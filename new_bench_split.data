@@ -1,0 +1,16 @@
+#Train Set	Test Set
+automotive_susan_c	automotive_bitcount
+automotive_susan_s	automotive_qsort1
+bzip2d	automotive_susan_e
+bzip2e	consumer_jpeg_c
+consumer_tiff2bw	consumer_jpeg_d
+consumer_tiff2rgba	consumer_tiffmedian
+consumer_tiffdither	network_patricia
+network_dijkstra	office_ispell
+office_ghostscript	office_rsynth
+security_blowfish_d	office_stringsearch1
+security_blowfish_e	security_pgp_d
+security_rijndael_e	security_pgp_e
+security_sha	security_rijndael_d
+telecom_adpcm_d	telecom_adpcm_c
+telecom_gsm	telecom_CRC32
