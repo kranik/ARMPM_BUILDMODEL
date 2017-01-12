@@ -7,9 +7,8 @@ fi
 
 
 #Programmable head line and column separator. By default I assume data start at line 1 (first line is description, second is column heads and third is actual data). Columns separated by tab(s).
-head_line=1
 COL_SEP="\t"
-time_convert=1000000000
+#time_convert=1000000000
 
 #requires getops, but this should not be an issue since ints built in bash
 while getopts ":r:n:esh" opt;
@@ -26,7 +25,7 @@ do
 	        ;;
         #Specify the save directory, if no save directory is chosen the results are saved in the $PWD
         r)
-		if [[ -n  $RESULTS_DIR ]]; then
+		if [[ -n  "$RESULTS_DIR" ]]; then
 			echo "Invalid input: option -r has already been used!" >&2
 			exit 1                
 		fi
@@ -37,14 +36,14 @@ do
 		else
 			#directory does exists and we can analyse results
 			RESULTS_DIR=$OPTARG
-			NUM_RUNS=$(ls $RESULTS_DIR | grep 'Run' | wc -w)
+			NUM_RUNS=$(ls "$RESULTS_DIR" | grep -c 'Run')
 			if [[ $NUM_RUNS -eq 0 ]]; then
 				echo "Directory specified with -r flag does not contain any results." >&2
 				exit 1                
 			else
-				if [[ $(find $RESULTS_DIR -type d -name 'LITTLE' | wc -w) -gt 0 ]]; then
+				if [[ $(echo "$RESULTS_DIR" | grep -c 'LITTLE') -gt 0 ]]; then
 					CORETYPE="LITTLE"	
-				elif [[ $(find $RESULTS_DIR -type d -name 'big' | wc -w) -gt 0 ]]; then
+				elif [[ $(echo "$RESULTS_DIR" | grep -c 'big') -gt 0 ]]; then
 					CORETYPE="big"
 				else	
 					echo "Directory specified with -r flag does not specify core type." >&2
@@ -69,7 +68,7 @@ do
 		fi
 
 		#Sanity check the directory has been specified. Part of my runs check is to see if the runs are present in the directory, so we need that entered first
-		if [[ -z $RESULTS_DIR ]]; then
+		if [[ -z "$RESULTS_DIR" ]]; then
 			echo "Please specify results directory before entering number of runs!" >&2
 			exit 1
 		fi
@@ -107,7 +106,7 @@ do
 	esac
 done
 
-if [[ -z $RESULTS_DIR ]]; then
+if [[ -z "$RESULTS_DIR" ]]; then
     	echo "Nothing to run. Expected -r flag!" >&2
     	exit 1
 fi
@@ -117,7 +116,7 @@ if [[ -z $RUNS ]]; then
     	exit 1
 fi
 
-FREQ_LIST=$(ls $RESULTS_DIR/Run_${RUNS%% *} | tr " " "\n" | sort -gr | tr "\n" " ")
+FREQ_LIST=$(ls "$RESULTS_DIR/Run_${RUNS%% *}" | tr " " "\n" | sort -gr | tr "\n" " ")
 
 for i in $RUNS
 do
@@ -132,35 +131,35 @@ do
 		
 		#Extract header information
 		#Fele data start (first lines with no #)
-		BENCHMARKS_BEGIN_LINE=$(awk -v SEP='\t' 'BEGIN{FS=SEP}{ if($1 !~ /#/){print (NR);exit} }' < $BENCHMARKS_FILE)
-		SENSORS_BEGIN_LINE=$(awk -v SEP='\t' 'BEGIN{FS=SEP}{ if($1 !~ /#/){print (NR);exit} }' < $SENSORS_FILE)
+		BENCHMARKS_BEGIN_LINE=$(awk -v SEP='\t' 'BEGIN{FS=SEP}{ if($1 !~ /#/){print (NR);exit} }' < "$BENCHMARKS_FILE")
+		SENSORS_BEGIN_LINE=$(awk -v SEP='\t' 'BEGIN{FS=SEP}{ if($1 !~ /#/){print (NR);exit} }' < "$SENSORS_FILE")
 		#Only extract events if selected
-		[[ -n $WITH_EVENTS ]] && EVENTS_BEGIN_LINE=$(awk -v SEP='\t' 'BEGIN{FS=SEP}{ if($1 !~ /#/){print (NR);exit} }' < $EVENTS_FILE)
+		[[ -n $WITH_EVENTS ]] && EVENTS_BEGIN_LINE=$(awk -v SEP='\t' 'BEGIN{FS=SEP}{ if($1 !~ /#/){print (NR);exit} }' < "$EVENTS_FILE")
 						
 		#Extract field information position from header lines - header line is assumed to be last line before data
 		#Benchmarks
-		BENCH_NAME_COLUMN=$(awk -v SEP='\t' -v START=$(($BENCHMARKS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /Name/) { print i; exit} } } }' < $BENCHMARKS_FILE)
-		BENCH_START_COLUMN=$(awk -v SEP='\t' -v START=$(($BENCHMARKS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /Start/) { print i; exit} } } }' < $BENCHMARKS_FILE)
-		BENCH_END_COLUMN=$(awk -v SEP='\t' -v START=$(($BENCHMARKS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /End/) { print i; exit} } } }' < $BENCHMARKS_FILE)
+		BENCH_NAME_COLUMN=$(awk -v SEP='\t' -v START=$((BENCHMARKS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /Name/) { print i; exit} } } }' < "$BENCHMARKS_FILE")
+		BENCH_START_COLUMN=$(awk -v SEP='\t' -v START=$((BENCHMARKS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /Start/) { print i; exit} } } }' < "$BENCHMARKS_FILE")
+		BENCH_END_COLUMN=$(awk -v SEP='\t' -v START=$((BENCHMARKS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /End/) { print i; exit} } } }' < "$BENCHMARKS_FILE")
 		
 		#Sensors
 		case $CORETYPE in
 			big)
-				SENSORS_COL_START=$(awk -v SEP='\t' -v START=$(($SENSORS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /A7 Power/) { print (i+1); exit} } } }' < $SENSORS_FILE)
-				SENSORS_COL_END=$(awk -v SEP='\t' -v START=$(($SENSORS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /A15 Power/) { print i; exit} } } }' < $SENSORS_FILE)
-				SENSORS_LABELS=$((awk -v SEP='\t' -v START=$(($SENSORS_BEGIN_LINE-1)) -v COL_START=$SENSORS_COL_START -v COL_END=$SENSORS_COL_END 'BEGIN{FS=SEP}{if(NR==START){ for(i=COL_START;i<=COL_END;i++) print $i} }' < $SENSORS_FILE) | tr "\n" "\t" | head -c -1)
+				SENSORS_COL_START=$(awk -v SEP='\t' -v START=$((SENSORS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /A7 Power/) { print (i+1); exit} } } }' < "$SENSORS_FILE")
+				SENSORS_COL_END=$(awk -v SEP='\t' -v START=$((SENSORS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /A15 Power/) { print i; exit} } } }' < "$SENSORS_FILE")
+				SENSORS_LABELS=$(echo "$(awk -v SEP='\t' -v START=$((SENSORS_BEGIN_LINE-1)) -v COL_START="$SENSORS_COL_START" -v COL_END="$SENSORS_COL_END" 'BEGIN{FS=SEP}{if(NR==START){ for(i=COL_START;i<=COL_END;i++) print $i} }' < "$SENSORS_FILE")" | tr "\n" "\t" | head -c -1)
 				;;
 			LITTLE)
-				SENSORS_COL_START=$(awk -v SEP='\t' -v START=$(($SENSORS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i !~ /Timestamp/) { print i; exit} } } }' < $SENSORS_FILE)
-				SENSORS_COL_END=$(awk -v SEP='\t' -v START=$(($SENSORS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /A7 Power/) { print i; exit} } } }' < $SENSORS_FILE)
-				SENSORS_LABELS=$((awk -v SEP='\t' -v START=$(($SENSORS_BEGIN_LINE-1)) -v COL_START=$SENSORS_COL_START -v COL_END=$SENSORS_COL_END 'BEGIN{FS=SEP}{if(NR==START){ for(i=COL_START;i<=COL_END;i++) print $i} }' < $SENSORS_FILE) | tr "\n" "\t" | head -c -1)
+				SENSORS_COL_START=$(awk -v SEP='\t' -v START=$((SENSORS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i !~ /Timestamp/) { print i; exit} } } }' < "$SENSORS_FILE")
+				SENSORS_COL_END=$(awk -v SEP='\t' -v START=$((SENSORS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /A7 Power/) { print i; exit} } } }' < "$SENSORS_FILE")
+				SENSORS_LABELS=$(echo "$(awk -v SEP='\t' -v START=$((SENSORS_BEGIN_LINE-1)) -v COL_START="$SENSORS_COL_START" -v COL_END="$SENSORS_COL_END" 'BEGIN{FS=SEP}{if(NR==START){ for(i=COL_START;i<=COL_END;i++) print $i} }' < "$SENSORS_FILE")" | tr "\n" "\t" | head -c -1)
 				;;
 		esac
 		
 		#Events
 		if [[ -n $WITH_EVENTS ]]; then
-			EVENTS_COL_START=$(awk -v SEP='\t' -v START=$(($EVENTS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i !~ /Timestamp/) { print i; exit} } } }' < $EVENTS_FILE)
-			EVENTS_LABELS=$((awk -v SEP='\t' -v START=$(($EVENTS_BEGIN_LINE-1)) -v COL_START=$EVENTS_COL_START 'BEGIN{FS=SEP}{if(NR==START){ for(i=COL_START;i<=NF;i++) print $i} }' < $EVENTS_FILE) | tr "\n" "\t" | head -c -1)
+			EVENTS_COL_START=$(awk -v SEP='\t' -v START=$((EVENTS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i !~ /Timestamp/) { print i; exit} } } }' < "$EVENTS_FILE")
+			EVENTS_LABELS=$(echo "$(awk -v SEP='\t' -v START=$((EVENTS_BEGIN_LINE-1)) -v COL_START="$EVENTS_COL_START" 'BEGIN{FS=SEP}{if(NR==START){ for(i=COL_START;i<=NF;i++) print $i} }' < "$EVENTS_FILE")" | tr "\n" "\t" | head -c -1)
 		fi
 		
 	   	if [[ -z $SAVE ]]; then
@@ -172,32 +171,33 @@ do
 		else
 		   	#Save results header
 			RESULTS_FILE="$RESULTS_DIR/Run_$i/$FREQ_SELECT/results.data"
-			[[ -n $WITH_EVENTS ]] && echo -e "#Timestamp\tBenchmark\t$SENSORS_LABELS\t$EVENTS_LABELS" > $RESULTS_FILE || echo -e "#Timestamp\tBenchmark\t$SENSORS_LABELS" > $RESULTS_FILE
+			[[ -n $WITH_EVENTS ]] && echo -e "#Timestamp\tBenchmark\t$SENSORS_LABELS\t$EVENTS_LABELS" > "$RESULTS_FILE" || echo -e "#Timestamp\tBenchmark\t$SENSORS_LABELS" > "$RESULTS_FILE"
 		fi		
 		
-		#Extract energy consumption information
-		for BENCH_LINE in $(seq $BENCHMARKS_BEGIN_LINE $(wc -l $BENCHMARKS_FILE | awk '{print $1}'))
+		#Extract sensor and event information
+		for BENCH_LINE in $(seq "$BENCHMARKS_BEGIN_LINE" "$(wc -l "$BENCHMARKS_FILE" | awk '{print $1}')")
 		do 
 			#Get start and end of each benchmark
-			BENCH_NAME=$(awk -v START=$BENCH_LINE -v SEP=$COL_SEP -v COL=$BENCH_NAME_COLUMN 'BEGIN{FS=SEP}{if (NR == START){print $COL;exit}}' $BENCHMARKS_FILE)
-			BENCH_START=$(awk -v START=$BENCH_LINE -v SEP=$COL_SEP -v COL=$BENCH_START_COLUMN 'BEGIN{FS=SEP}{if (NR == START){print $COL;exit}}' $BENCHMARKS_FILE)
-			BENCH_FINISH=$(awk -v START=$BENCH_LINE -v SEP=$COL_SEP -v COL=$BENCH_END_COLUMN 'BEGIN{FS=SEP}{if (NR == START){print $COL;exit}}' $BENCHMARKS_FILE)
-			BENCH_RUNTIME=$(echo "scale = 10; ($BENCH_FINISH-$BENCH_START)/$time_convert;" | bc) 
-			for SENSORS_LINE in $(awk -v START=$SENSORS_BEGIN_LINE -v SEP=' ' -v B_ST=$BENCH_START -v B_F=$BENCH_FINISH 'BEGIN{FS = SEP} {if (NR >= START && $1 >= B_ST && $1 <= B_F) print NR }' $SENSORS_FILE)
+			BENCH_NAME=$(awk -v START="$BENCH_LINE" -v SEP=$COL_SEP -v COL="$BENCH_NAME_COLUMN" 'BEGIN{FS=SEP}{if (NR == START){print $COL;exit}}' < "$BENCHMARKS_FILE")
+			BENCH_START=$(awk -v START="$BENCH_LINE" -v SEP=$COL_SEP -v COL="$BENCH_START_COLUMN" 'BEGIN{FS=SEP}{if (NR == START){print $COL;exit}}' < "$BENCHMARKS_FILE")
+			BENCH_FINISH=$(awk -v START="$BENCH_LINE" -v SEP=$COL_SEP -v COL="$BENCH_END_COLUMN" 'BEGIN{FS=SEP}{if (NR == START){print $COL;exit}}' < "$BENCHMARKS_FILE")
+			#BENCH_RUNTIME=$(echo "scale = 10; ($BENCH_FINISH-$BENCH_START)/$time_convert;" | bc) 
+			for SENSORS_LINE in $(awk -v START="$SENSORS_BEGIN_LINE" -v SEP=' ' -v B_ST="$BENCH_START" -v B_F="$BENCH_FINISH" 'BEGIN{FS = SEP} {if (NR >= START && $1 >= B_ST && $1 <= B_F) print NR }' < "$SENSORS_FILE")
 			do
-				SENSORS_TIMESTAMP=$(awk -v START=$SENSORS_LINE -v SEP=' ' 'BEGIN{FS=SEP}{if (NR==START){print $1;exit}}' $SENSORS_FILE)
-				SENSORS_TIMESTAMP_NEXT=$(awk -v START=$(($SENSORS_LINE+1)) -v SEP=' ' 'BEGIN{FS=SEP}{if (NR==START){print $1;exit}}' $SENSORS_FILE)
-				SENSORS_DATA=$((awk -v START=$SENSORS_LINE -v SEP=' ' -v COL_START=$SENSORS_COL_START -v COL_END=$SENSORS_COL_END 'BEGIN{FS = SEP}{if(NR==START){ for(i=COL_START;i<=COL_END;i++) print $i} }' < $SENSORS_FILE) | tr "\n" "\t" | head -c -1)
+				SENSORS_TIMESTAMP=$(awk -v START="$SENSORS_LINE" -v SEP=' ' 'BEGIN{FS=SEP}{if (NR==START){print $1;exit}}'  < "$SENSORS_FILE")
+				SENSORS_TIMESTAMP_NEXT=$(awk -v START=$((SENSORS_LINE+1)) -v SEP=' ' 'BEGIN{FS=SEP}{if (NR==START){print $1;exit}}'  < "$SENSORS_FILE")
+				SENSORS_DATA=$(echo "$(awk -v START="$SENSORS_LINE" -v SEP=' ' -v COL_START="$SENSORS_COL_START" -v COL_END="$SENSORS_COL_END" 'BEGIN{FS = SEP}{if(NR==START){ for(i=COL_START;i<=COL_END;i++) print $i} }' < "$SENSORS_FILE")" | tr "\n" "\t" | head -c -1)
 				if [[ -n $WITH_EVENTS ]]; then
-					for EVENTS_LINE in $(awk -v START=$EVENTS_BEGIN_LINE -v SEP="\t" -v S_ST=$SENSORS_TIMESTAMP -v S_F=$SENSORS_TIMESTAMP_NEXT 'BEGIN{FS=SEP}{if (NR >= START && $1 >= S_ST && $1 < S_F){print NR;exit}}' $EVENTS_FILE)
+					for EVENTS_LINE in $(awk -v START="$EVENTS_BEGIN_LINE" -v SEP="\t" -v S_ST="$SENSORS_TIMESTAMP" -v S_F="$SENSORS_TIMESTAMP_NEXT" 'BEGIN{FS=SEP}{if (NR >= START && $1 >= S_ST && $1 < S_F){print NR;exit}}' < "$EVENTS_FILE")
 					do
-						EVENTS_DATA=$((awk -v START=$EVENTS_LINE -v SEP="\t" -v COL_START=$EVENTS_COL_START 'BEGIN{FS = SEP}{if(NR==START){ for(i=COL_START;i<=NF;i++) print $i } }' < $EVENTS_FILE) | tr "\n" "\t" | head -c -1)					
-						[[ -z $SAVE ]] && echo -e "$SENSORS_TIMESTAMP\t$BENCH_NAME\t$SENSORS_DATA\t$EVENTS_DATA" || echo -e "$SENSORS_TIMESTAMP\t$BENCH_NAME\t$SENSORS_DATA\t$EVENTS_DATA" >> $RESULTS_FILE
+						EVENTS_DATA=$(echo "$(awk -v START="$EVENTS_LINE" -v SEP="\t" -v COL_START="$EVENTS_COL_START" 'BEGIN{FS = SEP}{if(NR==START){ for(i=COL_START;i<=NF;i++) print $i } }' < "$EVENTS_FILE")" | tr "\n" "\t" | head -c -1)					
+						[[ -z $SAVE ]] && echo -e "$SENSORS_TIMESTAMP\t$BENCH_NAME\t$SENSORS_DATA\t$EVENTS_DATA" || echo -e "$SENSORS_TIMESTAMP\t$BENCH_NAME\t$SENSORS_DATA\t$EVENTS_DATA" >> "$RESULTS_FILE"
 						EVENTS_DATA=""
 					done
+				else
+					#Print only sensors data if no events
+					[[ -z $SAVE ]] && echo -e "$SENSORS_TIMESTAMP\t$BENCH_NAME\t$SENSORS_DATA" || echo -e "$SENSORS_TIMESTAMP\t$BENCH_NAME\t$SENSORS_DATA" >> "$RESULTS_FILE"
 				fi
-				#Print only sensors data if no events
-				[[ -z $SAVE && -z $WITH_EVENTS ]] && echo -e "$SENSORS_TIMESTAMP\t$BENCH_NAME\t$SENSORS_DATA" || echo -e "$SENSORS_TIMESTAMP\t$BENCH_NAME\t$SENSORS_DATA" >> $RESULTS_FILE
 				SENSORS_DATA=""
 			done   
 		done

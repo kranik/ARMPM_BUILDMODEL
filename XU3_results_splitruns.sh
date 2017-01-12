@@ -5,12 +5,6 @@ if [[ "$#" -eq 0 ]]; then
 	exit 1
 fi
 
-
-#Programmable head line and column separator. By default I assume data start at line 1 (first line is description, second is column heads and third is actual data). Columns separated by tab(s).
-head_line=1
-col_sep="\t"
-time_convert=1000000000
-
 #requires getops, but this should not be an issue since ints built in bash
 while getopts ":r:n:s:h" opt;
 do
@@ -34,15 +28,15 @@ do
 				exit 1
 		    	else
 				RESULTS_FILE="$OPTARG"
-				RESULTS_START_LINE=$(awk -v SEP='\t' 'BEGIN{FS=SEP}{ if($1 !~ /#/){print (NR);exit} }' < $RESULTS_FILE)
+				RESULTS_START_LINE=$(awk -v SEP='\t' 'BEGIN{FS=SEP}{ if($1 !~ /#/){print (NR);exit} }' < "$RESULTS_FILE")
 				#Check if results file contains data
 			    	if [[ -z $RESULTS_START_LINE ]]; then 
 					echo "Results file contains no data!" >&2
 					exit 1
 				else
 					#Extract runs
-					RESULTS_RUN_COLUMN=$(awk -v SEP='\t' -v START=$(($RESULTS_START_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /Run/) { print i; exit} } } }' < $RESULTS_FILE )
-					RESULTS_RUN_LIST=$(echo $(awk -v SEP='\t' -v START=$RESULTS_START_LINE -v DATA=0 -v COL=$RESULTS_RUN_COLUMN 'BEGIN{FS=SEP}{ if(NR >= START && $COL != DATA){print ($COL);DATA=$COL} }' < $RESULTS_FILE | sort -u | sort -gr ) | tr " " ",")
+					RESULTS_RUN_COLUMN=$(awk -v SEP='\t' -v START=$((RESULTS_START_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /Run/) { print i; exit} } } }' < "$RESULTS_FILE")
+					RESULTS_RUN_LIST=$(echo "$(awk -v SEP='\t' -v START="$RESULTS_START_LINE" -v DATA=0 -v COL="$RESULTS_RUN_COLUMN" 'BEGIN{FS=SEP}{ if(NR >= START && $COL != DATA){print ($COL);DATA=$COL} }' < "$RESULTS_FILE" | sort -u | sort -gr )" | tr " " ",")
 					#Check if we have successfully extracted freqeuncies
 					if [[ -z $RESULTS_RUN_LIST ]]; then
 						echo "Unable to extract runs from results file!" >&2
@@ -51,7 +45,7 @@ do
 						echo "Extracted run list:" >&1
 						echo "$RESULTS_RUN_LIST" >&1
 						#Check if list > 1 if not just terminate since its uselsess
-						if [[ $(echo $RESULTS_RUN_LIST | tr "," "\n" | wc -l) -gt 1 ]]; then 
+						if [[ $(echo "$RESULTS_RUN_LIST" | tr "," "\n" | wc -l) -gt 1 ]]; then 
 							spaced_RUN_LIST="${RESULTS_RUN_LIST//,/ }"
 							#Extract file characteristics
 							#Finish this later
@@ -121,8 +115,8 @@ for i in $spaced_RUN_LIST;
 do
 	echo "Extracting run: $i"
 	#Print header run save file
-	awk -v SEP='\t' -v START=$(($RESULTS_START_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){print $0;exit}}' < $RESULTS_FILE > $(echo $(echo "$SAVE_DIR/")$(eval echo -e $SAVE_FILENAME))
+	awk -v SEP='\t' -v START=$((RESULTS_START_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){print $0;exit}}' < "$RESULTS_FILE" > "$(echo "$SAVE_DIR/$(eval echo -e "$SAVE_FILENAME")")"
 	#Print results
-	awk -v SEP='\t' -v START=$RESULTS_START_LINE -v COL=$RESULTS_RUN_COLUMN -v DATA=$i 'BEGIN{FS=SEP}{if(NR >= START){ if($COL==DATA) {print $0} }}' < $RESULTS_FILE >> $(echo $(echo "$SAVE_DIR/")$(eval echo -e $SAVE_FILENAME))
-	echo -e "Finished writing into file -> "$(echo $(echo "$SAVE_DIR/")$(eval echo -e $SAVE_FILENAME))
+	awk -v SEP='\t' -v START="$RESULTS_START_LINE" -v COL="$RESULTS_RUN_COLUMN" -v DATA="$i" 'BEGIN{FS=SEP}{if(NR >= START){ if($COL==DATA) {print $0} }}' < "$RESULTS_FILE" >> "$(echo "$SAVE_DIR/$(eval echo -e "$SAVE_FILENAME")")"
+	echo -e "Finished writing into file -> ""$(echo "$SAVE_DIR/$(eval echo -e "$SAVE_FILENAME")")"
 done
