@@ -16,7 +16,7 @@ do
 			echo "Mandatory options are: -r -s "
 			exit 0 
         		;;
-		#Specify the save directory, if no save directory is chosen the results are saved in the $PWD
+		#Specify the results file
 		r)
 			if [[ -n $RESULTS_FILE ]]; then
 				echo "Invalid input: option -r has already been used!" >&2
