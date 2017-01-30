@@ -85,7 +85,7 @@ if (mode == 2)
   %The ones in front are for the constant coefficiant for linear regression
   train_reg=[ones(size(train_set,1),1),train_set(:,str2num(events_col).-start_col)];
   %Compute model
-  [m, Err, CLow, CHigh] = build_model(train_reg,train_set(:,power_col.-start_col));
+  [m, maxcorr, maxcorrindices, avgcorr] = build_model(train_reg,train_set(:,power_col.-start_col));
 
   %Open test set file
   fid = fopen (test_set, "r");
@@ -124,8 +124,13 @@ if (mode == 2)
   disp(["Average Relative Error [%]: " num2str(rel_avg_abs_err,"%.5f")]);
   disp(["Relative Error Standart Deviation [%]: " num2str(rel_err_std_dev,"%.5f")]);
   disp("###########################################################");
-  disp(["Model coefficients: " num2str(m',"%G\t")]);
+  disp(["Average Event Cross-Correlation [%]: " num2str((avgcorr/1.0)*100,"%.5f")]);
+  disp(["Maximum Event Cross-Correlation [%]: " num2str((maxcorr/1.0)*100,"%.5f")]);
+  disp(["Most Cross-Correlated Events: " num2str(str2num(events_col)(maxcorrindices(1,1)),"%d") " and " num2str(str2num(events_col)(maxcorrindices(1,2)),"%d")]);
   disp("###########################################################");
+  disp(["Model Coefficients: " num2str(m',"%G\t")]);
+  disp("###########################################################");
+  
 endif
 
 endfunction
