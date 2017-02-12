@@ -99,7 +99,7 @@ do
 			MODE="$OPTARG"
 			#Depending on mode build header files
 			#Extract nonevent related information
-			NONEVENTS_LIST=$(echo "$(awk -v SEP='\t' -v START=$((RESULTS_START_LINE-1)) -v COL_END="$EVENTS_COL_START" 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<COL_END;i++) print i} }' < "$RESULTS_FILE")" | tr "\n" ","| head -c -1)
+			NONEVENTS_LIST=$(awk -v SEP='\t' -v START=$((RESULTS_START_LINE-1)) -v COL_END="$EVENTS_COL_START" 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<COL_END;i++) print i} }' < "$RESULTS_FILE" | tr "\n" ","| head -c -1)
 			#NONEVENTS_LIST_LABELS=$(echo "$(awk -v SEP='\t' -v START=$(($RESULTS_START_LINE-1)) -v COLUMNS="$NONEVENTS_LIST" 'BEGIN{FS = SEP;len=split(COLUMNS,ARRAY,",")}{if (NR == START){for (i = 1; i <= len; i++){print $ARRAY[i]}}}' < "$RESULTS_FILE")" | tr "\n" "," | head -c -1)
 			#Extract events list labels (for sanity check)
 			#EVENTS_LIST_LABELS=$(echo "$(awk -v SEP='\t' -v START=$(($RESULTS_START_LINE-1)) -v COLUMNS="$EVENTS_LIST" 'BEGIN{FS = SEP;len=split(COLUMNS,ARRAY,",")}{if (NR == START){for (i = 1; i <= len; i++){print $ARRAY[i]}}}' < "$RESULTS_FILE")" | tr "\n" "," | head -c -1)
@@ -132,7 +132,7 @@ do
 			esac
 			#Extract full extract list size labels
 			FINAL_EXTRACT_LIST_SIZE=$(echo "$FINAL_EXTRACT_LIST" | tr "," "\n" | wc -l)
-			FINAL_EXTRACT_LIST_LABELS=$(echo "$(awk -v SEP='\t' -v START=$((RESULTS_START_LINE-1)) -v COLUMNS="$FINAL_EXTRACT_LIST" 'BEGIN{FS = SEP;len=split(COLUMNS,ARRAY,",")}{if (NR == START){for (i = 1; i <= len; i++){print $ARRAY[i]}}}' < "$RESULTS_FILE")" | tr "\n" "," | head -c -1)
+			FINAL_EXTRACT_LIST_LABELS=$(awk -v SEP='\t' -v START=$((RESULTS_START_LINE-1)) -v COLUMNS="$FINAL_EXTRACT_LIST" 'BEGIN{FS = SEP;len=split(COLUMNS,ARRAY,",")}{if (NR == START){for (i = 1; i <= len; i++){print $ARRAY[i]}}}' < "$RESULTS_FILE" | tr "\n" "," | head -c -1)
 			;;
 		#Specify the save file, if no save directory is chosen the results are printed on terminal
 		s)

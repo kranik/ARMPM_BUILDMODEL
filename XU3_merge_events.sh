@@ -38,7 +38,7 @@ do
 
 				#Exctract sync point 1 (run) information and do checks
 				eval RESULTS_RUN_COLUMN_$RF_NUM="$(awk -v SEP='\t' -v START="$(( $(eval echo -e "\$RESULTS_START_LINE_$RF_NUM") - 1 ))" 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /Run/) { print i; exit} } } }' < "$(eval echo -e "\$RESULTS_FILE_$RF_NUM")" )"
-				eval RESULTS_RUN_LIST_$RF_NUM="$(echo "$(awk -v SEP='\t' -v START="$(eval echo -e "\$RESULTS_START_LINE_$RF_NUM")" -v DATA=0 -v COL="$(eval echo -e "\$RESULTS_RUN_COLUMN_$RF_NUM")" 'BEGIN{FS=SEP}{ if(NR >= START && $COL != DATA){print ($COL);DATA=$COL} }' < "$(eval echo -e "\$RESULTS_FILE_$RF_NUM")" | sort -u | sort -g | tr "\n" "," | head -c -1 )")"
+				eval RESULTS_RUN_LIST_$RF_NUM="$(awk -v SEP='\t' -v START="$(eval echo -e "\$RESULTS_START_LINE_$RF_NUM")" -v DATA=0 -v COL="$(eval echo -e "\$RESULTS_RUN_COLUMN_$RF_NUM")" 'BEGIN{FS=SEP}{ if(NR >= START && $COL != DATA){print ($COL);DATA=$COL} }' < "$(eval echo -e "\$RESULTS_FILE_$RF_NUM" | sort -u | sort -g | tr "\n" "," | head -c -1 )")"
 				#Compare run column information
 				if [[ -z $RESULTS_RUN_LIST ]]; then
 					#If first file (no standart run information exists) use its runs as a standart.
@@ -52,7 +52,7 @@ do
 				fi
 				#Exctract sync point 2 (frequency) information and do checks
 				eval RESULTS_FREQ_COLUMN_$RF_NUM="$(awk -v SEP='\t' -v START="$(( $(eval echo -e "\$RESULTS_START_LINE_$RF_NUM") - 1 ))" 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /Frequency/) { print i; exit} } } }' < "$(eval echo -e "\$RESULTS_FILE_$RF_NUM")" )"
-				eval RESULTS_FREQ_LIST_$RF_NUM="$(echo "$(awk -v SEP='\t' -v START="$(eval echo -e "\$RESULTS_START_LINE_$RF_NUM")" -v DATA=0 -v COL="$(eval echo -e "\$RESULTS_FREQ_COLUMN_$RF_NUM")" 'BEGIN{FS=SEP}{ if(NR >= START && $COL != DATA){print ($COL);DATA=$COL} }' < "$(eval echo -e "\$RESULTS_FILE_$RF_NUM")" | sort -u | sort -g | tr "\n" "," | head -c -1 )")"
+				eval RESULTS_FREQ_LIST_$RF_NUM="$(awk -v SEP='\t' -v START="$(eval echo -e "\$RESULTS_START_LINE_$RF_NUM")" -v DATA=0 -v COL="$(eval echo -e "\$RESULTS_FREQ_COLUMN_$RF_NUM")" 'BEGIN{FS=SEP}{ if(NR >= START && $COL != DATA){print ($COL);DATA=$COL} }' < "$(eval echo -e "\$RESULTS_FILE_$RF_NUM" | sort -u | sort -g | tr "\n" "," | head -c -1 )")"
 				#Compare frequency column information
 				if [[ -z $RESULTS_FREQ_LIST ]]; then
 					#If first file (no standart frequency information exists) use its frequencies as a standart.
@@ -66,7 +66,7 @@ do
 				fi
 				#Exctract sync point 3 (bench) information and do checks
 				eval RESULTS_BENCH_COLUMN_$RF_NUM="$(awk -v SEP='\t' -v START="$(( $(eval echo -e "\$RESULTS_START_LINE_$RF_NUM") - 1 ))" 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /Benchmark/) { print i; exit} } } }' < "$(eval echo -e "\$RESULTS_FILE_$RF_NUM")" )"
-				eval RESULTS_BENCH_LIST_$RF_NUM="$(echo "$(awk -v SEP='\t' -v START="$(eval echo -e "\$RESULTS_START_LINE_$RF_NUM")" -v DATA=0 -v COL="$(eval echo -e "\$RESULTS_BENCH_COLUMN_$RF_NUM")" 'BEGIN{FS=SEP}{ if(NR >= START && $COL != DATA){print ($COL);DATA=$COL} }' < "$(eval echo -e "\$RESULTS_FILE_$RF_NUM")" | sort -u | sort -g | tr "\n" "," | head -c -1 )")"
+				eval RESULTS_BENCH_LIST_$RF_NUM="$(awk -v SEP='\t' -v START="$(eval echo -e "\$RESULTS_START_LINE_$RF_NUM")" -v DATA=0 -v COL="$(eval echo -e "\$RESULTS_BENCH_COLUMN_$RF_NUM")" 'BEGIN{FS=SEP}{ if(NR >= START && $COL != DATA){print ($COL);DATA=$COL} }' < "$(eval echo -e "\$RESULTS_FILE_$RF_NUM" | sort -u | sort -g | tr "\n" "," | head -c -1 )")"
 				#Compare benchmark column information
 				if [[ -z $RESULTS_BENCH_LIST ]]; then
 					#If first file (no standart benchmark information exists) use its benchmarks as a standart.
@@ -96,7 +96,7 @@ do
 				#Extrating the event names (header) is a bit tricky. First we store the events as string in temp (note events separated by commas not tabs)
 				#We do this so we can pick them up with the eval variable, otherwise every spaced entry is a new command so we cant add them just as a string
 				#Also we avoid tabs since echo stores them as spaces, only way around is to separate with commas then tr the final output
-				temp=$(echo "$(awk -v SEP='\t' -v START="$(( $(eval echo -e "\$RESULTS_START_LINE_$RF_NUM") - 1 ))"  -v COL_START="$(eval echo -e "\$RESULTS_EV_START_COLUMN_$RF_NUM")" 'BEGIN{FS=SEP}{if(NR==START){ for(i=COL_START;i<=NF;i++) print $i} }' < "$(eval echo -e "\$RESULTS_FILE_$RF_NUM")" )" | tr "\n" "," | head -c -1)
+				temp=$(awk -v SEP='\t' -v START="$(( $(eval echo -e "\$RESULTS_START_LINE_$RF_NUM") - 1 ))"  -v COL_START="$(eval echo -e "\$RESULTS_EV_START_COLUMN_$RF_NUM")" 'BEGIN{FS=SEP}{if(NR==START){ for(i=COL_START;i<=NF;i++) print $i} }' < "$(eval echo -e "\$RESULTS_FILE_$RF_NUM")" | tr "\n" "," | head -c -1)
 				eval RESULTS_EV_HEADER_$RF_NUM="$temp"
 		    	fi
 		    	;;    
@@ -342,7 +342,7 @@ do
 	TEMP_TOTAL=$(awk -v SEP='\t' -v START="$MAIN_LINE" -v COL="$RESULTS_TEMP_COLUMN_1" 'BEGIN{FS=SEP}{if(NR==START){print$COL;exit}}' < "$RESULTS_FILE_1")
 	VOLT_TOTAL=$(awk -v SEP='\t' -v START="$MAIN_LINE" -v COL="$RESULTS_VOLT_COLUMN_1" 'BEGIN{FS=SEP}{if(NR==START){print$COL;exit}}' < "$RESULTS_FILE_1")
 	CURR_TOTAL=$(awk -v SEP='\t' -v START="$MAIN_LINE" -v COL="$RESULTS_CURR_COLUMN_1" 'BEGIN{FS=SEP}{if(NR==START){print$COL;exit}}' < "$RESULTS_FILE_1")
-	EVENTS_TOTAL=$(echo "$(awk -v SEP='\t' -v START="$MAIN_LINE" -v COL_START="$RESULTS_EV_START_COLUMN_1" 'BEGIN{FS=SEP}{if(NR==START){for(i=COL_START;i<=NF;i++){print $i}}}' < "$RESULTS_FILE_1")" | tr "\n" "\t" | head -c -1)
+	EVENTS_TOTAL=$(awk -v SEP='\t' -v START="$MAIN_LINE" -v COL_START="$RESULTS_EV_START_COLUMN_1" 'BEGIN{FS=SEP}{if(NR==START){for(i=COL_START;i<=NF;i++){print $i}}}' < "$RESULTS_FILE_1" | tr "\n" "\t" | head -c -1)
 	#Then extract data from every synced file and add to total
 	for i in $(seq 2 $RF_NUM)
 	do
@@ -366,7 +366,7 @@ do
 		MERGE_CURR=$(awk -v SEP='\t' -v START="$(eval echo -e "\$MERGE_LINE_$i")" -v COL="$(eval echo -e "\$RESULTS_CURR_COLUMN_$i")" 'BEGIN{FS=SEP}{if(NR==START){print $COL;exit}}' < "$(eval echo -e "\$RESULTS_FILE_$i")")
 		CURR_TOTAL=$(echo "$CURR_TOTAL+$MERGE_CURR;" | bc )
 		#Add events
-		EVENTS_TOTAL+="\t"$( echo "$(awk -v SEP='\t' -v START="$(eval echo -e "\$MERGE_LINE_$i")" -v COL_START="$(eval echo -e "\$RESULTS_EV_START_COLUMN_$i")" 'BEGIN{FS=SEP}{if(NR==START){for(i=COL_START;i<=NF;i++){print $i}}}' < "$(eval echo -e "\$RESULTS_FILE_$i")")" | tr "\n" "\t" | head -c -1)
+		EVENTS_TOTAL+="\t"$(awk -v SEP='\t' -v START="$(eval echo -e "\$MERGE_LINE_$i")" -v COL_START="$(eval echo -e "\$RESULTS_EV_START_COLUMN_$i")" 'BEGIN{FS=SEP}{if(NR==START){for(i=COL_START;i<=NF;i++){print $i}}}' < "$(eval echo -e "\$RESULTS_FILE_$i")" | tr "\n" "\t" | head -c -1)
 	done
 	#After merge points have been totalled and averaged add them to output string and print along with data
 	#Average timestamp

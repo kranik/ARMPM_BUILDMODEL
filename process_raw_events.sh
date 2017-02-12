@@ -117,9 +117,9 @@ do
 		
 		#Get events labels and RAW identifieers in list form
 		#I take the raw events file then I extract the labels and in orger to turn it int oa nice string I replace all \n with commas and remove the last train=ling comma (caused by replacing the FINISHing \n)
-		EVENTS_LABELS=$(echo "$(awk -v START="$LABEL_START" -v FINISH="$LABEL_FINISH" -v COL="$LABEL_COLUMN" -v SEP='\t' 'BEGIN{FS=SEP}{if (NR >= START && NR < FINISH) {print $COL}}' < "$EVENTS_RAW_FILE")" | tr "\n" "\t" | head -c -1)
+		EVENTS_LABELS=$(awk -v START="$LABEL_START" -v FINISH="$LABEL_FINISH" -v COL="$LABEL_COLUMN" -v SEP='\t' 'BEGIN{FS=SEP}{if (NR >= START && NR < FINISH) {print $COL}}' < "$EVENTS_RAW_FILE" | tr "\n" "\t" | head -c -1)
 		#for some obscure reason it cannot convert strings with \n to arrays so I need to extract identfiers then convers \n to commas using tr, then remove trailing last comma (which used to be a \n) and then convert properly
-		IFS="," read -a EVENTS_RAW <<< "$(echo "$(awk -v START="$LABEL_START" -v FINISH="$LABEL_FINISH" -v COL="$RAW_COLUMN" -v SEP='\t' 'BEGIN{FS=SEP}{if (NR >= START && NR < FINISH) {print $COL}}' < "$EVENTS_RAW_FILE")" | tr "\n" "," | head -c -1)" 
+		IFS="," read -a EVENTS_RAW <<< $(awk -v START="$LABEL_START" -v FINISH="$LABEL_FINISH" -v COL="$RAW_COLUMN" -v SEP='\t' 'BEGIN{FS=SEP}{if (NR >= START && NR < FINISH) {print $COL}}' < "$EVENTS_RAW_FILE" | tr "\n" "," | head -c -1) 
 
 		if [[ -z $SAVE ]]; then
 	   		#Display results header

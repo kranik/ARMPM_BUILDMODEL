@@ -147,19 +147,19 @@ do
 			big)
 				SENSORS_COL_START=$(awk -v SEP='\t' -v START=$((SENSORS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /A7 Power/) { print (i+1); exit} } } }' < "$SENSORS_FILE")
 				SENSORS_COL_END=$(awk -v SEP='\t' -v START=$((SENSORS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /A15 Power/) { print i; exit} } } }' < "$SENSORS_FILE")
-				SENSORS_LABELS=$(echo "$(awk -v SEP='\t' -v START=$((SENSORS_BEGIN_LINE-1)) -v COL_START="$SENSORS_COL_START" -v COL_END="$SENSORS_COL_END" 'BEGIN{FS=SEP}{if(NR==START){ for(i=COL_START;i<=COL_END;i++) print $i} }' < "$SENSORS_FILE")" | tr "\n" "\t" | head -c -1)
+				SENSORS_LABELS=$(awk -v SEP='\t' -v START=$((SENSORS_BEGIN_LINE-1)) -v COL_START="$SENSORS_COL_START" -v COL_END="$SENSORS_COL_END" 'BEGIN{FS=SEP}{if(NR==START){ for(i=COL_START;i<=COL_END;i++) print $i} }' < "$SENSORS_FILE" | tr "\n" "\t" | head -c -1)
 				;;
 			LITTLE)
 				SENSORS_COL_START=$(awk -v SEP='\t' -v START=$((SENSORS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i !~ /Timestamp/) { print i; exit} } } }' < "$SENSORS_FILE")
 				SENSORS_COL_END=$(awk -v SEP='\t' -v START=$((SENSORS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /A7 Power/) { print i; exit} } } }' < "$SENSORS_FILE")
-				SENSORS_LABELS=$(echo "$(awk -v SEP='\t' -v START=$((SENSORS_BEGIN_LINE-1)) -v COL_START="$SENSORS_COL_START" -v COL_END="$SENSORS_COL_END" 'BEGIN{FS=SEP}{if(NR==START){ for(i=COL_START;i<=COL_END;i++) print $i} }' < "$SENSORS_FILE")" | tr "\n" "\t" | head -c -1)
+				SENSORS_LABELS=$(awk -v SEP='\t' -v START=$((SENSORS_BEGIN_LINE-1)) -v COL_START="$SENSORS_COL_START" -v COL_END="$SENSORS_COL_END" 'BEGIN{FS=SEP}{if(NR==START){ for(i=COL_START;i<=COL_END;i++) print $i} }' < "$SENSORS_FILE" | tr "\n" "\t" | head -c -1)
 				;;
 		esac
 		
 		#Events
 		if [[ -n $WITH_EVENTS ]]; then
 			EVENTS_COL_START=$(awk -v SEP='\t' -v START=$((EVENTS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i !~ /Timestamp/) { print i; exit} } } }' < "$EVENTS_FILE")
-			EVENTS_LABELS=$(echo "$(awk -v SEP='\t' -v START=$((EVENTS_BEGIN_LINE-1)) -v COL_START="$EVENTS_COL_START" 'BEGIN{FS=SEP}{if(NR==START){ for(i=COL_START;i<=NF;i++) print $i} }' < "$EVENTS_FILE")" | tr "\n" "\t" | head -c -1)
+			EVENTS_LABELS=$(awk -v SEP='\t' -v START=$((EVENTS_BEGIN_LINE-1)) -v COL_START="$EVENTS_COL_START" 'BEGIN{FS=SEP}{if(NR==START){ for(i=COL_START;i<=NF;i++) print $i} }' < "$EVENTS_FILE" | tr "\n" "\t" | head -c -1)
 		fi
 		
 	   	if [[ -z $SAVE ]]; then
@@ -186,11 +186,11 @@ do
 			do
 				SENSORS_TIMESTAMP=$(awk -v START="$SENSORS_LINE" -v SEP=' ' 'BEGIN{FS=SEP}{if (NR==START){print $1;exit}}'  < "$SENSORS_FILE")
 				SENSORS_TIMESTAMP_NEXT=$(awk -v START=$((SENSORS_LINE+1)) -v SEP=' ' 'BEGIN{FS=SEP}{if (NR==START){print $1;exit}}'  < "$SENSORS_FILE")
-				SENSORS_DATA=$(echo "$(awk -v START="$SENSORS_LINE" -v SEP=' ' -v COL_START="$SENSORS_COL_START" -v COL_END="$SENSORS_COL_END" 'BEGIN{FS = SEP}{if(NR==START){ for(i=COL_START;i<=COL_END;i++) print $i} }' < "$SENSORS_FILE")" | tr "\n" "\t" | head -c -1)
+				SENSORS_DATA=$(awk -v START="$SENSORS_LINE" -v SEP=' ' -v COL_START="$SENSORS_COL_START" -v COL_END="$SENSORS_COL_END" 'BEGIN{FS = SEP}{if(NR==START){ for(i=COL_START;i<=COL_END;i++) print $i} }' < "$SENSORS_FILE" | tr "\n" "\t" | head -c -1)
 				if [[ -n $WITH_EVENTS ]]; then
 					for EVENTS_LINE in $(awk -v START="$EVENTS_BEGIN_LINE" -v SEP="\t" -v S_ST="$SENSORS_TIMESTAMP" -v S_F="$SENSORS_TIMESTAMP_NEXT" 'BEGIN{FS=SEP}{if (NR >= START && $1 >= S_ST && $1 < S_F){print NR;exit}}' < "$EVENTS_FILE")
 					do
-						EVENTS_DATA=$(echo "$(awk -v START="$EVENTS_LINE" -v SEP="\t" -v COL_START="$EVENTS_COL_START" 'BEGIN{FS = SEP}{if(NR==START){ for(i=COL_START;i<=NF;i++) print $i } }' < "$EVENTS_FILE")" | tr "\n" "\t" | head -c -1)					
+						EVENTS_DATA=$(awk -v START="$EVENTS_LINE" -v SEP="\t" -v COL_START="$EVENTS_COL_START" 'BEGIN{FS = SEP}{if(NR==START){ for(i=COL_START;i<=NF;i++) print $i } }' < "$EVENTS_FILE" | tr "\n" "\t" | head -c -1)					
 						[[ -z $SAVE ]] && echo -e "$SENSORS_TIMESTAMP\t$BENCH_NAME\t$SENSORS_DATA\t$EVENTS_DATA" || echo -e "$SENSORS_TIMESTAMP\t$BENCH_NAME\t$SENSORS_DATA\t$EVENTS_DATA" >> "$RESULTS_FILE"
 						EVENTS_DATA=""
 					done

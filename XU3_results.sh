@@ -144,9 +144,9 @@ do
 		RESULTS_BEGIN_LINE=$(awk -v SEP='\t' 'BEGIN{FS=SEP}{ if($1 !~ /#/){print (NR);exit} }' < "$RESULTS_FILE")
 		BENCHMARK_NAME_COLUMN=$(awk -v SEP='\t' -v START=$((RESULTS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /Benchmark/) { print i; exit} } } }' < "$RESULTS_FILE")
 		
-		TIME_BENCH_HEADER=$(echo "$(awk -v SEP='\t' -v START=$((RESULTS_BEGIN_LINE-1)) -v COL_END=$((BENCHMARK_NAME_COLUMN+1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<COL_END;i++) print $i} }' < "$RESULTS_FILE")" | tr "\n" "\t"| head -c -1)
+		TIME_BENCH_HEADER=$(awk -v SEP='\t' -v START=$((RESULTS_BEGIN_LINE-1)) -v COL_END=$((BENCHMARK_NAME_COLUMN+1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<COL_END;i++) print $i} }' < "$RESULTS_FILE" | tr "\n" "\t"| head -c -1)
 		#If no events this should just include sensor data (concatenate_results should automatically adjust)
-		SENSORS_EVENTS_HEADER=$(echo "$(awk -v SEP='\t' -v START=$((RESULTS_BEGIN_LINE-1)) -v COL_START=$((BENCHMARK_NAME_COLUMN+1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=COL_START;i<=NF;i++) print $i} }' < "$RESULTS_FILE")" | tr "\n" "\t" | head -c -1)
+		SENSORS_EVENTS_HEADER=$(awk -v SEP='\t' -v START=$((RESULTS_BEGIN_LINE-1)) -v COL_START=$((BENCHMARK_NAME_COLUMN+1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=COL_START;i<=NF;i++) print $i} }' < "$RESULTS_FILE" | tr "\n" "\t" | head -c -1)
 	
 		if [[ -z $SAVE_FILE ]]; then
 			#Display results header
@@ -158,8 +158,8 @@ do
 
 		for LINE in $(seq "$RESULTS_BEGIN_LINE" 1 "$(wc -l "$RESULTS_FILE" | awk '{print $1}')") 
 		do
-			TIME_BENCH_DATA=$(echo "$(awk -v SEP='\t' -v START="$LINE" -v COL_END=$((BENCHMARK_NAME_COLUMN+1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<COL_END;i++) print $i} }' < "$RESULTS_FILE")" | tr "\n" "\t" | head -c -1)
-			SENSORS_EVENTS_DATA=$(echo "$(awk -v SEP='\t' -v START="$LINE" -v COL_START=$((BENCHMARK_NAME_COLUMN+1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=COL_START;i<=NF;i++) print $i} }' < "$RESULTS_FILE")" | tr "\n" "\t" | head -c -1) 
+			TIME_BENCH_DATA=$(awk -v SEP='\t' -v START="$LINE" -v COL_END=$((BENCHMARK_NAME_COLUMN+1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<COL_END;i++) print $i} }' < "$RESULTS_FILE" | tr "\n" "\t" | head -c -1)
+			SENSORS_EVENTS_DATA=$(awk -v SEP='\t' -v START="$LINE" -v COL_START=$((BENCHMARK_NAME_COLUMN+1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=COL_START;i<=NF;i++) print $i} }' < "$RESULTS_FILE" | tr "\n" "\t" | head -c -1) 
 			[[ -z $SAVE_FILE ]] && echo -e "$TIME_BENCH_DATA\t$i\t$SENSORS_EVENTS_DATA" >&1 || echo -e "$TIME_BENCH_DATA\t$i\t$SENSORS_EVENTS_DATA" >> "$SAVE_FILE"		 
 		done
 	done

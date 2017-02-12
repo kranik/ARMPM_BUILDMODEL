@@ -36,7 +36,7 @@ do
 				else
 					#Extract runs
 					RESULTS_RUN_COLUMN=$(awk -v SEP='\t' -v START=$((RESULTS_START_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /Run/) { print i; exit} } } }' < "$RESULTS_FILE")
-					RESULTS_RUN_LIST=$(echo "$(awk -v SEP='\t' -v START="$RESULTS_START_LINE" -v DATA=0 -v COL="$RESULTS_RUN_COLUMN" 'BEGIN{FS=SEP}{ if(NR >= START && $COL != DATA){print ($COL);DATA=$COL} }' < "$RESULTS_FILE" | sort -u | sort -gr )" | tr " " ",")
+					RESULTS_RUN_LIST=$(awk -v SEP='\t' -v START="$RESULTS_START_LINE" -v DATA=0 -v COL="$RESULTS_RUN_COLUMN" 'BEGIN{FS=SEP}{ if(NR >= START && $COL != DATA){print ($COL);DATA=$COL} }' < "$RESULTS_FILE" | sort -u | sort -gr | tr " " ",")
 					#Check if we have successfully extracted freqeuncies
 					if [[ -z $RESULTS_RUN_LIST ]]; then
 						echo "Unable to extract runs from results file!" >&2
@@ -115,8 +115,8 @@ for i in $spaced_RUN_LIST;
 do
 	echo "Extracting run: $i"
 	#Print header run save file
-	awk -v SEP='\t' -v START=$((RESULTS_START_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){print $0;exit}}' < "$RESULTS_FILE" > "$(echo "$SAVE_DIR/$(eval echo -e "$SAVE_FILENAME")")"
+	awk -v SEP='\t' -v START=$((RESULTS_START_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){print $0;exit}}' < "$RESULTS_FILE" > "$SAVE_DIR/$(eval echo -e "$SAVE_FILENAME")"
 	#Print results
-	awk -v SEP='\t' -v START="$RESULTS_START_LINE" -v COL="$RESULTS_RUN_COLUMN" -v DATA="$i" 'BEGIN{FS=SEP}{if(NR >= START){ if($COL==DATA) {print $0} }}' < "$RESULTS_FILE" >> "$(echo "$SAVE_DIR/$(eval echo -e "$SAVE_FILENAME")")"
-	echo -e "Finished writing into file -> ""$(echo "$SAVE_DIR/$(eval echo -e "$SAVE_FILENAME")")"
+	awk -v SEP='\t' -v START="$RESULTS_START_LINE" -v COL="$RESULTS_RUN_COLUMN" -v DATA="$i" 'BEGIN{FS=SEP}{if(NR >= START){ if($COL==DATA) {print $0} }}' < "$RESULTS_FILE" >> "$SAVE_DIR/$(eval echo -e "$SAVE_FILENAME")"
+	echo -e "Finished writing into file -> $SAVE_DIR/$(eval echo -e "$SAVE_FILENAME")"
 done
