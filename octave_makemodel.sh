@@ -10,7 +10,7 @@ TIME_CONVERT=1000000000
 #Internal variable for quickly setting maximum number of modes and model types
 NUM_ML_METHODS=3
 NUM_OPT_CRITERIA=3
-#NUM_CROSS=1
+NUM_CROSS_MODES=2
 NUM_OUTPUT_MODES=5
 
 #Extract unique benchmark split from result file
@@ -64,7 +64,7 @@ getMaxIndex () {
 }
 
 #requires getops, but this should not be an issue since ints built in bash
-while getopts ":r:t:f:b:p:e:am:c:n:o:s:h" opt;
+while getopts ":r:t:f:b:p:e:ax:m:c:n:o:s:h" opt;
 do
 	case $opt in
 		h)
@@ -76,10 +76,10 @@ do
 			echo "-p [NUMBER] -> Specify power column." >&1
 			echo "-e [NUMBER LIST] -> Specify events list." >&1
 			echo "-a -> Use flag to specify all frequencies model instead of per frequency one." >&1
+			echo "-x [NUMBER: 1:$NUM_CROSS_MODES]-> Select cross model computation mode: 1 -> Single dimension cross model (-r file to -t file); 2 -> Double dimension cross model (-r file to -t file and vice-versa);" >&1
 			echo "-m [NUMBER: 1:$NUM_ML_METHODS]-> Type of automatic machine learning search method: 1 -> Bottom-up; 2 -> Top-down; 3 -> Exhaustive search;" >&1
 			echo "-c [NUMBER: 1:$NUM_OPT_CRITERIA]-> Select minimization criteria for model optimisation: 1 -> Absolute error; 2 -> Absolute error standart deviation; 3 -> Maximum event cross-correlation;" >&1
 			echo "-n [NUMBER] -> Specify max number of events to include in automatic model generation." >&1
-			#echo "-x [NUMBER: 1:$NUM_CROSS]-> Select cross model computation mode 1 -> Use a separate test file;" >&1
 			echo "-o [NUMBER: 1:$NUM_OUTPUT_MODES]-> Output mode: 1 -> Measured platform physical data; 2 -> Model detailed performance and coefficients; 3 -> Model shortened performance; 4 -> Platform selected event totals; 5 -> Platform selected event averages;" >&1
 			echo "-s [FILEPATH] -> Specify the save file for the analyzed results." >&1
 			echo "Mandatory options are: -r, -b, -p, -e, -o"
@@ -90,15 +90,17 @@ do
 		r)
 			if [[ -n $RESULT_FILE ]]; then
 				echo "Invalid input: option -r has already been used!" >&2
+				echo -e "===================="
 				exit 1                
 			else
 				RESULT_FILE="$OPTARG"
 			fi
 		    	;;
-		#Specify the test file
+		#Specify the test/cross file
 		t)
 			if [[ -n $TEST_FILE ]]; then
 				echo "Invalid input: option -t has already been used!" >&2
+				echo -e "===================="
 				exit 1                
 			else
 				TEST_FILE="$OPTARG"
@@ -108,6 +110,7 @@ do
 		f)
 		    	if [[ -n $USER_FREQ_LIST ]]; then
 			    	echo "Invalid input: option -f has already been used!" >&2
+				echo -e "===================="
 		            	exit 1
 			else	
 				USER_FREQ_LIST="$OPTARG"
@@ -117,6 +120,7 @@ do
 		b)
 			if [[ -n $BENCH_FILE ]]; then
 		    		echo "Invalid input: option -b has already been used!" >&2
+				echo -e "===================="
 		    		exit 1                
 			else
 				BENCH_FILE="$OPTARG"
@@ -125,6 +129,7 @@ do
 		p)
 			if [[ -n  $POWER_COL ]]; then
 		    		echo "Invalid input: option -p has already been used!" >&2
+				echo -e "===================="
 		    		exit 1    
 			else
 				POWER_COL="$OPTARG"            
@@ -133,6 +138,7 @@ do
 		e)
 			if [[ -n  $EVENTS_LIST ]]; then
 		    		echo "Invalid input: option -e has already been used!" >&2
+				echo -e "===================="
 		    		exit 1
 			else
 				EVENTS_LIST="$OPTARG"
@@ -141,14 +147,25 @@ do
 		a)
 			if [[ -n  $ALL_FREQUENCY ]]; then
 		    		echo "Invalid input: option -a has already been used!" >&2
+				echo -e "===================="
 		    		exit 1                
 			fi
 		    	ALL_FREQUENCY=1
+		    	;;
+		x)
+			if [[ -n $CM_MODE ]]; then
+		    		echo "Invalid input: option -x has already been used!" >&2
+				echo -e "===================="
+		    		exit 1                
+			else
+				CM_MODE="$OPTARG"
+			fi
 		    	;;
 
 		m)
 			if [[ -n $AUTO_SEARCH ]]; then
 		    		echo "Invalid input: option -m has already been used!" >&2
+				echo -e "===================="
 		    		exit 1                
 			else
 				AUTO_SEARCH="$OPTARG"
@@ -157,6 +174,7 @@ do
 		c)
 			if [[ -n $MODEL_TYPE ]]; then
 		    		echo "Invalid input: option -c has already been used!" >&2
+				echo -e "===================="
 		    		exit 1                
 			else
 				MODEL_TYPE="$OPTARG"
@@ -165,6 +183,7 @@ do
 		n)
 			if [[ -n  $NUM_MODEL_EVENTS ]]; then
 		    		echo "Invalid input: option -n has already been used!" >&2
+				echo -e "===================="
 		    		exit 1                
 			else
 				NUM_MODEL_EVENTS="$OPTARG"
@@ -173,6 +192,7 @@ do
 		o)
 			if [[ -n $OUTPUT_MODE ]]; then
 		    		echo "Invalid input: option -o has already been used!" >&2
+				echo -e "===================="
 		    		exit 1                
 			else	
 				OUTPUT_MODE="$OPTARG"
@@ -182,6 +202,7 @@ do
 		s)
 			if [[ -n $SAVE_FILE ]]; then
 			    	echo "Invalid input: option -s has already been used!" >&2
+				echo -e "===================="
 			    	exit 1                
 			else
 		    		SAVE_FILE="$OPTARG"
@@ -189,10 +210,12 @@ do
 			;;        
 		:)
 		    	echo "Option: -$OPTARG requires an argument" >&2
+			echo -e "===================="
 		    	exit 1
 		    	;;
 		\?)
 		    	echo "Invalid option: -$OPTARG" >&2
+			echo -e "===================="
 		    	exit 1
 		    	;;
 	esac
@@ -231,13 +254,15 @@ fi
 #Check if result file is present
 #Make sure the result file exists
 if [[ ! -e "$RESULT_FILE" ]]; then
-	echo "-r $RESULT_FILE does not exist. Please enter the result file to be analyzed!" >&2 
+	echo "-r $RESULT_FILE does not exist. Please enter the result file to be analyzed!" >&2
+	echo -e "===================="
 	exit 1
 else
 	#Check if result file contains data
 	RESULT_START_LINE=$(awk -v SEP='\t' 'BEGIN{FS=SEP}{ if($1 !~ /#/){print (NR);exit} }' < "$RESULT_FILE")
     	if [[ -z $RESULT_START_LINE ]]; then 
 		echo "Results file contains no data!" >&2
+		echo -e "===================="
 		exit 1
 	fi
 
@@ -245,11 +270,13 @@ else
 	RESULT_RUN_COL=$(awk -v SEP='\t' -v START=$((RESULT_START_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /Run/) { print i; exit} } } }' < "$RESULT_FILE")
 	if [[ -z $RESULT_RUN_COL ]]; then
 		echo "Results file contains no run column!" >&2
+		echo -e "===================="
 		exit 1
 	fi
 	RESULT_RUN_LIST=$(awk -v SEP='\t' -v START="$RESULT_START_LINE" -v DATA=0 -v COL="$RESULT_RUN_COL" 'BEGIN{FS=SEP}{ if(NR >= START && $COL != DATA){print ($COL);DATA=$COL} }' < "$RESULT_FILE" | sort -u | sort -g | tr "\n" "," | head -c -1 )
 	if [[ -z $RESULT_RUN_LIST ]]; then
 		echo "Unable to extract run list from result file!" >&2
+		echo -e "===================="
 		exit 1
 	fi
 	#Extract run number for runtime information now that we have events column
@@ -260,11 +287,13 @@ else
 	RESULT_FREQ_COL=$(awk -v SEP='\t' -v START=$((RESULT_START_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /Frequency/) { print i; exit} } } }' < "$RESULT_FILE")
 	if [[ -z $RESULT_FREQ_COL ]]; then
 		echo "Results file contains no freqeuncy column!" >&2
+		echo -e "===================="
 		exit 1
 	fi
 	RESULT_FREQ_LIST=$(awk -v SEP='\t' -v START="$RESULT_START_LINE" -v DATA=0 -v COL="$RESULT_FREQ_COL" 'BEGIN{FS=SEP}{ if(NR >= START && $COL != DATA){print ($COL);DATA=$COL} }' < "$RESULT_FILE" | sort -u | sort -gr | tr "\n" "," | head -c -1 )
 	if [[ -z $RESULT_FREQ_LIST ]]; then
 		echo "Unable to extract freqeuncy list from result file!" >&2
+		echo -e "===================="
 		exit 1
 	fi
 
@@ -272,11 +301,13 @@ else
 	RESULT_BENCH_COL=$(awk -v SEP='\t' -v START=$((RESULT_START_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /Benchmark/) { print i; exit} } } }' < "$RESULT_FILE")
 	if [[ -z $RESULT_BENCH_COL ]]; then
 		echo "Results file contains no benchmark column!" >&2
+		echo -e "===================="
 		exit 1
 	fi
 	RESULT_BENCH_LIST=$(awk -v SEP='\t' -v START="$RESULT_START_LINE" -v DATA=0 -v COL="$RESULT_BENCH_COL" 'BEGIN{FS=SEP}{ if(NR >= START && $COL != DATA){print ($COL);DATA=$COL} }' < "$RESULT_FILE" | sort -u | sort -d | tr "\n" "," | head -c -1)
 	if [[ -z $RESULT_BENCH_LIST ]]; then
 		echo "Unable to extract benchmarks from result file!" >&2
+		echo -e "===================="
 		exit 1
 	fi
 
@@ -285,6 +316,7 @@ else
 	RESULT_EVENTS_COL_END=$(awk -v SEP='\t' -v START=$((RESULT_START_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ print NF; exit } }' < "$RESULT_FILE")
 	if [[ "$RESULT_EVENTS_COL_START" -eq "$RESULT_EVENTS_COL_END" ]]; then
 		echo "No events present in result files!" >&2
+		echo -e "===================="
 		exit 1
 	fi
 	RESULT_EVENTS_LIST=$(seq "$RESULT_EVENTS_COL_START" 1 "$RESULT_EVENTS_COL_END" | tr '\n' ',' | head -c -1)
@@ -292,22 +324,25 @@ else
 fi
 
 #-t flag
-#Check if test file is present
+#Check if test/cross file is present
 if [[ -n $TEST_FILE ]]; then
 	if [[ ! -e "$TEST_FILE" ]]; then
-		echo "-t $TEST_FILE does not exist. Please enter and existing test file!" >&2 
+		echo "-t $TEST_FILE does not exist. Please enter and existing test/cross file!" >&2 
+		echo -e "===================="
 		exit 1
 	else
-		#Check if test file is the same as the result file
+		#Check if test/cross file is the same as the result file
 		if [[ "$TEST_FILE" == "$RESULT_FILE" ]]; then
-			echo "Results file and test file are the same! File specified using -t flag must be different or it is useless (just use -r flag)." >&2
+			echo "Results file and test/cross file are the same! File specified using -t flag must be different or it is useless (just use -r flag)." >&2
+			echo -e "===================="
 			exit 1
 		fi
 
-		#Check if test file contains data
+		#Check if test/cross file contains data
 		TEST_START_LINE=$(awk -v SEP='\t' 'BEGIN{FS=SEP}{ if($1 !~ /#/){print (NR);exit} }' < "$TEST_FILE")
 	    	if [[ -z $TEST_START_LINE ]]; then 
 			echo "Results file contains no data!" >&2
+			echo -e "===================="
 			exit 1
 		fi
 
@@ -315,11 +350,13 @@ if [[ -n $TEST_FILE ]]; then
 		TEST_RUN_COL=$(awk -v SEP='\t' -v START=$((TEST_START_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /Run/) { print i; exit} } } }' < "$TEST_FILE")
 		if [[ -z $TEST_RUN_COL ]]; then
 			echo "Results file contains no run column!" >&2
+			echo -e "===================="
 			exit 1
 		fi
 		TEST_RUN_LIST=$(awk -v SEP='\t' -v START="$TEST_START_LINE" -v DATA=0 -v COL="$TEST_RUN_COL" 'BEGIN{FS=SEP}{ if(NR >= START && $COL != DATA){print ($COL);DATA=$COL} }' < "$TEST_FILE" | sort -u | sort -g | tr "\n" "," | head -c -1 )
 		if [[ -z $TEST_RUN_LIST ]]; then
-			echo "Unable to extract run list from test file!" >&2
+			echo "Unable to extract run list from test/cross file!" >&2
+			echo -e "===================="
 			exit 1
 		fi
 		#Extract run number for runtime information now that we have events column
@@ -330,11 +367,13 @@ if [[ -n $TEST_FILE ]]; then
 		TEST_FREQ_COL=$(awk -v SEP='\t' -v START=$((TEST_START_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /Frequency/) { print i; exit} } } }' < "$TEST_FILE")
 		if [[ -z $TEST_FREQ_COL ]]; then
 			echo "Results file contains no freqeuncy column!" >&2
+			echo -e "===================="
 			exit 1
 		fi
 		TEST_FREQ_LIST=$(awk -v SEP='\t' -v START="$TEST_START_LINE" -v DATA=0 -v COL="$TEST_FREQ_COL" 'BEGIN{FS=SEP}{ if(NR >= START && $COL != DATA){print ($COL);DATA=$COL} }' < "$TEST_FILE" | sort -u | sort -gr | tr "\n" "," | head -c -1 )
 		if [[ -z $TEST_FREQ_LIST ]]; then
-			echo "Unable to extract freqeuncy list from test file!" >&2
+			echo "Unable to extract freqeuncy list from test/cross file!" >&2
+			echo -e "===================="
 			exit 1
 		fi
 
@@ -342,19 +381,22 @@ if [[ -n $TEST_FILE ]]; then
 		TEST_BENCH_COL=$(awk -v SEP='\t' -v START=$((TEST_START_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /Benchmark/) { print i; exit} } } }' < "$TEST_FILE")
 		if [[ -z $TEST_BENCH_COL ]]; then
 			echo "Results file contains no benchmark column!" >&2
+			echo -e "===================="
 			exit 1
 		fi
 		TEST_BENCH_LIST=$(awk -v SEP='\t' -v START="$TEST_START_LINE" -v DATA=0 -v COL="$TEST_BENCH_COL" 'BEGIN{FS=SEP}{ if(NR >= START && $COL != DATA){print ($COL);DATA=$COL} }' < "$TEST_FILE" | sort -u | sort -d | tr "\n" "," | head -c -1)
 		if [[ -z $TEST_BENCH_LIST ]]; then
-			echo "Unable to extract benchmarks from test file!" >&2
+			echo "Unable to extract benchmarks from test/cross file!" >&2
+			echo -e "===================="
 			exit 1
 		fi
 
-		#Extract events columns from test file
+		#Extract events columns from test/cross file
 		TEST_EVENTS_COL_START=$TEST_FREQ_COL
 		TEST_EVENTS_COL_END=$(awk -v SEP='\t' -v START=$((TEST_START_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ print NF; exit } }' < "$TEST_FILE")
 		if [[ "$TEST_EVENTS_COL_START" -eq "$TEST_EVENTS_COL_END" ]]; then
-			echo "No events present in test file!" >&2
+			echo "No events present in test/cross file!" >&2
+			echo -e "===================="
 			exit 1
 		fi
 		TEST_EVENTS_LIST=$(seq "$TEST_EVENTS_COL_START" 1 "$TEST_EVENTS_COL_END" | tr '\n' ',' | head -c -1)
@@ -362,22 +404,17 @@ if [[ -n $TEST_FILE ]]; then
 
 		#Check if test frequencies match result file if no user freqeuncy list
 		if [[ -z $USER_FREQ_LIST ]]; then
-			if [[ "$TEST_FREQ_LIST" -ne "$RESULT_FREQ_LIST" ]]; then
+			if [[ "$TEST_FREQ_LIST" != "$RESULT_FREQ_LIST" ]]; then
 				echo "Test file frequency list is different than result file freqeuncy list! Please use -f flag to specify specific list." >&2
+				echo -e "===================="
 				exit 1
 			fi
-		fi
-
-		#Check if test events match result file events
-		if [[ "$TEST_EVENTS_LIST_LABELS" != "$RESULT_EVENTS_LIST_LABELS" ]]; then
-			echo "Test file events list is different than result file events list! Please trim files so that they have the same events to train/build model from." >&2
-			exit 1
 		fi
 	fi
 fi
 
 #-f flag
-#Check if user specified frequencies are present in result file and test file
+#Check if user specified frequencies are present in result file and test/cross file
 if [[ -n $USER_FREQ_LIST ]]; then
 	#Go throught the user frequencies and make sure they are not out of bounds of the train file
 	spaced_USER_FREQ_LIST="${USER_FREQ_LIST//,/ }"
@@ -387,17 +424,19 @@ if [[ -n $USER_FREQ_LIST ]]; then
 		#containsElement "$FREQ_SELECT" "${FREQ_LIST[@]}"
 		if [[ ! " ${FREQ_LIST[@]} " =~ " $FREQ_SELECT " ]]; then
 			echo "selected frequency $FREQ_SELECT for -f is not present in result file."
+			echo -e "===================="
 	       	 	exit 1
 		fi
 	done
-	#Check freq list against test file freq list (if selected)
+	#Check freq list against test/cross file freq list (if selected)
 	if [[ -n $TEST_FILE ]]; then
 		IFS="," read -a FREQ_LIST <<< "$TEST_FREQ_LIST"
 		for FREQ_SELECT in $spaced_USER_FREQ_LIST
 		do
 			#containsElement "$FREQ_SELECT" "${FREQ_LIST[@]}"
 			if [[ ! " ${FREQ_LIST[@]} " =~ " $FREQ_SELECT " ]]; then
-				echo "selected frequency $FREQ_SELECT for -f is not present in train file."
+				echo "selected frequency $FREQ_SELECT for -f is not present in test/cross file."
+				echo -e "===================="
 		       	 	exit 1
 			fi
 		done
@@ -417,6 +456,7 @@ if [[ -e "$BENCH_FILE" ]]; then
 	#Check if bench file contains data
 	if [[ -z $BENCH_START_LINE ]]; then
 		echo "Benchmarks split file contains no data!" >&2
+		echo -e "===================="
 		exit 1
 	fi
 	IFS=";" read -a TRAIN_SET <<< "$(awk -v SEP='\t' -v START="$BENCH_START_LINE" 'BEGIN{FS=SEP}{if (NR >= START){ print $1 }}' < "$BENCH_FILE" | sort -d | tr "\n" ";" | head -c -1 )"
@@ -424,15 +464,17 @@ if [[ -e "$BENCH_FILE" ]]; then
 	#Check if we have successfully extracted benchmark sets 
 	if [[ ${#TRAIN_SET[@]} == 0 || ${#TEST_SET[@]} == 0 ]]; then
 		echo "Unable to extract train or test set from benchmarks file!" >&2
+		echo -e "===================="
 		exit 1
 	fi
-	#Check if benchmarks specified by bench split files are present in train/test files
+	#Check if benchmarks specified by bench split files are present in train/test/cross files
 	IFS="," read -a BENCH_LIST <<< "$RESULT_BENCH_LIST"
 	for count in $(seq 0 1 $((${#TRAIN_SET[@]}-1)))
 	do
 		#containsElement "$FREQ_SELECT" "${FREQ_LIST[@]}"
 		if [[ ! " ${BENCH_LIST[@]} " =~ " ${TRAIN_SET[$count]} " ]]; then
 			echo "Specified train benchmark ${TRAIN_SET[$count]} for -b is not present in result file."
+			echo -e "===================="
 	       	 	exit 1
 		fi
 	done
@@ -442,7 +484,8 @@ if [[ -e "$BENCH_FILE" ]]; then
 		do
 			#containsElement "$FREQ_SELECT" "${FREQ_LIST[@]}"
 			if [[ ! " ${BENCH_LIST[@]} " =~ " ${TEST_SET[$count]} " ]]; then
-				echo "Specified test benchmark ${TEST_SET[$count]} for -b is not present in test file."
+				echo "Specified test benchmark ${TEST_SET[$count]} for -b is not present in test/cross file."
+				echo -e "===================="
 		       	 	exit 1
 			fi
 		done
@@ -452,6 +495,7 @@ if [[ -e "$BENCH_FILE" ]]; then
 			#containsElement "$FREQ_SELECT" "${FREQ_LIST[@]}"
 			if [[ ! " ${BENCH_LIST[@]} " =~ " ${TEST_SET[$count]} " ]]; then
 				echo "Specified test benchmark ${TEST_SET[$count]} for -b is not present in result file."
+				echo -e "===================="
 		       	 	exit 1
 			fi
 		done
@@ -462,11 +506,13 @@ fi
 #Check if power is within bounds
 if [[ "$POWER_COL" -gt $RESULT_EVENTS_COL_END || "$POWER_COL" -lt $RESULT_EVENTS_COL_START ]]; then 
 	echo "Selected power column -p $POWER_COL is out of bounds from result file events. Needs to be an integer value betweeen [$RESULT_EVENTS_COL_START:$RESULT_EVENTS_COL_END]." >&2
+	echo -e "===================="
 	exit 1
 fi
 if [[ -n $TEST_FILE ]]; then
 	if [[ "$POWER_COL" -gt $TEST_EVENTS_COL_END || "$POWER_COL" -lt $TEST_EVENTS_COL_START ]]; then 
-		echo "Selected power column -p $POWER_COL is out of bounds from test file events. Needs to be an integer value betweeen [$TEST_EVENTS_COL_START:$TEST_EVENTS_COL_END]." >&2
+		echo "Selected power column -p $POWER_COL is out of bounds from test/cross file events. Needs to be an integer value betweeen [$TEST_EVENTS_COL_START:$TEST_EVENTS_COL_END]." >&2
+		echo -e "===================="
 		exit 1
 	fi
 fi
@@ -480,19 +526,56 @@ for EVENT in $spaced_EVENTS_LIST
 do
 	#Check if events list is in bounds
 	if [[ "$EVENT" -gt $RESULT_EVENTS_COL_END || "$EVENT" -lt $RESULT_EVENTS_COL_START ]]; then 
-		echo "Selected event -e $EVENT is out of bounds/invalid to result/test file events. Needs to be an integer value betweeen [$RESULT_EVENTS_COL_START:$RESULT_EVENTS_COL_END]." >&2
+		echo "Selected event -e $EVENT is out of bounds/invalid to result file events. Needs to be an integer value betweeen [$RESULT_EVENTS_COL_START:$RESULT_EVENTS_COL_END]." >&2
+		echo -e "===================="
 		exit 1
+	fi
+	#Check event list against test/cross file event list (if selected)
+	if [[ -n $TEST_FILE ]]; then
+		if [[ "$EVENT" -gt $TEST_EVENTS_COL_END || "$EVENT" -lt $TEST_EVENTS_COL_START ]]; then 
+			echo "Selected event -e $EVENT is out of bounds/invalid to test/cross file events. Needs to be an integer value betweeen [$TEST_EVENTS_COL_START:$TEST_EVENTS_COL_END]." >&2
+			echo -e "===================="
+			exit 1
+		fi
+		#Check if events list is the same for both test and result files
+		RESULT_EVENTS_LIST_LABELS=$(awk -v SEP='\t' -v START=$((RESULT_START_LINE-1)) -v COLUMNS="$EVENTS_LIST" 'BEGIN{FS = SEP;len=split(COLUMNS,ARRAY,",")}{if (NR == START){for (i = 1; i <= len; i++){print $ARRAY[i]}}}' < "$RESULT_FILE" | tr "\n" "," | head -c -1)
+		TEST_EVENTS_LIST_LABELS=$(awk -v SEP='\t' -v START=$((TEST_START_LINE-1)) -v COLUMNS="$EVENTS_LIST" 'BEGIN{FS = SEP;len=split(COLUMNS,ARRAY,",")}{if (NR == START){for (i = 1; i <= len; i++){print $ARRAY[i]}}}' < "$TEST_FILE" | tr "\n" "," | head -c -1)
+		if [[ "$TEST_EVENTS_LIST_LABELS" != "$RESULT_EVENTS_LIST_LABELS" ]]; then
+			echo "The selected events list -r $EVENTS_LIST is different between result file and test/cross file!" >&2
+			echo "Result list -> $RESULT_EVENTS_LIST_LABELS" >&2
+			echo "Test list -> $TEST_EVENTS_LIST_LABELS" >&2
+			echo -e "===================="
+			exit 1
+		fi
 	fi
 	#Check if it contains power
 	if [[ "$EVENT" == "$POWER_COL" ]]; then 
 		echo "Selected event -e $EVENT is the same as the regressand -p $POWER_COL -> $POWER_LABEL." >&2
+		echo -e "===================="
 		exit 1
 	fi
 done
 #Checkif events string contains duplicates
 if [[ $(echo "$EVENTS_LIST" | tr "," "\n" | wc -l) -gt $(echo "$EVENTS_LIST" | tr "," "\n" | sort | uniq | wc -l) ]]; then
 	echo "Selected event list -e $EVENTS_LIST contains duplicates." >&2
+	echo -e "===================="
 	exit 1
+fi
+
+#-x flag
+if [[ -n $CM_MODE ]]; then
+	if [[ -z $TEST_FILE ]]; then
+		echo "Expected -t flag when -x flag is used in order to specify cross-core data!" >&2
+		echo -e "===================="
+		exit 1
+	fi
+	#Check if valid input
+	if [[ "$CM_MODE" != "1" && "$CM_MODE" != "2" ]]; then 
+		echo "Invalid operarion: -x $CM_MODE! Options are: [1:$NUM_CROSS_MODES]." >&2
+		echo "Use -h flag for more information on the available cross model computation modes." >&2
+	    	echo -e "===================="
+	    	exit 1
+	fi	
 fi
 
 #-m flag
@@ -500,6 +583,7 @@ if [[ -n $AUTO_SEARCH ]]; then
 	#Check if other flags present
 	if  [[ -z $MODEL_TYPE || -z $NUM_MODEL_EVENTS ]]; then
 		echo "Expected -c and -n flag when -m flag is used!" >&2
+		echo -e "===================="
 		exit 1
 	fi
 	#Check if valid input
@@ -515,6 +599,7 @@ if [[ -n $MODEL_TYPE ]]; then
 	#Check if other flags present
 	if  [[ -z $AUTO_SEARCH || -z $NUM_MODEL_EVENTS ]]; then
 		echo "Expected -m and -n flag when -c flag is used!" >&2
+	    	echo -e "===================="
 		exit 1
 	fi
 	#Check if valid input
@@ -531,12 +616,14 @@ if [[ -n $NUM_MODEL_EVENTS ]]; then
 	#Check if other flags present
 	if  [[ -z $AUTO_SEARCH || -z $MODEL_TYPE ]]; then
 		echo "Expected -m and -c flag when -n flag is used!" >&2
+	    	echo -e "===================="
 		exit 1
 	fi
 	EVENTS_LIST_SIZE=$(echo "$EVENTS_LIST" | tr "," "\n" | wc -l)
 	#Check if number is within bounds, which is total number of events - 1 (power)
 	if [[ "$NUM_MODEL_EVENTS" -gt "$EVENTS_LIST_SIZE" || "$NUM_MODEL_EVENTS" -le 0 ]]; then 
 		echo "Selected number of events -n $EVENTS_LIST_SIZE is out of bounds/invalid. Needs to be an integer value betweeen [1:$EVENTS_LIST_SIZE]." >&2
+	    	echo -e "===================="
 		exit 1
 	fi
 	#Initiate variables and unset events_list (since we use events_pool for the automatic list)
@@ -622,7 +709,7 @@ echo "$RESULT_FILE" >&1
 #-t file
 if [[ -n $TEST_FILE ]]; then
 	echo -e "--------------------" >&1
-	echo -e "Using test file:" >&1
+	echo -e "Using test/cross file:" >&1
 	echo "$TEST_FILE" >&1
 fi
 #Frequency list sanity check
@@ -678,6 +765,20 @@ if [[ -z $ALL_FREQUENCY ]]; then
     	echo "Computing per-frequency models!" >&1
 else
     	echo "Computing full frequency model!" >&1
+fi
+#Cross model computation mode sanity check
+#-x flag
+if [[ -n $CM_MODE ]]; then
+	echo -e "--------------------" >&1
+	echo "Specified cross-model computation mode:" >&1
+	case $CM_MODE in
+		1)
+			echo "$CM_MODE -> Single dimension cross model (-r $RESULT_FILE to -t $TEST_FILE);" >&1
+			;;
+		2) 
+			echo "$CM_MODE -> Double dimension cross model (-r $RESULT_FILE to -t $TEST_FILE);" >&1
+			;;
+	esac
 fi
 #Machine learning method sanity checks
 #-m number; -c number; -n number
@@ -748,6 +849,7 @@ else
 fi
 echo -e "--------------------" >&1
 
+exit
 #Trim constant events from events pool
 if [[ -n $AUTO_SEARCH ]]; then
 	echo -e "====================" >&1
