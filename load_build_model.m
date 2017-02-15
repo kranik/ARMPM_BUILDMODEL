@@ -18,6 +18,10 @@ if ( mode == 0 )
   disp("Need to pass 6 arguments to load_build_model(mode,data_set,start_row,start_col,power_col,events_col)")
   disp("2) Model generation with detailed output.")
   disp("Need to pass 7 arguments to load_build_model(mode,train_set,test_set,start_row,start_col,power_col,events_col)")
+  disp("3) Single dimention cross-model generation with detailed output.")
+  disp("Need to pass 11 arguments to load_build_model(mode,train_set_1,test_set_1,start_row_1,start_col_1,train_set_2,test_set_2,start_row_2,start_col_2,power_col,events_col)")
+  disp("4) Double dimention cross-model generation with detailed output.")
+  disp("Need to pass 11 arguments to load_build_model(mode,train_set_1,test_set_1,start_row_1,start_col_1,train_set_2,test_set_2,start_row_2,start_col_2,power_col,events_col)")
   return
 endif
 
@@ -133,38 +137,89 @@ if (mode == 2)
   
 endif
 
+if (mode == 3)
+  disp("Need to pass 11 arguments to load_build_model(mode,train_set_1,test_set_1,start_row_1,start_col_1,train_set_2,test_set_2,start_row_2,start_col_2,power_col,events_col)")
+
+  %Sanity check argument number
+  if ( length (varargin) != 11 )
+      error ("Need to pass 11 arguments to load_build_model() for mode 3");
+      error ("Please use load_build_model(0) for more info");
+      return
+  endif
+  
+  %Read input data
+  train_set_1=varargin{2};
+  test_set_1=varargin{3};
+  start_row_1=varargin{4};
+  start_col_1=varargin{5};
+  
+  train_set_2=varargin{6};  
+  test_set_2=varargin{7};
+  start_row_2=varargin{8};
+  start_col_2=varargin{9};
+  
+  power_col=varargin{10};
+  events_col=varargin{11};
+  
+  %Extract train and test set for file 1
+  fid = fopen (train_set_1, "r");
+  train_set_1 = dlmread(fid,'\t',start_row_1,start_col_1);
+  fclose (fid);
+  fid = fopen (test_set_1, "r");
+  test_set_1 = dlmread(fid,'\t',start_row_1,start_col_1);
+  fclose (fid);
+  
+  %Extract train and test set for file 2
+  fid = fopen (train_set_2, "r");
+  train_set_2 = dlmread(fid,'\t',start_row_2,start_col_2);
+  fclose (fid);
+  fid = fopen (test_set_2, "r");
+  test_set_2 = dlmread(fid,'\t',start_row_2,start_col_2);
+  fclose (fid);
+  
+  %Get scaling factors
+  train_events_mean_1=mean(train_set_1(:,str2num(events_col).-start_col_1),1);
+  train_events_mean_2=mean(train_set_2(:,str2num(events_col).-start_col_2),1);
+  scaling_factors=train_events_mean_2./train_events_mean_1;
+  
+  %Extract train data from the second file
+  train_reg=[ones(size(train_set_2,1),1),train_set_2(:,str2num(events_col).-start_col_2)];
+  
+  %Compute model for second core
+  [m, maxcorr, maxcorrindices, avgcorr] = build_model(train_reg,train_set_2(:,power_col.-start_col_2));
+
+  %Again extract test data from first file (first core) and scale events
+  test_reg=[ones(size(test_set_1,1),1),test_set_1(:,str2num(events_col).-start_col_1).*scaling_factors];
+
+  %Extract measured power and range for second core
+  test_power=test_set_2(:,power_col.-start_col_2));
+
+  %Compute predicted power using model and scaled events from first core
+  pred_power=test_reg(:,:)*m;
+
+  %Compute absolute model errors
+  err=(mean(test_power)-mean(pred_power));
+  abs_err=abs(err);
+  %compute realtive model errors and deviation
+  rel_abs_err=abs(err./mean(test_power))*100;
+  
+  disp("###########################################################");
+  disp("Model validation against test set");
+  disp("###########################################################"); 
+  disp(["Average Predicted Power [W]: " num2str(mean(pred_power),"%.3f")]);  
+  disp(["Predicted Power Range [%]: " num2str((range(pred_power)./min(pred_power))*100,"%d")]);
+  disp("###########################################################"); 
+  disp(["Average Absolute Error [W]: " num2str(abs_err,"%.5f")]);
+  disp("###########################################################");
+  disp(["Average Relative Error [%]: " num2str(rel_abs_err,"%.5f")]);
+  disp("###########################################################");
+  disp(["Average Event Cross-Correlation [%]: " num2str((avgcorr/1.0)*100,"%.5f")]);
+  disp(["Maximum Event Cross-Correlation [%]: " num2str((maxcorr/1.0)*100,"%.5f")]);
+  disp(["Most Cross-Correlated Events: " num2str(str2num(events_col)(maxcorrindices(1,1)),"%d") " and " num2str(str2num(events_col)(maxcorrindices(1,2)),"%d")]);
+  disp("###########################################################");
+  disp(["Model Coefficients: " num2str(m',"%G\t")]);
+  disp("###########################################################");
+  
+endif
+
 endfunction
-
-%Cross model functionality sketch
-
-  %big 2GHz coefficients
-  %cross_model_coeff=[-0.911098	0.0371157	-1.90668E-06	9.53766E-06	1.04598E-09];
-  %cross_runtime=1022;
-  %cross_total_events=[ 647981000000	129597000000	193702992000 ];
-  %cross_avg_temp=48.945;
-  %test_power=ones(size(test_set,1),1).*1.755;
-  %big 0.2GHz coefficients
-  %cross_model_coeff=[ -0.0345156	0.0020704	-2.93598E-08	8.89556E-08	4.90109E-10 ];
-  %cross_runtime=6087;
-  %cross_total_events=[ 556401000000	185467082987	195745000000 ];
-  %cross_avg_temp=51.123;
-  %test_power=ones(size(test_set,1),1).*0.118;
-
-  %LITTLE 1.4GHz coefficients
-  %cross_model_coeff=[0.142096	-0.000564015	4.18931E-08	-1.67084E-07	4.10101E-10]
-  %cross_runtime=1483;
-  %cross_total_events=[ 864406000000	216098000000	192757000000 ];
-  %cross_avg_temp=54.561;
-  %test_power=ones(size(test_set,1),1).*0.247;
-  %LITTLE 0.2GHz coefficients
-  %cross_model_coeff=[ 0.00553497	0.000118464	-4.25782E-09	1.29323E-08	1.19413E-10 ]
-  %cross_runtime=8330;
-  %cross_total_events=[ 797933000000	265979000000	204099000000 ];
-  %cross_avg_temp=54.11;
-  %test_power=ones(size(test_set,1),1).*0.021;
-  %
-  %
-  %total_events=sum(test_reg(:,3:end)/5);
-  %event_scaling=(cross_total_events./total_events)*(runtime/cross_runtime);
-  %m=(cross_model_coeff.*[1 1 event_scaling])' #No temp scaling
-  %%m=(cross_model_coeff.*[1 cross_avg_temp/mean(test_reg(:,2)) event_scaling])'; #Temp scaling
