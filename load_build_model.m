@@ -138,7 +138,6 @@ if (mode == 2)
 endif
 
 if (mode == 3)
-  disp("Need to pass 11 arguments to load_build_model(mode,train_set_1,test_set_1,start_row_1,start_col_1,train_set_2,test_set_2,start_row_2,start_col_2,power_col,events_col)")
 
   %Sanity check argument number
   if ( length (varargin) != 11 )
@@ -192,7 +191,7 @@ if (mode == 3)
   test_reg=[ones(size(test_set_1,1),1),test_set_1(:,str2num(events_col).-start_col_1).*scaling_factors];
 
   %Extract measured power and range for second core
-  test_power=test_set_2(:,power_col.-start_col_2));
+  test_power=test_set_2(:,power_col.-start_col_2);
 
   %Compute predicted power using model and scaled events from first core
   pred_power=test_reg(:,:)*m;
