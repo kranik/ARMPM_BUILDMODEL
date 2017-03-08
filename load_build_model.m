@@ -213,10 +213,12 @@ if (mode == 3)
   disp(["Average Absolute Error [W]: " num2str(abs_err,"%.5f")]);
   disp("###########################################################");
   disp(["Average Relative Error [%]: " num2str(rel_abs_err,"%.5f")]);
-  disp("###########################################################");
-  disp(["Average Event Cross-Correlation [%]: " num2str((avgcorr/1.0)*100,"%.5f")]);
-  disp(["Maximum Event Cross-Correlation [%]: " num2str((maxcorr/1.0)*100,"%.5f")]);
-  disp(["Most Cross-Correlated Events: " num2str(str2num(events_col)(maxcorrindices(1,1)),"%d") " and " num2str(str2num(events_col)(maxcorrindices(1,2)),"%d")]);
+  if (size(str2num(events_col),2) >= 2) 
+    disp("###########################################################");
+    disp(["Average Event Cross-Correlation [%]: " num2str((avgcorr/1.0)*100,"%.5f")]);
+    disp(["Maximum Event Cross-Correlation [%]: " num2str((maxcorr/1.0)*100,"%.5f")]);
+    disp(["Most Cross-Correlated Events: " num2str(str2num(events_col)(maxcorrindices(1,1)),"%d") " and " num2str(str2num(events_col)(maxcorrindices(1,2)),"%d")]);
+  endif
   disp("###########################################################");
   disp(["Model Coefficients: " num2str(m',"%G\t")]);
   disp("###########################################################");
