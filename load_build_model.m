@@ -18,9 +18,7 @@ if ( mode == 0 )
   disp("Need to pass 6 arguments to load_build_model(mode,data_set,start_row,start_col,power_col,events_col)")
   disp("2) Model generation with detailed output.")
   disp("Need to pass 7 arguments to load_build_model(mode,train_set,test_set,start_row,start_col,power_col,events_col)")
-  disp("3) Single dimention cross-model generation with detailed output.")
-  disp("Need to pass 11 arguments to load_build_model(mode,train_set_1,test_set_1,start_row_1,start_col_1,train_set_2,test_set_2,start_row_2,start_col_2,power_col,events_col)")
-  disp("4) Double dimention cross-model generation with detailed output.")
+  disp("3) Cross-model generation with detailed output.")
   disp("Need to pass 11 arguments to load_build_model(mode,train_set_1,test_set_1,start_row_1,start_col_1,train_set_2,test_set_2,start_row_2,start_col_2,power_col,events_col)")
   return
 endif
@@ -88,6 +86,22 @@ if (mode == 2)
   %Extract train data from the file train clomuns specified. 
   %The ones in front are for the constant coefficiant for linear regression
   train_reg=[ones(size(train_set,1),1),train_set(:,str2num(events_col).-start_col)];
+
+%  %Pricopi
+%  EVLIST=train_set(:,str2num(events_col).-start_col);
+%  CYCLES=EVLIST(:,1);
+%  INSTR=EVLIST(:,2);
+%  INT=EVLIST(:,3);
+%  VFP=EVLIST(:,4);
+%  L1DACC=EVLIST(:,5);
+%  L2DACC=EVLIST(:,6);
+%  L2DREF=EVLIST(:,7);
+%  train_reg=[ones(size(train_set,1),1),INSTR./CYCLES,INT./INSTR,VFP./INSTR,L1DACC./INSTR,L2DACC./INSTR,L2DREF./INSTR];
+
+%  %Rodriguez
+%  EVLIST=train_set(:,str2num(events_col).-start_col);
+%  train_reg=[ones(size(train_set,1),1),EVLIST(:,1),EVLIST(:,2).+EVLIST(:,3),EVLIST(:,4:end)];
+
   %Compute model
   [m, maxcorr, maxcorrindices, avgcorr] = build_model(train_reg,train_set(:,power_col.-start_col));
 
@@ -100,6 +114,21 @@ if (mode == 2)
   %Events columns are same as train file
   test_reg=[ones(size(test_set,1),1),test_set(:,str2num(events_col).-start_col)];
 
+%  %Pricopi
+%  EVLIST=test_set(:,str2num(events_col).-start_col);
+%  CYCLES=EVLIST(:,1);
+%  INSTR=EVLIST(:,2);
+%  INT=EVLIST(:,3);
+%  VFP=EVLIST(:,4);
+%  L1DACC=EVLIST(:,5);
+%  L2DACC=EVLIST(:,6);
+%  L2DREF=EVLIST(:,7);
+%  test_reg=[ones(size(test_set,1),1),INSTR./CYCLES,INT./INSTR,VFP./INSTR,L1DACC./INSTR,L2DACC./INSTR,L2DREF./INSTR]; 
+  
+%  %Rodriguez
+%  EVLIST=test_set(:,str2num(events_col).-start_col);
+%  test_reg=[ones(size(test_set,1),1),EVLIST(:,1),EVLIST(:,2).+EVLIST(:,3),EVLIST(:,4:end)];
+  
   %Extract measured power and range from test data
   test_power=test_set(:,power_col.-start_col);
 
