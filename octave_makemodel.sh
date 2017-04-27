@@ -84,7 +84,7 @@ getMaxIndex () {
 }
 
 #requires getops, but this should not be an issue since ints built in bash
-while getopts ":r:t:f:b:p:e:ax:q:m:c:n:o:s:h" opt;
+while getopts ":r:t:f:b:p:e:ax:q:m:c:l:n:o:s:h" opt;
 do
 	case $opt in
 		h)
@@ -100,10 +100,11 @@ do
 			echo "-q [FREQENCY LIST][MHz] -> Specify the frequencies to be used in cross-model for the second core (specified with -t flag)." >&1
 			echo "-m [NUMBER: 1:$NUM_ML_METHODS]-> Type of automatic machine learning search method: 1 -> Bottom-up; 2 -> Top-down; 3 -> Exhaustive search;" >&1
 			echo "-c [NUMBER: 1:$NUM_OPT_CRITERIA]-> Select minimization criteria for model optimisation: 1 -> Absolute error; 2 -> Absolute error standart deviation; 3 -> Maximum event cross-correlation;" >&1
+			echo "-l [NUMBER LIST] -> Specify events pool." >&1
 			echo "-n [NUMBER] -> Specify max number of events to include in automatic model generation." >&1
 			echo "-o [NUMBER: 1:$NUM_OUTPUT_MODES]-> Output mode: 1 -> Measured platform physical data; 2 -> Model detailed performance and coefficients; 3 -> Model shortened performance; 4 -> Platform selected event totals; 5 -> Platform selected event averages;" >&1
 			echo "-s [FILEPATH] -> Specify the save file for the analyzed results." >&1
-			echo "Mandatory options are: -r, -b, -p, -e, -o"
+			echo "Mandatory options are: -r, -b, -p, -e/(-m -c -n -l), -o"
 			exit 0 
 			;;
 
@@ -211,6 +212,15 @@ do
 				MODEL_TYPE="$OPTARG"
 			fi
 			;;
+		l)
+			if [[ -n  $EVENTS_POOL ]]; then
+		    		echo "Invalid input: option -l has already been used!" >&2
+				echo -e "===================="
+		    		exit 1
+			else
+				EVENTS_POOL="$OPTARG"
+                	fi
+		    	;;
 		n)
 			if [[ -n  $NUM_MODEL_EVENTS ]]; then
 		    		echo "Invalid input: option -n has already been used!" >&2
@@ -269,8 +279,8 @@ if [[ -z $POWER_COL ]]; then
     	echo -e "====================" >&1
     	exit 1
 fi
-if [[ -z $EVENTS_LIST ]]; then
-    	echo "No events list specified! Expected -e flag." >&2
+if [[ -z $EVENTS_LIST && -z $AUTO_SEARCH ]]; then
+    	echo "No events list specified! Expected -e flag when auto search not used (no -m flag)." >&2
     	echo -e "====================" >&1
     	exit 1
 fi
@@ -350,8 +360,6 @@ else
 		echo -e "===================="
 		exit 1
 	fi
-	RESULT_EVENTS_LIST=$(seq "$RESULT_EVENTS_COL_START" 1 "$RESULT_EVENTS_COL_END" | tr '\n' ',' | head -c -1)
-	RESULT_EVENTS_LIST_LABELS=$(awk -v SEP='\t' -v START=$((RESULT_START_LINE-1)) -v COLUMNS="$RESULT_EVENTS_LIST" 'BEGIN{FS = SEP;len=split(COLUMNS,ARRAY,",")}{if (NR == START){for (i = 1; i <= len; i++){print $ARRAY[i]}}}' < "$RESULT_FILE" | tr "\n" "," | head -c -1)
 fi
 
 #-t flag
@@ -430,8 +438,6 @@ if [[ -n $TEST_FILE ]]; then
 			echo -e "===================="
 			exit 1
 		fi
-		TEST_EVENTS_LIST=$(seq "$TEST_EVENTS_COL_START" 1 "$TEST_EVENTS_COL_END" | tr '\n' ',' | head -c -1)
-		TEST_EVENTS_LIST_LABELS=$(awk -v SEP='\t' -v START=$((RESULT_START_LINE-1)) -v COLUMNS="$TEST_EVENTS_LIST" 'BEGIN{FS = SEP;len=split(COLUMNS,ARRAY,",")}{if (NR == START){for (i = 1; i <= len; i++){print $ARRAY[i]}}}' < "$TEST_FILE" | tr "\n" "," | head -c -1)
 
 		#Check if test frequencies match result file if no user freqeuncy list
 		if [[ -z $USER_FREQ_LIST && -z $CM_MODE ]]; then
@@ -548,46 +554,50 @@ POWER_LABEL=$(awk -v SEP='\t' -v START=$((RESULT_START_LINE-1)) -v COL="$POWER_C
 
 
 #-e flag
-spaced_EVENTS_LIST="${EVENTS_LIST//,/ }"
-for EVENT in $spaced_EVENTS_LIST
-do
-	#Check if events list is in bounds
-	if [[ "$EVENT" -gt $RESULT_EVENTS_COL_END || "$EVENT" -lt $RESULT_EVENTS_COL_START ]]; then 
-		echo "Selected event -e $EVENT is out of bounds/invalid to result file events. Needs to be an integer value betweeen [$RESULT_EVENTS_COL_START:$RESULT_EVENTS_COL_END]." >&2
-		echo -e "===================="
-		exit 1
-	fi
-	#Check event list against test/cross file event list (if selected)
-	if [[ -n $TEST_FILE ]]; then
-		if [[ "$EVENT" -gt $TEST_EVENTS_COL_END || "$EVENT" -lt $TEST_EVENTS_COL_START ]]; then 
-			echo "Selected event -e $EVENT is out of bounds/invalid to test/cross file events. Needs to be an integer value betweeen [$TEST_EVENTS_COL_START:$TEST_EVENTS_COL_END]." >&2
+if [[ -n $EVENTS_LIST ]]; then
+	spaced_EVENTS_LIST="${EVENTS_LIST//,/ }"
+	for EVENT in $spaced_EVENTS_LIST
+	do
+		#Check if events list is in bounds
+		if [[ "$EVENT" -gt $RESULT_EVENTS_COL_END || "$EVENT" -lt $RESULT_EVENTS_COL_START ]]; then 
+			echo "Selected event -e $EVENT is out of bounds/invalid to result file events. Needs to be an integer value betweeen [$RESULT_EVENTS_COL_START:$RESULT_EVENTS_COL_END]." >&2
 			echo -e "===================="
 			exit 1
 		fi
-		#Check if events list is the same for both test and result files
-		RESULT_EVENTS_LIST_LABELS=$(awk -v SEP='\t' -v START=$((RESULT_START_LINE-1)) -v COLUMNS="$EVENTS_LIST" 'BEGIN{FS = SEP;len=split(COLUMNS,ARRAY,",")}{if (NR == START){for (i = 1; i <= len; i++){print $ARRAY[i]}}}' < "$RESULT_FILE" | tr "\n" "," | head -c -1)
-		TEST_EVENTS_LIST_LABELS=$(awk -v SEP='\t' -v START=$((TEST_START_LINE-1)) -v COLUMNS="$EVENTS_LIST" 'BEGIN{FS = SEP;len=split(COLUMNS,ARRAY,",")}{if (NR == START){for (i = 1; i <= len; i++){print $ARRAY[i]}}}' < "$TEST_FILE" | tr "\n" "," | head -c -1)
-		if [[ "$TEST_EVENTS_LIST_LABELS" != "$RESULT_EVENTS_LIST_LABELS" ]]; then
-			echo "The selected events list -r $EVENTS_LIST is different between result file and test/cross file!" >&2
-			echo "Result list -> $RESULT_EVENTS_LIST_LABELS" >&2
-			echo "Test list -> $TEST_EVENTS_LIST_LABELS" >&2
+		#Check event list against test/cross file event list (if selected)
+		if [[ -n $TEST_FILE ]]; then
+			if [[ "$EVENT" -gt $TEST_EVENTS_COL_END || "$EVENT" -lt $TEST_EVENTS_COL_START ]]; then 
+				echo "Selected event -e $EVENT is out of bounds/invalid to test/cross file events. Needs to be an integer value betweeen [$TEST_EVENTS_COL_START:$TEST_EVENTS_COL_END]." >&2
+				echo -e "===================="
+				exit 1
+			fi
+			#Check if events list is the same for both test and result files
+			RESULT_EVENTS_LIST_LABELS=$(awk -v SEP='\t' -v START=$((RESULT_START_LINE-1)) -v COLUMNS="$EVENTS_LIST" 'BEGIN{FS = SEP;len=split(COLUMNS,ARRAY,",")}{if (NR == START){for (i = 1; i <= len; i++){print $ARRAY[i]}}}' < "$RESULT_FILE" | tr "\n" "," | head -c -1)
+			TEST_EVENTS_LIST_LABELS=$(awk -v SEP='\t' -v START=$((TEST_START_LINE-1)) -v COLUMNS="$EVENTS_LIST" 'BEGIN{FS = SEP;len=split(COLUMNS,ARRAY,",")}{if (NR == START){for (i = 1; i <= len; i++){print $ARRAY[i]}}}' < "$TEST_FILE" | tr "\n" "," | head -c -1)
+			if [[ "$TEST_EVENTS_LIST_LABELS" != "$RESULT_EVENTS_LIST_LABELS" ]]; then
+				echo "The selected events list -e $EVENTS_LIST is different between result file and test/cross file!" >&2
+				echo "Result list -> $RESULT_EVENTS_LIST_LABELS" >&2
+				echo "Test list -> $TEST_EVENTS_LIST_LABELS" >&2
+				echo -e "===================="
+				exit 1
+			fi
+		fi
+		#Check if it contains power
+		if [[ "$EVENT" == "$POWER_COL" ]]; then 
+			echo "Selected event -e $EVENT is the same as the regressand -p $POWER_COL -> $POWER_LABEL." >&2
 			echo -e "===================="
 			exit 1
 		fi
-	fi
-	#Check if it contains power
-	if [[ "$EVENT" == "$POWER_COL" ]]; then 
-		echo "Selected event -e $EVENT is the same as the regressand -p $POWER_COL -> $POWER_LABEL." >&2
-		echo -e "===================="
-		exit 1
-	fi
-done
+	done
+fi
+
 #Checkif events string contains duplicates
 if [[ $(echo "$EVENTS_LIST" | tr "," "\n" | wc -l) -gt $(echo "$EVENTS_LIST" | tr "," "\n" | sort | uniq | wc -l) ]]; then
 	echo "Selected event list -e $EVENTS_LIST contains duplicates." >&2
 	echo -e "===================="
 	exit 1
 fi
+
 
 #-x flag
 if [[ -n $CM_MODE ]]; then
@@ -640,8 +650,8 @@ fi
 #-m flag
 if [[ -n $AUTO_SEARCH ]]; then
 	#Check if other flags present
-	if  [[ -z $MODEL_TYPE || -z $NUM_MODEL_EVENTS ]]; then
-		echo "Expected -c and -n flag when -m flag is used!" >&2
+	if  [[ -z $MODEL_TYPE || -z $NUM_MODEL_EVENTS || -z $EVENTS_POOL ]]; then
+		echo "Expected -c, -l and -n flag when -m flag is used!" >&2
 		echo -e "===================="
 		exit 1
 	fi
@@ -656,8 +666,8 @@ fi
 #-c flag
 if [[ -n $MODEL_TYPE ]]; then
 	#Check if other flags present
-	if  [[ -z $AUTO_SEARCH || -z $NUM_MODEL_EVENTS ]]; then
-		echo "Expected -m and -n flag when -c flag is used!" >&2
+	if  [[ -z $AUTO_SEARCH || -z $NUM_MODEL_EVENTS || -z $EVENTS_POOL ]]; then
+		echo "Expected -m, -l and -n flag when -c flag is used!" >&2
 	    	echo -e "===================="
 		exit 1
 	fi
@@ -670,24 +680,91 @@ if [[ -n $MODEL_TYPE ]]; then
 	fi	
 fi
 
+#-l flag
+if [[ -n $EVENTS_POOL ]]; then
+	#Check if other flags present
+	if  [[ -z $AUTO_SEARCH || -z $MODEL_TYPE || -z $NUM_MODEL_EVENTS ]]; then
+		echo "Expected -m, -c and -n flag when -l flag is used!" >&2
+	    	echo -e "===================="
+		exit 1
+	fi
+	spaced_EVENTS_POOL="${EVENTS_POOL//,/ }"
+	for EVENT in $spaced_EVENTS_POOL
+	do
+		#Check if events pool is in bounds
+		if [[ "$EVENT" -gt $RESULT_EVENTS_COL_END || "$EVENT" -lt $RESULT_EVENTS_COL_START ]]; then 
+			echo "Selected event -l $EVENT is out of bounds/invalid to result file events. Needs to be an integer value betweeen [$RESULT_EVENTS_COL_START:$RESULT_EVENTS_COL_END]." >&2
+			echo -e "===================="
+			exit 1
+		fi
+		#Check event pool against test/cross file event pool (if selected)
+		if [[ -n $TEST_FILE ]]; then
+			if [[ "$EVENT" -gt $TEST_EVENTS_COL_END || "$EVENT" -lt $TEST_EVENTS_COL_START ]]; then 
+				echo "Selected event -l $EVENT is out of bounds/invalid to test/cross file events. Needs to be an integer value betweeen [$TEST_EVENTS_COL_START:$TEST_EVENTS_COL_END]." >&2
+				echo -e "===================="
+				exit 1
+			fi
+			#Check if events pool is the same for both test and result files
+			RESULT_EVENTS_POOL_LABELS=$(awk -v SEP='\t' -v START=$((RESULT_START_LINE-1)) -v COLUMNS="$EVENTS_POOL" 'BEGIN{FS = SEP;len=split(COLUMNS,ARRAY,",")}{if (NR == START){for (i = 1; i <= len; i++){print $ARRAY[i]}}}' < "$RESULT_FILE" | tr "\n" "," | head -c -1)
+			TEST_EVENTS_POOL_LABELS=$(awk -v SEP='\t' -v START=$((TEST_START_LINE-1)) -v COLUMNS="$EVENTS_POOL" 'BEGIN{FS = SEP;len=split(COLUMNS,ARRAY,",")}{if (NR == START){for (i = 1; i <= len; i++){print $ARRAY[i]}}}' < "$TEST_FILE" | tr "\n" "," | head -c -1)
+			if [[ "$TEST_EVENTS_POOL_LABELS" != "$RESULT_EVENTS_POOL_LABELS" ]]; then
+				echo "The selected events pool -r $EVENTS_POOL is different between result file and test/cross file!" >&2
+				echo "Result events -> $RESULT_EVENTS_POOL_LABELS" >&2
+				echo "Test events -> $TEST_EVENTS_POOL_LABELS" >&2
+				echo -e "===================="
+				exit 1
+			fi
+		fi
+		#Check if it contains power
+		if [[ "$EVENT" == "$POWER_COL" ]]; then 
+			echo "Selected event -l $EVENT is the same as the regressand -p $POWER_COL -> $POWER_LABEL." >&2
+			echo -e "===================="
+			exit 1
+		fi
+		#Check if it contains events from events list (if present)
+		if [[ -n $EVENTS_LIST ]]; then
+			for EVENT2 in $spaced_EVENTS_LIST
+			do
+				if [[ "$EVENT" == "$EVENT2" ]]; then 
+					echo "Selected event -l $EVENT is also present in default events list -e $EVENTS_LIST. Please exclude from pool." >&2
+					echo -e "===================="
+					exit 1
+				fi
+			done
+		fi
+	done
+
+	#Check if events string contains duplicates
+	if [[ $(echo "$EVENTS_POOL" | tr "," "\n" | wc -l) -gt $(echo "$EVENTS_POOL" | tr "," "\n" | sort | uniq | wc -l) ]]; then
+		echo "Selected event pool -l $EVENTS_POOL contains duplicates." >&2
+		echo -e "===================="
+		exit 1
+	fi
+fi
+
 #-n flag
 if [[ -n $NUM_MODEL_EVENTS ]]; then
 	#Check if other flags present
-	if  [[ -z $AUTO_SEARCH || -z $MODEL_TYPE ]]; then
-		echo "Expected -m and -c flag when -n flag is used!" >&2
+	if  [[ -z $AUTO_SEARCH || -z $MODEL_TYPE || -z $EVENTS_POOL ]]; then
+		echo "Expected -m, -l and -c flag when -n flag is used!" >&2
 	    	echo -e "===================="
 		exit 1
 	fi
-	EVENTS_LIST_SIZE=$(echo "$EVENTS_LIST" | tr "," "\n" | wc -l)
+
+	if [[ -n $EVENTS_LIST ]]; then
+		EVENTS_LIST_SIZE=$(echo "$EVENTS_LIST" | tr "," "\n" | wc -l)
+	else
+		EVENTS_LIST_SIZE=0
+	fi
+
+	EVENTS_POOL_SIZE=$(echo "$EVENTS_POOL" | tr "," "\n" | wc -l)
+	EVENTS_FULL_SIZE=$(echo "$EVENTS_LIST_SIZE+$EVENTS_POOL_SIZE;" | bc )
 	#Check if number is within bounds, which is total number of events - 1 (power)
-	if [[ "$NUM_MODEL_EVENTS" -gt "$EVENTS_LIST_SIZE" || "$NUM_MODEL_EVENTS" -le 0 ]]; then 
-		echo "Selected number of events -n $EVENTS_LIST_SIZE is out of bounds/invalid. Needs to be an integer value betweeen [1:$EVENTS_LIST_SIZE]." >&2
+	if [[ "$NUM_MODEL_EVENTS" -gt "$EVENTS_FULL_SIZE" || "$NUM_MODEL_EVENTS" -le 0 ]]; then 
+		echo "Selected number of events -n $EVENTS_LIST_SIZE is out of bounds/invalid. Needs to be an integer value betweeen [1:$EVENTS_FULL_SIZE]." >&2
 	    	echo -e "===================="
 		exit 1
 	fi
-	#Initiate variables and unset events_list (since we use events_pool for the automatic list)
-	EVENTS_POOL="$EVENTS_LIST"
-	unset EVENTS_LIST
 fi
 
 #-o flag
@@ -879,14 +956,14 @@ if [[ -n $CM_MODE ]]; then
 fi
 
 #Machine learning method sanity checks
-#-m number; -c number; -n number
+#-m number; -c number; -n number; -l list
 if [[ -n $AUTO_SEARCH ]]; then
 	#Number of events in model sanity checks
 	echo -e "--------------------" >&1
 	echo "Specified search algorithm:" >&1
 	case $AUTO_SEARCH in
 		1)
-			echo "$AUTO_SEARCH -> Use bottom-up approach. Heuristically add events until we cannot improve model or we reach limit -> $NUM_MODEL_EVENTS" >&1
+			echo "$AUTO_SEARCH -> Use bottom-up approach. Heuristically add events until we cannot improve model or we reach limit. -> $NUM_MODEL_EVENTS" >&1
 			;;
 		2) 
 			echo "$AUTO_SEARCH -> Use top-down approach. Heuristically remove events until we cannot improve model or we reach limit -> $NUM_MODEL_EVENTS" >&1
@@ -909,7 +986,15 @@ if [[ -n $AUTO_SEARCH ]]; then
 			echo "$MODEL_TYPE -> Minimize model maximum event cross-correlation." >&1
 			;;
 	esac
+
 	#Events sanity checks
+	if [[ -n $EVENTS_LIST ]]; then
+		echo -e "--------------------" >&1
+		EVENTS_LIST_LABELS=$(awk -v SEP='\t' -v START=$((RESULT_START_LINE-1)) -v COLUMNS="$EVENTS_LIST" 'BEGIN{FS = SEP;len=split(COLUMNS,ARRAY,",")}{if (NR == START){for (i = 1; i <= len; i++){print $ARRAY[i]}}}' < "$RESULT_FILE" | tr "\n" "," | head -c -1)
+		echo -e "Using user specified list as initial model in search:" >&1
+		echo "$EVENTS_LIST -> $EVENTS_LIST_LABELS" >&1		
+	fi
+
 	echo -e "--------------------" >&1
 	EVENTS_POOL_LABELS=$(awk -v SEP='\t' -v START=$((RESULT_START_LINE-1)) -v COLUMNS="$EVENTS_POOL" 'BEGIN{FS = SEP;len=split(COLUMNS,ARRAY,",")}{if (NR == START){for (i = 1; i <= len; i++){print $ARRAY[i]}}}' < "$RESULT_FILE" | tr "\n" "," | head -c -1)
 	echo -e "Full events pool:" >&1
@@ -952,6 +1037,7 @@ if [[ -n $AUTO_SEARCH ]]; then
 	echo -e "====================" >&1
 	echo -e "--------------------" >&1
 	echo -e "Preparing data for automatic model generation." >&1
+	echo -e "--------------------" >&1
 	echo -e "Removing constant events from events pool." >&1
 	echo -e "Current events used:" >&1
 	echo "$EVENTS_POOL -> $EVENTS_POOL_LABELS" >&1
