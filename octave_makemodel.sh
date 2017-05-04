@@ -773,6 +773,13 @@ if [[ "$OUTPUT_MODE" != "1" && "$OUTPUT_MODE" != "2" && "$OUTPUT_MODE" != "3" &&
 	echo "Use -h flag for more information on the available modes." >&2
     	echo -e "===================="
     	exit 1
+else
+	if [[ "$OUTPUT_MODE" != "2" && "$OUTPUT_MODE" != "3" && -n $CM_MODE ]]; then 
+		echo "Incompatible flags: -o $OUTPUT_MODE and -x $CM_MODE" >&2
+		echo "Please do not use physical characteristics output for cross model. You can extract this information separately for each cluster usign the standart modes." >&2
+	    	echo -e "===================="
+	    	exit 1
+	fi
 fi
 
 echo -e "Critical checks passed!"  >&1
@@ -900,12 +907,12 @@ echo -e "--------------------" >&1
 if [[ -z $ALL_FREQUENCY ]]; then
     	echo "Computing per-frequency models!" >&1
 else
-	if [[ -z $CM_MODE ]]; then
+	#if [[ -z $CM_MODE ]]; then
     		echo "Computing full frequency model!" >&1
-	else
-		echo "-a flag cannot be used together with cross-model -x flag. Cannot scale the events for the full-freqeuncy model successfully to achieve good results." >&2
-		exit 1
-	fi
+	#else
+	#	echo "-a flag cannot be used together with cross-model -x flag. Cannot scale the events for the full-freqeuncy model successfully to achieve good results." >&2
+	#	exit 1
+	#fi
 fi
 #Cross model computation mode sanity check
 #-x flag
@@ -1868,20 +1875,42 @@ if [[ -n $ALL_FREQUENCY ]]; then
 		else
 			#If we are collecting model performance
 			#If all freqeuncy model then use all freqeuncies in octave, as in use the fully populated train and test set files
-			#Split data and collect output, then cleanup 	
-			#Split input into train and test set
-			touch "train_set.data" "test_set.data"
-			awk -v START="$RESULT_START_LINE" -v SEP='\t' -v BENCH_COL="$RESULT_BENCH_COL" -v BENCH_SET="${TRAIN_SET[*]}" 'BEGIN{FS = SEP;len=split(BENCH_SET,ARRAY," ")}{if (NR >= START){for (i = 1; i <= len; i++){if ($BENCH_COL == ARRAY[i]){print $0;next}}}}' < "$RESULT_FILE" > "train_set.data"
-			if [[ -n $TEST_FILE ]]; then
-				awk -v START="$TEST_START_LINE" -v SEP='\t' -v BENCH_COL="$TEST_BENCH_COL" -v BENCH_SET="${TEST_SET[*]}" 'BEGIN{FS = SEP;len=split(BENCH_SET,ARRAY," ")}{if (NR >= START){for (i = 1; i <= len; i++){if ($BENCH_COL == ARRAY[i]){print $0;next}}}}' < "$TEST_FILE" > "test_set.data"
+			if [[ -n $CM_MODE ]]; then
+				#if cross model then procede to split into two train and two test files
+				#Split data and collect output, then cleanup 	
+				#Split input into train and test set
+				touch "train_set_1.data" "test_set_1.data" "train_set_2.data" "test_set_2.data"
+				awk -v START="$RESULT_START_LINE" -v SEP='\t' -v BENCH_COL="$RESULT_BENCH_COL" -v BENCH_SET="${TRAIN_SET[*]}" 'BEGIN{FS = SEP;len=split(BENCH_SET,ARRAY," ")}{if (NR >= START){for (i = 1; i <= len; i++){if ($BENCH_COL == ARRAY[i]){print $0;next}}}}' < "$RESULT_FILE" > "train_set_1.data"
+				awk -v START="$RESULT_START_LINE" -v SEP='\t' -v BENCH_COL="$RESULT_BENCH_COL" -v BENCH_SET="${TEST_SET[*]}" 'BEGIN{FS = SEP;len=split(BENCH_SET,ARRAY," ")}{if (NR >= START){for (i = 1; i <= len; i++){if ($BENCH_COL == ARRAY[i]){print $0;next}}}}' < "$RESULT_FILE" > "test_set_1.data"
+				awk -v START="$TEST_START_LINE" -v SEP='\t' -v BENCH_COL="$TEST_BENCH_COL" -v BENCH_SET="${TRAIN_SET[*]}" 'BEGIN{FS = SEP;len=split(BENCH_SET,ARRAY," ")}{if (NR >= START){for (i = 1; i <= len; i++){if ($BENCH_COL == ARRAY[i]){print $0;next}}}}' < "$TEST_FILE" > "train_set_2.data"
+				awk -v START="$TEST_START_LINE" -v SEP='\t' -v BENCH_COL="$TEST_BENCH_COL" -v BENCH_SET="${TEST_SET[*]}" 'BEGIN{FS = SEP;len=split(BENCH_SET,ARRAY," ")}{if (NR >= START){for (i = 1; i <= len; i++){if ($BENCH_COL == ARRAY[i]){print $0;next}}}}' < "$TEST_FILE" > "test_set_2.data"
+
+				#Collect octave output this depends on program mode
+				octave_output=$(octave --silent --eval "load_build_model(3,'train_set_1.data','test_set_1.data',0,$((RESULT_EVENTS_COL_START-1)),'train_set_2.data','test_set_2.data',0,$((TEST_EVENTS_COL_START-1)),$POWER_COL,'$EVENTS_LIST')" 2> /dev/null)
+				#There is no standart deviation sicne the error is only 1 number so just add N/A
+				octave_output+="\nRelative Error Standart Deviation [%]: null\n"
+				octave_output+="###########################################################\n"
+				echo $octave_output
+				data_count=$(echo -e "$octave_output" | awk -v SEP=' ' 'BEGIN{FS=SEP;count=0}{if ($1=="Average" && $2=="Predicted" && $3=="Power"){ count++ }}END{print count}' )
+				#Cleanup
+				rm "train_set_1.data" "test_set_1.data" "train_set_2.data" "test_set_2.data"
 			else
-				awk -v START="$RESULT_START_LINE" -v SEP='\t' -v BENCH_COL="$RESULT_BENCH_COL" -v BENCH_SET="${TEST_SET[*]}" 'BEGIN{FS = SEP;len=split(BENCH_SET,ARRAY," ")}{if (NR >= START){for (i = 1; i <= len; i++){if ($BENCH_COL == ARRAY[i]){print $0;next}}}}' < "$RESULT_FILE" > "test_set.data" 	
+				#if no cross model then procede standart
+				#Split data and collect output, then cleanup 	
+				#Split input into train and test set
+				touch "train_set.data" "test_set.data"
+				awk -v START="$RESULT_START_LINE" -v SEP='\t' -v BENCH_COL="$RESULT_BENCH_COL" -v BENCH_SET="${TRAIN_SET[*]}" 'BEGIN{FS = SEP;len=split(BENCH_SET,ARRAY," ")}{if (NR >= START){for (i = 1; i <= len; i++){if ($BENCH_COL == ARRAY[i]){print $0;next}}}}' < "$RESULT_FILE" > "train_set.data"
+				if [[ -n $TEST_FILE ]]; then
+					awk -v START="$TEST_START_LINE" -v SEP='\t' -v BENCH_COL="$TEST_BENCH_COL" -v BENCH_SET="${TEST_SET[*]}" 'BEGIN{FS = SEP;len=split(BENCH_SET,ARRAY," ")}{if (NR >= START){for (i = 1; i <= len; i++){if ($BENCH_COL == ARRAY[i]){print $0;next}}}}' < "$TEST_FILE" > "test_set.data"
+				else
+					awk -v START="$RESULT_START_LINE" -v SEP='\t' -v BENCH_COL="$RESULT_BENCH_COL" -v BENCH_SET="${TEST_SET[*]}" 'BEGIN{FS = SEP;len=split(BENCH_SET,ARRAY," ")}{if (NR >= START){for (i = 1; i <= len; i++){if ($BENCH_COL == ARRAY[i]){print $0;next}}}}' < "$RESULT_FILE" > "test_set.data" 	
+				fi
+				#Collect octave output this depends on program mode
+				octave_output=$(octave --silent --eval "load_build_model(2,'train_set.data','test_set.data',0,$((RESULT_EVENTS_COL_START-1)),$POWER_COL,'$EVENTS_LIST')" 2> /dev/null)
+				data_count=$(echo -e "$octave_output" | awk -v SEP=' ' 'BEGIN{FS=SEP;count=0}{if ($1=="Average" && $2=="Predicted" && $3=="Power"){ count++ }}END{print count}' )
+				#Cleanup
+				rm "train_set.data" "test_set.data"
 			fi
-			#Collect octave output this depends on program mode
-			octave_output=$(octave --silent --eval "load_build_model(2,'train_set.data','test_set.data',0,$((RESULT_EVENTS_COL_START-1)),$POWER_COL,'$EVENTS_LIST')" 2> /dev/null)
-			data_count=$(echo -e "$octave_output" | awk -v SEP=' ' 'BEGIN{FS=SEP;count=0}{if ($1=="Average" && $2=="Predicted" && $3=="Power"){ count++ }}END{print count}' )
-			#Cleanup
-			rm "train_set.data" "test_set.data"
 		fi	
 	done
 else
@@ -2128,7 +2157,7 @@ do
 done
 
 #Print model summary if in mode
-if [[ $OUTPUT_MODE == 2 || $OUTPUT_MODE == 3 ]]; then 
+if [[ $OUTPUT_MODE == 2 || $OUTPUT_MODE == 3  ]]; then
 	echo -e "--------------------" >&1
 	MEAN_REL_AVG_ABS_ERR=$(getMean rel_avg_abs_err ${#rel_avg_abs_err[@]} )
 	MEAN_REL_AVG_ABS_ERR_STD_DEV=$(getMean rel_avg_abs_err_std_dev ${#rel_avg_abs_err_std_dev[@]} )
