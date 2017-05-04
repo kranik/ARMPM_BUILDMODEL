@@ -6,17 +6,6 @@ if [[ "$#" -eq 0 ]]; then
 fi
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-#Programmable head line and column separator. By default I assume data start at line 1 (first line is description, second is column heads and third is actual data). Columns separated by tab(s).
-head_line=1
-col_sep="\t"
-time_convert=1000000000
-
-=======
->>>>>>> 113fade9c5df9572588e61fd917c7782e7824365
-=======
->>>>>>> 1e9d7615504fc9f2cac1629b8c53358dc8a4ec30
 #requires getops, but this should not be an issue since ints built in bash
 while getopts ":r:n:s:eh" opt;
 do
@@ -43,32 +32,10 @@ do
 			else
 				#directory does exists and we can analyse results
 				RESULTS_DIR=$OPTARG
-<<<<<<< HEAD
-<<<<<<< HEAD
-				NUM_RUNS=$(ls $RESULTS_DIR | grep 'Run' | wc -w)
-				if [[ $NUM_RUNS -eq 0 ]]; then
-					echo "Directory specified with -r flag does not contain any results." >&2
-		    			exit 1                
-				else
-					if [[ $(find $RESULTS_DIR -type d -name 'LITTLE' | wc -w) -gt 0 ]]; then
-						CORETYPE="LITTLE"	
-					elif [[ $(find $RESULTS_DIR -type d -name 'big' | wc -w) -gt 0 ]]; then
-						CORETYPE="big"
-					else	
-				        	echo "Directory specified with -r flag does not specify core type." >&2
-				    		exit 1                        				
-					fi
-=======
-=======
->>>>>>> 1e9d7615504fc9f2cac1629b8c53358dc8a4ec30
 				NUM_RUNS=$(ls "$RESULTS_DIR" | grep -c 'Run')
 				if [[ $NUM_RUNS -eq 0 ]]; then
 					echo "Directory specified with -r flag does not contain any results." >&2
 		    			exit 1
-<<<<<<< HEAD
->>>>>>> 113fade9c5df9572588e61fd917c7782e7824365
-=======
->>>>>>> 1e9d7615504fc9f2cac1629b8c53358dc8a4ec30
 				fi
 				    	
 			fi
@@ -159,19 +126,6 @@ if [[ -z $RUNS ]]; then
     	exit 1
 fi
 						
-<<<<<<< HEAD
-<<<<<<< HEAD
-FREQ_LIST=$(ls $RESULTS_DIR/Run_${RUNS%% *} | tr " " "\n" | sort -gr | tr "\n" " ")						
-
-#If we have event selection enabled then process raw events and concatenated with events, else jsut concatenate sensor data
-if [[ -n $WITH_EVENTS ]]; then
-	./process_raw_events.sh -r $RESULTS_DIR -n "${RUNS// /,}" -s
-	./concatenate_results.sh -r $RESULTS_DIR -n "${RUNS// /,}" -e -s
-else
-	./concatenate_results.sh -r $RESULTS_DIR -n "${RUNS// /,}" -s
-=======
-=======
->>>>>>> 1e9d7615504fc9f2cac1629b8c53358dc8a4ec30
 FREQ_LIST=$(ls "$RESULTS_DIR/Run_${RUNS%% *}" | tr " " "\n" | sort -gr | tr "\n" " ")						
 
 #If we have event selection enabled then process raw events and concatenated with events, else jsut concatenate sensor data
@@ -180,10 +134,6 @@ if [[ -n $WITH_EVENTS ]]; then
 	./concatenate_results.sh -r "$RESULTS_DIR" -n "${RUNS// /,}" -e -s
 else
 	./concatenate_results.sh -r "$RESULTS_DIR" -n "${RUNS// /,}" -s
-<<<<<<< HEAD
->>>>>>> 113fade9c5df9572588e61fd917c7782e7824365
-=======
->>>>>>> 1e9d7615504fc9f2cac1629b8c53358dc8a4ec30
 fi
 #Go into results directories and concatenate all the results files in to a big beast!
 for i in $RUNS;
@@ -191,46 +141,18 @@ do
 	for FREQ_SELECT in $FREQ_LIST
 	do	
 		RESULTS_FILE="$RESULTS_DIR/Run_$i/$FREQ_SELECT/results.data"
-<<<<<<< HEAD
-<<<<<<< HEAD
-		RESULTS_BEGIN_LINE=$(awk -v SEP='\t' 'BEGIN{FS=SEP}{ if($1 !~ /#/){print (NR);exit} }' < $RESULTS_FILE)
-		BENCHMARK_NAME_COLUMN=$(awk -v SEP='\t' -v START=$(($RESULTS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /Benchmark/) { print i; exit} } } }' < $RESULTS_FILE)
-		
-		TIME_BENCH_HEADER=$((awk -v SEP='\t' -v START=$(($RESULTS_BEGIN_LINE-1)) -v COL_END=$(($BENCHMARK_NAME_COLUMN+1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<COL_END;i++) print $i} }' < $RESULTS_FILE) | tr "\n" "\t"| head -c -1)
-		#If no events this should just include sensor data (concatenate_results should automatically adjust)
-		SENSORS_EVENTS_HEADER=$((awk -v SEP='\t' -v START=$(($RESULTS_BEGIN_LINE-1)) -v COL_START=$(($BENCHMARK_NAME_COLUMN+1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=COL_START;i<=NF;i++) print $i} }' < $RESULTS_FILE) | tr "\n" "\t" | head -c -1)
-=======
-=======
->>>>>>> 1e9d7615504fc9f2cac1629b8c53358dc8a4ec30
 		RESULTS_BEGIN_LINE=$(awk -v SEP='\t' 'BEGIN{FS=SEP}{ if($1 !~ /#/){print (NR);exit} }' < "$RESULTS_FILE")
 		BENCHMARK_NAME_COLUMN=$(awk -v SEP='\t' -v START=$((RESULTS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /Benchmark/) { print i; exit} } } }' < "$RESULTS_FILE")
 		
 		TIME_BENCH_HEADER=$(awk -v SEP='\t' -v START=$((RESULTS_BEGIN_LINE-1)) -v COL_END=$((BENCHMARK_NAME_COLUMN+1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<COL_END;i++) print $i} }' < "$RESULTS_FILE" | tr "\n" "\t"| head -c -1)
 		#If no events this should just include sensor data (concatenate_results should automatically adjust)
 		SENSORS_EVENTS_HEADER=$(awk -v SEP='\t' -v START=$((RESULTS_BEGIN_LINE-1)) -v COL_START=$((BENCHMARK_NAME_COLUMN+1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=COL_START;i<=NF;i++) print $i} }' < "$RESULTS_FILE" | tr "\n" "\t" | head -c -1)
-<<<<<<< HEAD
->>>>>>> 113fade9c5df9572588e61fd917c7782e7824365
-=======
->>>>>>> 1e9d7615504fc9f2cac1629b8c53358dc8a4ec30
 	
 		if [[ -z $SAVE_FILE ]]; then
 			#Display results header
 			[[ -z $HEADER ]] && echo -e "$TIME_BENCH_HEADER\tRun(#)\t$SENSORS_EVENTS_HEADER" >&1; HEADER=1
 		else
 		   	#Save results header
-<<<<<<< HEAD
-<<<<<<< HEAD
-			[[ -z $HEADER ]] && echo -e "$TIME_BENCH_HEADER\tRun(#)\t$SENSORS_EVENTS_HEADER" > $SAVE_FILE; HEADER=1
-		fi
-
-		for LINE in $(seq $RESULTS_BEGIN_LINE 1 $(wc -l $RESULTS_FILE | awk '{print $1}')) 
-		do
-			TIME_BENCH_DATA=$((awk -v SEP='\t' -v START=$LINE -v COL_END=$(($BENCHMARK_NAME_COLUMN+1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<COL_END;i++) print $i} }' < $RESULTS_FILE) | tr "\n" "\t" | head -c -1)
-			SENSORS_EVENTS_DATA=$((awk -v SEP='\t' -v START=$LINE -v COL_START=$(($BENCHMARK_NAME_COLUMN+1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=COL_START;i<=NF;i++) print $i} }' < $RESULTS_FILE) | tr "\n" "\t" | head -c -1) 
-			[[ -z $SAVE_FILE ]] && echo -e "$TIME_BENCH_DATA\t$i\t$SENSORS_EVENTS_DATA" >&1 || echo -e "$TIME_BENCH_DATA\t$i\t$SENSORS_EVENTS_DATA" >> $SAVE_FILE		 
-=======
-=======
->>>>>>> 1e9d7615504fc9f2cac1629b8c53358dc8a4ec30
 			[[ -z $HEADER ]] && echo -e "$TIME_BENCH_HEADER\tRun(#)\t$SENSORS_EVENTS_HEADER" > "$SAVE_FILE"; HEADER=1
 		fi
 
@@ -239,10 +161,6 @@ do
 			TIME_BENCH_DATA=$(awk -v SEP='\t' -v START="$LINE" -v COL_END=$((BENCHMARK_NAME_COLUMN+1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<COL_END;i++) print $i} }' < "$RESULTS_FILE" | tr "\n" "\t" | head -c -1)
 			SENSORS_EVENTS_DATA=$(awk -v SEP='\t' -v START="$LINE" -v COL_START=$((BENCHMARK_NAME_COLUMN+1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=COL_START;i<=NF;i++) print $i} }' < "$RESULTS_FILE" | tr "\n" "\t" | head -c -1) 
 			[[ -z $SAVE_FILE ]] && echo -e "$TIME_BENCH_DATA\t$i\t$SENSORS_EVENTS_DATA" >&1 || echo -e "$TIME_BENCH_DATA\t$i\t$SENSORS_EVENTS_DATA" >> "$SAVE_FILE"		 
-<<<<<<< HEAD
->>>>>>> 113fade9c5df9572588e61fd917c7782e7824365
-=======
->>>>>>> 1e9d7615504fc9f2cac1629b8c53358dc8a4ec30
 		done
 	done
 done
