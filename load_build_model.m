@@ -19,10 +19,15 @@ if ( mode == 0 )
   disp("2) Model generation with detailed output.")
   disp("Need to pass 7 arguments to load_build_model(mode,train_set,test_set,start_row,start_col,power_col,events_col)")
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   disp("3) Cross-model generation with detailed output.")
   disp("Need to pass 11 arguments to load_build_model(mode,train_set_1,test_set_1,start_row_1,start_col_1,train_set_2,test_set_2,start_row_2,start_col_2,power_col,events_col)")
 >>>>>>> 113fade9c5df9572588e61fd917c7782e7824365
+=======
+  disp("3) Cross-model generation with detailed output.")
+  disp("Need to pass 11 arguments to load_build_model(mode,train_set_1,test_set_1,start_row_1,start_col_1,train_set_2,test_set_2,start_row_2,start_col_2,power_col,events_col)")
+>>>>>>> 1e9d7615504fc9f2cac1629b8c53358dc8a4ec30
   return
 endif
 
@@ -90,9 +95,12 @@ if (mode == 2)
   %The ones in front are for the constant coefficiant for linear regression
   train_reg=[ones(size(train_set,1),1),train_set(:,str2num(events_col).-start_col)];
 <<<<<<< HEAD
+<<<<<<< HEAD
   %Compute model
   [m, Err, CLow, CHigh] = build_model(train_reg,train_set(:,power_col.-start_col));
 =======
+=======
+>>>>>>> 1e9d7615504fc9f2cac1629b8c53358dc8a4ec30
 
 %  %Pricopi
 %  EVLIST=train_set(:,str2num(events_col).-start_col);
@@ -111,7 +119,10 @@ if (mode == 2)
 
   %Compute model
   [m, maxcorr, maxcorrindices, avgcorr] = build_model(train_reg,train_set(:,power_col.-start_col));
+<<<<<<< HEAD
 >>>>>>> 113fade9c5df9572588e61fd917c7782e7824365
+=======
+>>>>>>> 1e9d7615504fc9f2cac1629b8c53358dc8a4ec30
 
   %Open test set file
   fid = fopen (test_set, "r");
@@ -123,7 +134,10 @@ if (mode == 2)
   test_reg=[ones(size(test_set,1),1),test_set(:,str2num(events_col).-start_col)];
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 1e9d7615504fc9f2cac1629b8c53358dc8a4ec30
 %  %Pricopi
 %  EVLIST=test_set(:,str2num(events_col).-start_col);
 %  CYCLES=EVLIST(:,1);
@@ -139,7 +153,10 @@ if (mode == 2)
 %  EVLIST=test_set(:,str2num(events_col).-start_col);
 %  test_reg=[ones(size(test_set,1),1),EVLIST(:,1),EVLIST(:,2).+EVLIST(:,3),EVLIST(:,4:end)];
   
+<<<<<<< HEAD
 >>>>>>> 113fade9c5df9572588e61fd917c7782e7824365
+=======
+>>>>>>> 1e9d7615504fc9f2cac1629b8c53358dc8a4ec30
   %Extract measured power and range from test data
   test_power=test_set(:,power_col.-start_col);
 
@@ -167,6 +184,7 @@ if (mode == 2)
   disp("###########################################################");
   disp(["Average Relative Error [%]: " num2str(rel_avg_abs_err,"%.5f")]);
   disp(["Relative Error Standart Deviation [%]: " num2str(rel_err_std_dev,"%.5f")]);
+<<<<<<< HEAD
 <<<<<<< HEAD
   disp("###########################################################");
   disp(["Model coefficients: " num2str(m',"%G\t")]);
@@ -209,6 +227,8 @@ endfunction
   %m=(cross_model_coeff.*[1 1 event_scaling])' #No temp scaling
   %%m=(cross_model_coeff.*[1 cross_avg_temp/mean(test_reg(:,2)) event_scaling])'; #Temp scaling
 =======
+=======
+>>>>>>> 1e9d7615504fc9f2cac1629b8c53358dc8a4ec30
   if (size(str2num(events_col),2) >= 2) 
     disp("###########################################################");
     disp(["Average Event Cross-Correlation [%]: " num2str((avgcorr/1.0)*100,"%.5f")]);
@@ -289,8 +309,13 @@ if (mode == 3)
   disp("###########################################################");
   disp("Model validation against test set");
   disp("###########################################################"); 
+<<<<<<< HEAD
   disp(["Average Predicted Power [W]: " num2str(mean(pred_power),"%.3f")]);  
   disp(["Predicted Power Range [%]: " num2str((range(pred_power)./min(pred_power))*100,"%d")]);
+=======
+  disp(["Average Predicted Power [W]: " num2str(mean(pred_power),"%.3f")]); 
+  disp(["Predicted Power Range [%]: " num2str(abs((range(pred_power)./min(pred_power))*100),"%d")]);
+>>>>>>> 1e9d7615504fc9f2cac1629b8c53358dc8a4ec30
   disp("###########################################################"); 
   disp(["Average Absolute Error [W]: " num2str(abs_err,"%.5f")]);
   disp("###########################################################");
@@ -307,5 +332,9 @@ if (mode == 3)
   
 endif
 
+<<<<<<< HEAD
 endfunction
 >>>>>>> 113fade9c5df9572588e61fd917c7782e7824365
+=======
+endfunction
+>>>>>>> 1e9d7615504fc9f2cac1629b8c53358dc8a4ec30

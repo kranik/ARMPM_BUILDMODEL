@@ -8,6 +8,7 @@ fi
 
 #Programmable head line and column separator. By default I assume data start at line 1 (first line is description, second is column heads and third is actual data). Columns separated by tab(s).
 <<<<<<< HEAD
+<<<<<<< HEAD
 head_line=1
 COL_SEP="\t"
 time_convert=1000000000
@@ -15,6 +16,10 @@ time_convert=1000000000
 COL_SEP="\t"
 #time_convert=1000000000
 >>>>>>> 113fade9c5df9572588e61fd917c7782e7824365
+=======
+COL_SEP="\t"
+#time_convert=1000000000
+>>>>>>> 1e9d7615504fc9f2cac1629b8c53358dc8a4ec30
 
 #requires getops, but this should not be an issue since ints built in bash
 while getopts ":r:n:esh" opt;
@@ -32,10 +37,14 @@ do
         #Specify the save directory, if no save directory is chosen the results are saved in the $PWD
         r)
 <<<<<<< HEAD
+<<<<<<< HEAD
 		if [[ -n  $RESULTS_DIR ]]; then
 =======
 		if [[ -n  "$RESULTS_DIR" ]]; then
 >>>>>>> 113fade9c5df9572588e61fd917c7782e7824365
+=======
+		if [[ -n  "$RESULTS_DIR" ]]; then
+>>>>>>> 1e9d7615504fc9f2cac1629b8c53358dc8a4ec30
 			echo "Invalid input: option -r has already been used!" >&2
 			exit 1                
 		fi
@@ -47,14 +56,19 @@ do
 			#directory does exists and we can analyse results
 			RESULTS_DIR=$OPTARG
 <<<<<<< HEAD
+<<<<<<< HEAD
 			NUM_RUNS=$(ls $RESULTS_DIR | grep 'Run' | wc -w)
 =======
 			NUM_RUNS=$(ls "$RESULTS_DIR" | grep -c 'Run')
 >>>>>>> 113fade9c5df9572588e61fd917c7782e7824365
+=======
+			NUM_RUNS=$(ls "$RESULTS_DIR" | grep -c 'Run')
+>>>>>>> 1e9d7615504fc9f2cac1629b8c53358dc8a4ec30
 			if [[ $NUM_RUNS -eq 0 ]]; then
 				echo "Directory specified with -r flag does not contain any results." >&2
 				exit 1                
 			else
+<<<<<<< HEAD
 <<<<<<< HEAD
 				if [[ $(find $RESULTS_DIR -type d -name 'LITTLE' | wc -w) -gt 0 ]]; then
 					CORETYPE="LITTLE"	
@@ -64,6 +78,11 @@ do
 					CORETYPE="LITTLE"	
 				elif [[ $(echo "$RESULTS_DIR" | grep -c 'big') -gt 0 ]]; then
 >>>>>>> 113fade9c5df9572588e61fd917c7782e7824365
+=======
+				if [[ $(echo "$RESULTS_DIR" | grep -c 'LITTLE') -gt 0 ]]; then
+					CORETYPE="LITTLE"	
+				elif [[ $(echo "$RESULTS_DIR" | grep -c 'big') -gt 0 ]]; then
+>>>>>>> 1e9d7615504fc9f2cac1629b8c53358dc8a4ec30
 					CORETYPE="big"
 				else	
 					echo "Directory specified with -r flag does not specify core type." >&2
@@ -89,10 +108,14 @@ do
 
 		#Sanity check the directory has been specified. Part of my runs check is to see if the runs are present in the directory, so we need that entered first
 <<<<<<< HEAD
+<<<<<<< HEAD
 		if [[ -z $RESULTS_DIR ]]; then
 =======
 		if [[ -z "$RESULTS_DIR" ]]; then
 >>>>>>> 113fade9c5df9572588e61fd917c7782e7824365
+=======
+		if [[ -z "$RESULTS_DIR" ]]; then
+>>>>>>> 1e9d7615504fc9f2cac1629b8c53358dc8a4ec30
 			echo "Please specify results directory before entering number of runs!" >&2
 			exit 1
 		fi
@@ -131,10 +154,14 @@ do
 done
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 if [[ -z $RESULTS_DIR ]]; then
 =======
 if [[ -z "$RESULTS_DIR" ]]; then
 >>>>>>> 113fade9c5df9572588e61fd917c7782e7824365
+=======
+if [[ -z "$RESULTS_DIR" ]]; then
+>>>>>>> 1e9d7615504fc9f2cac1629b8c53358dc8a4ec30
     	echo "Nothing to run. Expected -r flag!" >&2
     	exit 1
 fi
@@ -145,10 +172,14 @@ if [[ -z $RUNS ]]; then
 fi
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 FREQ_LIST=$(ls $RESULTS_DIR/Run_${RUNS%% *} | tr " " "\n" | sort -gr | tr "\n" " ")
 =======
 FREQ_LIST=$(ls "$RESULTS_DIR/Run_${RUNS%% *}" | tr " " "\n" | sort -gr | tr "\n" " ")
 >>>>>>> 113fade9c5df9572588e61fd917c7782e7824365
+=======
+FREQ_LIST=$(ls "$RESULTS_DIR/Run_${RUNS%% *}" | tr " " "\n" | sort -gr | tr "\n" " ")
+>>>>>>> 1e9d7615504fc9f2cac1629b8c53358dc8a4ec30
 
 for i in $RUNS
 do
@@ -164,6 +195,7 @@ do
 		#Extract header information
 		#Fele data start (first lines with no #)
 <<<<<<< HEAD
+<<<<<<< HEAD
 		BENCHMARKS_BEGIN_LINE=$(awk -v SEP='\t' 'BEGIN{FS=SEP}{ if($1 !~ /#/){print (NR);exit} }' < $BENCHMARKS_FILE)
 		SENSORS_BEGIN_LINE=$(awk -v SEP='\t' 'BEGIN{FS=SEP}{ if($1 !~ /#/){print (NR);exit} }' < $SENSORS_FILE)
 		#Only extract events if selected
@@ -175,6 +207,8 @@ do
 		BENCH_START_COLUMN=$(awk -v SEP='\t' -v START=$(($BENCHMARKS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /Start/) { print i; exit} } } }' < $BENCHMARKS_FILE)
 		BENCH_END_COLUMN=$(awk -v SEP='\t' -v START=$(($BENCHMARKS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /End/) { print i; exit} } } }' < $BENCHMARKS_FILE)
 =======
+=======
+>>>>>>> 1e9d7615504fc9f2cac1629b8c53358dc8a4ec30
 		BENCHMARKS_BEGIN_LINE=$(awk -v SEP='\t' 'BEGIN{FS=SEP}{ if($1 !~ /#/){print (NR);exit} }' < "$BENCHMARKS_FILE")
 		SENSORS_BEGIN_LINE=$(awk -v SEP='\t' 'BEGIN{FS=SEP}{ if($1 !~ /#/){print (NR);exit} }' < "$SENSORS_FILE")
 		#Only extract events if selected
@@ -185,11 +219,15 @@ do
 		BENCH_NAME_COLUMN=$(awk -v SEP='\t' -v START=$((BENCHMARKS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /Name/) { print i; exit} } } }' < "$BENCHMARKS_FILE")
 		BENCH_START_COLUMN=$(awk -v SEP='\t' -v START=$((BENCHMARKS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /Start/) { print i; exit} } } }' < "$BENCHMARKS_FILE")
 		BENCH_END_COLUMN=$(awk -v SEP='\t' -v START=$((BENCHMARKS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /End/) { print i; exit} } } }' < "$BENCHMARKS_FILE")
+<<<<<<< HEAD
 >>>>>>> 113fade9c5df9572588e61fd917c7782e7824365
+=======
+>>>>>>> 1e9d7615504fc9f2cac1629b8c53358dc8a4ec30
 		
 		#Sensors
 		case $CORETYPE in
 			big)
+<<<<<<< HEAD
 <<<<<<< HEAD
 				SENSORS_COL_START=$(awk -v SEP='\t' -v START=$(($SENSORS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /A7 Power/) { print (i+1); exit} } } }' < $SENSORS_FILE)
 				SENSORS_COL_END=$(awk -v SEP='\t' -v START=$(($SENSORS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /A15 Power/) { print i; exit} } } }' < $SENSORS_FILE)
@@ -200,6 +238,8 @@ do
 				SENSORS_COL_END=$(awk -v SEP='\t' -v START=$(($SENSORS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /A7 Power/) { print i; exit} } } }' < $SENSORS_FILE)
 				SENSORS_LABELS=$((awk -v SEP='\t' -v START=$(($SENSORS_BEGIN_LINE-1)) -v COL_START=$SENSORS_COL_START -v COL_END=$SENSORS_COL_END 'BEGIN{FS=SEP}{if(NR==START){ for(i=COL_START;i<=COL_END;i++) print $i} }' < $SENSORS_FILE) | tr "\n" "\t" | head -c -1)
 =======
+=======
+>>>>>>> 1e9d7615504fc9f2cac1629b8c53358dc8a4ec30
 				SENSORS_COL_START=$(awk -v SEP='\t' -v START=$((SENSORS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /A7 Power/) { print (i+1); exit} } } }' < "$SENSORS_FILE")
 				SENSORS_COL_END=$(awk -v SEP='\t' -v START=$((SENSORS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /A15 Power/) { print i; exit} } } }' < "$SENSORS_FILE")
 				SENSORS_LABELS=$(awk -v SEP='\t' -v START=$((SENSORS_BEGIN_LINE-1)) -v COL_START="$SENSORS_COL_START" -v COL_END="$SENSORS_COL_END" 'BEGIN{FS=SEP}{if(NR==START){ for(i=COL_START;i<=COL_END;i++) print $i} }' < "$SENSORS_FILE" | tr "\n" "\t" | head -c -1)
@@ -208,12 +248,16 @@ do
 				SENSORS_COL_START=$(awk -v SEP='\t' -v START=$((SENSORS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i !~ /Timestamp/) { print i; exit} } } }' < "$SENSORS_FILE")
 				SENSORS_COL_END=$(awk -v SEP='\t' -v START=$((SENSORS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /A7 Power/) { print i; exit} } } }' < "$SENSORS_FILE")
 				SENSORS_LABELS=$(awk -v SEP='\t' -v START=$((SENSORS_BEGIN_LINE-1)) -v COL_START="$SENSORS_COL_START" -v COL_END="$SENSORS_COL_END" 'BEGIN{FS=SEP}{if(NR==START){ for(i=COL_START;i<=COL_END;i++) print $i} }' < "$SENSORS_FILE" | tr "\n" "\t" | head -c -1)
+<<<<<<< HEAD
 >>>>>>> 113fade9c5df9572588e61fd917c7782e7824365
+=======
+>>>>>>> 1e9d7615504fc9f2cac1629b8c53358dc8a4ec30
 				;;
 		esac
 		
 		#Events
 		if [[ -n $WITH_EVENTS ]]; then
+<<<<<<< HEAD
 <<<<<<< HEAD
 			EVENTS_COL_START=$(awk -v SEP='\t' -v START=$(($EVENTS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i !~ /Timestamp/) { print i; exit} } } }' < $EVENTS_FILE)
 			EVENTS_LABELS=$((awk -v SEP='\t' -v START=$(($EVENTS_BEGIN_LINE-1)) -v COL_START=$EVENTS_COL_START 'BEGIN{FS=SEP}{if(NR==START){ for(i=COL_START;i<=NF;i++) print $i} }' < $EVENTS_FILE) | tr "\n" "\t" | head -c -1)
@@ -221,6 +265,10 @@ do
 			EVENTS_COL_START=$(awk -v SEP='\t' -v START=$((EVENTS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i !~ /Timestamp/) { print i; exit} } } }' < "$EVENTS_FILE")
 			EVENTS_LABELS=$(awk -v SEP='\t' -v START=$((EVENTS_BEGIN_LINE-1)) -v COL_START="$EVENTS_COL_START" 'BEGIN{FS=SEP}{if(NR==START){ for(i=COL_START;i<=NF;i++) print $i} }' < "$EVENTS_FILE" | tr "\n" "\t" | head -c -1)
 >>>>>>> 113fade9c5df9572588e61fd917c7782e7824365
+=======
+			EVENTS_COL_START=$(awk -v SEP='\t' -v START=$((EVENTS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i !~ /Timestamp/) { print i; exit} } } }' < "$EVENTS_FILE")
+			EVENTS_LABELS=$(awk -v SEP='\t' -v START=$((EVENTS_BEGIN_LINE-1)) -v COL_START="$EVENTS_COL_START" 'BEGIN{FS=SEP}{if(NR==START){ for(i=COL_START;i<=NF;i++) print $i} }' < "$EVENTS_FILE" | tr "\n" "\t" | head -c -1)
+>>>>>>> 1e9d7615504fc9f2cac1629b8c53358dc8a4ec30
 		fi
 		
 	   	if [[ -z $SAVE ]]; then
@@ -232,6 +280,7 @@ do
 		else
 		   	#Save results header
 			RESULTS_FILE="$RESULTS_DIR/Run_$i/$FREQ_SELECT/results.data"
+<<<<<<< HEAD
 <<<<<<< HEAD
 			[[ -n $WITH_EVENTS ]] && echo -e "#Timestamp\tBenchmark\t$SENSORS_LABELS\t$EVENTS_LABELS" > $RESULTS_FILE || echo -e "#Timestamp\tBenchmark\t$SENSORS_LABELS" > $RESULTS_FILE
 		fi		
@@ -260,6 +309,8 @@ do
 				#Print only sensors data if no events
 				[[ -z $SAVE && -z $WITH_EVENTS ]] && echo -e "$SENSORS_TIMESTAMP\t$BENCH_NAME\t$SENSORS_DATA" || echo -e "$SENSORS_TIMESTAMP\t$BENCH_NAME\t$SENSORS_DATA" >> $RESULTS_FILE
 =======
+=======
+>>>>>>> 1e9d7615504fc9f2cac1629b8c53358dc8a4ec30
 			[[ -n $WITH_EVENTS ]] && echo -e "#Timestamp\tBenchmark\t$SENSORS_LABELS\t$EVENTS_LABELS" > "$RESULTS_FILE" || echo -e "#Timestamp\tBenchmark\t$SENSORS_LABELS" > "$RESULTS_FILE"
 		fi		
 		
@@ -287,7 +338,10 @@ do
 					#Print only sensors data if no events
 					[[ -z $SAVE ]] && echo -e "$SENSORS_TIMESTAMP\t$BENCH_NAME\t$SENSORS_DATA" || echo -e "$SENSORS_TIMESTAMP\t$BENCH_NAME\t$SENSORS_DATA" >> "$RESULTS_FILE"
 				fi
+<<<<<<< HEAD
 >>>>>>> 113fade9c5df9572588e61fd917c7782e7824365
+=======
+>>>>>>> 1e9d7615504fc9f2cac1629b8c53358dc8a4ec30
 				SENSORS_DATA=""
 			done   
 		done

@@ -8,9 +8,12 @@ fi
 
 #Programmable head line and column separator. By default I assume data start at line 1 (first line is description, second is column heads and third is actual data). Columns separated by tab(s).
 <<<<<<< HEAD
+<<<<<<< HEAD
 head_line=1
 =======
 >>>>>>> 113fade9c5df9572588e61fd917c7782e7824365
+=======
+>>>>>>> 1e9d7615504fc9f2cac1629b8c53358dc8a4ec30
 col_sep="\t"
 time_convert=1000000000
 
@@ -40,6 +43,7 @@ do
 			#directory does exists and we can analyse results
 			RESULTS_DIR=$OPTARG
 <<<<<<< HEAD
+<<<<<<< HEAD
 			NUM_RUNS=$(ls $RESULTS_DIR | grep 'Run' | wc -w)
 			if [[ $NUM_RUNS -eq 0 ]]; then
 				echo "Directory specified with -r flag does not contain any results." >&2
@@ -54,11 +58,16 @@ do
 			    		exit 1                        				
 				fi
 =======
+=======
+>>>>>>> 1e9d7615504fc9f2cac1629b8c53358dc8a4ec30
 			NUM_RUNS=$(ls "$RESULTS_DIR" | grep -c 'Run')
 			if [[ $NUM_RUNS -eq 0 ]]; then
 				echo "Directory specified with -r flag does not contain any results." >&2
 				exit 1
+<<<<<<< HEAD
 >>>>>>> 113fade9c5df9572588e61fd917c7782e7824365
+=======
+>>>>>>> 1e9d7615504fc9f2cac1629b8c53358dc8a4ec30
 			fi				    	
 		fi
 		;;
@@ -119,10 +128,14 @@ if [[ -z $RUNS ]]; then
 fi
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 FREQ_LIST=$(ls $RESULTS_DIR/Run_${RUNS%% *} | tr " " "\n" | sort -gr | tr "\n" " ")
 =======
 FREQ_LIST=$(ls "$RESULTS_DIR/Run_${RUNS%% *}" | tr " " "\n" | sort -gr | tr "\n" " ")
 >>>>>>> 113fade9c5df9572588e61fd917c7782e7824365
+=======
+FREQ_LIST=$(ls "$RESULTS_DIR/Run_${RUNS%% *}" | tr " " "\n" | sort -gr | tr "\n" " ")
+>>>>>>> 1e9d7615504fc9f2cac1629b8c53358dc8a4ec30
 	
 for i in $RUNS
 do
@@ -131,6 +144,7 @@ do
 		EVENTS_RAW_FILE="$RESULTS_DIR/Run_$i/$FREQ_SELECT/events_raw.data"	        
 	   
 		#Get event start and FINISH lines for labels header
+<<<<<<< HEAD
 <<<<<<< HEAD
 		TIME_START=$(awk -v SEP='\t' 'BEGIN{FS=SEP}{if($1 ~ /Start/) {print NR;exit}}' < $EVENTS_RAW_FILE)
 		LABEL_START=$(awk -v SEP='\t' 'BEGIN{FS=SEP}{if($1 ~ /Label/) {print NR;exit}}' < $EVENTS_RAW_FILE)
@@ -146,6 +160,8 @@ do
 		#for some obscure reason it cannot convert strings with \n to arrays so I need to extract identfiers then convers \n to commas using tr, then remove trailing last comma (which used to be a \n) and then convert properly
 		IFS="," read -a EVENTS_RAW <<< "$((awk -v START=$LABEL_START -v FINISH=$LABEL_FINISH -v COL=$RAW_COLUMN -v SEP='\t' 'BEGIN{FS=SEP}{if (NR >= START && NR < FINISH) {print $COL}}' < $EVENTS_RAW_FILE) | tr "\n" "," | head -c -1)" 
 =======
+=======
+>>>>>>> 1e9d7615504fc9f2cac1629b8c53358dc8a4ec30
 		TIME_START=$(awk -v SEP='\t' 'BEGIN{FS=SEP}{if($1 ~ /Start/) {print NR;exit}}' < "$EVENTS_RAW_FILE")
 		LABEL_START=$(awk -v SEP='\t' 'BEGIN{FS=SEP}{if($1 ~ /Label/) {print NR;exit}}' < "$EVENTS_RAW_FILE")
 		LABEL_FINISH=$(awk -v START="$LABEL_START" -v SEP='\t' 'BEGIN{FS=SEP}{if($1 !~ /Label/ && NR > START) {print NR;exit}}' < "$EVENTS_RAW_FILE")
@@ -159,7 +175,10 @@ do
 		EVENTS_LABELS=$(awk -v START="$LABEL_START" -v FINISH="$LABEL_FINISH" -v COL="$LABEL_COLUMN" -v SEP='\t' 'BEGIN{FS=SEP}{if (NR >= START && NR < FINISH) {print $COL}}' < "$EVENTS_RAW_FILE" | tr "\n" "\t" | head -c -1)
 		#for some obscure reason it cannot convert strings with \n to arrays so I need to extract identfiers then convers \n to commas using tr, then remove trailing last comma (which used to be a \n) and then convert properly
 		IFS="," read -a EVENTS_RAW <<< $(awk -v START="$LABEL_START" -v FINISH="$LABEL_FINISH" -v COL="$RAW_COLUMN" -v SEP='\t' 'BEGIN{FS=SEP}{if (NR >= START && NR < FINISH) {print $COL}}' < "$EVENTS_RAW_FILE" | tr "\n" "," | head -c -1) 
+<<<<<<< HEAD
 >>>>>>> 113fade9c5df9572588e61fd917c7782e7824365
+=======
+>>>>>>> 1e9d7615504fc9f2cac1629b8c53358dc8a4ec30
 
 		if [[ -z $SAVE ]]; then
 	   		#Display results header
@@ -167,6 +186,7 @@ do
 		else
 		   	#Save results header
 			EVENTS_FILE="$RESULTS_DIR/Run_$i/$FREQ_SELECT/events.data"
+<<<<<<< HEAD
 <<<<<<< HEAD
 			echo -e "#Timestamp\t$EVENTS_LABELS" > $EVENTS_FILE
 		fi
@@ -190,6 +210,8 @@ do
 			nanotime=$(echo "scale = 0; ($starttime+($time*$time_convert))/1;" | bc )
 			[[ -z $SAVE ]] && echo -e "$nanotime\t$FREQ_SELECT\t$EVENTS_DATA" || echo -e "$nanotime\t$EVENTS_DATA" >> $EVENTS_FILE
 =======
+=======
+>>>>>>> 1e9d7615504fc9f2cac1629b8c53358dc8a4ec30
 			echo -e "#Timestamp\t$EVENTS_LABELS" > "$EVENTS_FILE"
 		fi
 		#read lines for event timing skipping event_number lines since perf puts events even during the same timestamp on new lines. this essentially distinguishes the different timestamps
@@ -211,7 +233,10 @@ do
 			
 			nanotime=$(echo "scale = 0; ($starttime+($time*$time_convert))/1;" | bc )
 			[[ -z $SAVE ]] && echo -e "$nanotime\t$FREQ_SELECT\t$EVENTS_DATA" || echo -e "$nanotime\t$EVENTS_DATA" >> "$EVENTS_FILE"
+<<<<<<< HEAD
 >>>>>>> 113fade9c5df9572588e61fd917c7782e7824365
+=======
+>>>>>>> 1e9d7615504fc9f2cac1629b8c53358dc8a4ec30
 			
 			EVENTS_DATA_STORE=""
 			EVENTS_DATA=""
