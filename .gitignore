@@ -38,8 +38,6 @@ Thumbs.db
 
 # Project-specific files and folders #
 ######################################
-#ARMPM_datacollect/Workloads/*
 ARMPM_buildmodel/Concatenated_Results/*
-#Results/*
 ARMPM_buildmodel/octave-workspace
 ARMPM_buildmodel/Analysed_Results/*
