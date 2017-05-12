@@ -1508,7 +1508,7 @@ do
 				octave_output=$(octave --silent --eval "load_build_model(3,'train_set_1.data','test_set_1.data',0,$((RESULT_EVENTS_COL_START-1)),'train_set_2.data','test_set_2.data',0,$((TEST_EVENTS_COL_START-1)),$POWER_COL,'$EVENTS_LIST_TEMP')" 2> /dev/null)
 				#There is no standart deviation since the error is only 1 number so just add N/A
 				octave_output+="\nRelative Error Standart Deviation [%]: null\n"
-				octave_output+="###########################################################\n" )
+				octave_output+="###########################################################\n"
 				#Cleanup
 				rm "train_set_1.data" "test_set_1.data" "train_set_2.data" "test_set_2.data"
 			else
@@ -1522,7 +1522,7 @@ do
 				octave_output=$(octave --silent --eval "load_build_model(2,'train_set.data','test_set.data',0,$((RESULT_EVENTS_COL_START-1)),$POWER_COL,'$EVENTS_LIST_TEMP')" 2> /dev/null)
 				rm "train_set.data" "test_set.data"
 			fi
-			data_count=$(echo -e "$octave_output" | awk -v SEP=' ' 'BEGIN{FS=SEP;count=0}{if ($1=="Average" && $2=="Predicted" && $3=="Power"){ count++ }}END{print count}'
+			data_count=$(echo -e "$octave_output" | awk -v SEP=' ' 'BEGIN{FS=SEP;count=0}{if ($1=="Average" && $2=="Predicted" && $3=="Power"){ count++ }}END{print count}')
 		done
 	else	
 		while [[ $data_count -ne ${#FREQ_LIST[@]} ]]
@@ -1670,7 +1670,7 @@ do
 					octave_output=$(octave --silent --eval "load_build_model(3,'train_set_1.data','test_set_1.data',0,$((RESULT_EVENTS_COL_START-1)),'train_set_2.data','test_set_2.data',0,$((TEST_EVENTS_COL_START-1)),$POWER_COL,'$EVENTS_LIST_TEMP')" 2> /dev/null)
 					#There is no standart deviation since the error is only 1 number so just add N/A
 					octave_output+="\nRelative Error Standart Deviation [%]: null\n"
-					octave_output+="###########################################################\n" )
+					octave_output+="###########################################################\n"
 					#Cleanup
 					rm "train_set_1.data" "test_set_1.data" "train_set_2.data" "test_set_2.data"
 				else
@@ -1900,7 +1900,7 @@ if [[ $AUTO_SEARCH == 3 ]]; then
 					octave_output=$(octave --silent --eval "load_build_model(3,'train_set_1.data','test_set_1.data',0,$((RESULT_EVENTS_COL_START-1)),'train_set_2.data','test_set_2.data',0,$((TEST_EVENTS_COL_START-1)),$POWER_COL,'$EVENTS_LIST_TEMP')" 2> /dev/null)
 					#There is no standart deviation since the error is only 1 number so just add N/A
 					octave_output+="\nRelative Error Standart Deviation [%]: null\n"
-					octave_output+="###########################################################\n" )
+					octave_output+="###########################################################\n"
 					#Cleanup
 					rm "train_set_1.data" "test_set_1.data" "train_set_2.data" "test_set_2.data"
 				else
@@ -2169,7 +2169,7 @@ if [[ -n $ALL_FREQUENCY ]]; then
 				octave_output=$(octave --silent --eval "load_build_model(3,'train_set_1.data','test_set_1.data',0,$((RESULT_EVENTS_COL_START-1)),'train_set_2.data','test_set_2.data',0,$((TEST_EVENTS_COL_START-1)),$POWER_COL,'$EVENTS_LIST')" 2> /dev/null)
 				#There is no standart deviation since the error is only 1 number so just add N/A
 				octave_output+="\nRelative Error Standart Deviation [%]: null\n"
-				octave_output+="###########################################################\n" )
+				octave_output+="###########################################################\n"
 				#Cleanup
 				rm "train_set_1.data" "test_set_1.data" "train_set_2.data" "test_set_2.data"
 			else
@@ -2188,7 +2188,7 @@ if [[ -n $ALL_FREQUENCY ]]; then
 				#Cleanup
 				rm "train_set.data" "test_set.data"
 			fi
-			data_count=$(echo -e "$octave_output" | awk -v SEP=' ' 'BEGIN{FS=SEP;count=0}{if ($1=="Average" && $2=="Predicted" && $3=="Power"){ count++ }}END{print count}'
+			data_count=$(echo -e "$octave_output" | awk -v SEP=' ' 'BEGIN{FS=SEP;count=0}{if ($1=="Average" && $2=="Predicted" && $3=="Power"){ count++ }}END{print count}')
 		fi	
 	done
 else
@@ -2197,9 +2197,11 @@ else
 	unset -v data_count	
 	while [[ $data_count -ne ${#FREQ_LIST[@]} ]]
 	do
+		#echo "data_count="$data_count"/${#FREQ_LIST[@]}"
 		unset -v octave_output				
 		for count in $(seq 0 $((${#FREQ_LIST[@]}-1)))
 		do
+			#echo "count="$count"/$((${#FREQ_LIST[@]}-1))"
 			#Collect runtime information depending on the mode
 			if [[ $OUTPUT_MODE == 1 || $OUTPUT_MODE == 4 || $OUTPUT_MODE == 5 ]]; then
 				#If we are collecting platform physical characteristics
@@ -2227,8 +2229,10 @@ else
 				else
 					for runnum in $(seq "$RESULT_RUN_START" 1 "$RESULT_RUN_END")
 					do
+						#echo "runnum="$runnum"/$RESULT_RUN_END"
 						for benchcount in $(seq 0 $((${#TEST_SET[@]}-1)))
 						do
+							#echo "benchcount="$benchcount"/$((${#TEST_SET[@]}-1))"
 							runtime_st=$(awk -v START="$RESULT_START_LINE" -v SEP='\t' -v RUNCOL="$RESULT_RUN_COL" -v RUN="$runnum" -v BENCHCOL="$RESULT_BENCH_COL" -v BENCH="${TEST_SET[$benchcount]}" -v FREQCOL="$RESULT_FREQ_COL" -v FREQ="${FREQ_LIST[$count]}" 'BEGIN{FS = SEP}{if (NR >= START && $RUNCOL == RUN && $BENCHCOL == BENCH && $FREQCOL == FREQ){print $1;exit}}' < "$RESULT_FILE")
 							#Use previous line timestamp (so this is reverse which means the next sensor reading) as final timestamp
 							runtime_nd_nr=$(tac "$RESULT_FILE" | awk -v START=1 -v SEP='\t' -v RUNCOL="$RESULT_RUN_COL" -v RUN="$runnum" -v BENCHCOL="$RESULT_BENCH_COL" -v BENCH="${TEST_SET[$benchcount]}" -v FREQCOL="$RESULT_FREQ_COL" -v FREQ="${FREQ_LIST[$count]}" 'BEGIN{FS = SEP}{if (NR >= START && $RUNCOL == RUN && $BENCHCOL == BENCH && $FREQCOL == FREQ){print NR;exit}}')
@@ -2244,7 +2248,7 @@ else
 					avg_total_runtime[$count]=$(echo "scale=0;$total_runtime/(($RESULT_RUN_END-$RESULT_RUN_START+1)*$TIME_CONVERT);" | bc )
 				fi
 				
-#Collect output for the frequency. Extract freqeuncy level from full set and pass it into octave
+				#Collect output for the frequency. Extract freqeuncy level from full set and pass it into octave
 				touch "test_set.data"
 				if [[ -n $TEST_FILE ]]; then
 					awk -v START="$TEST_START_LINE" -v SEP='\t' -v FREQ="${FREQ_LIST[$count]}" -v BENCH_SET="${TEST_SET[*]}" 'BEGIN{FS = SEP;len=split(BENCH_SET,ARRAY," ")}{if (NR >= START && $4 == FREQ){for (i = 1; i <= len; i++){if ($2 == ARRAY[i]){print $0;next}}}}' < "$TEST_FILE" > "test_set.data"
