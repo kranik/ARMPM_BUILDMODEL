@@ -149,7 +149,7 @@ if (mode == 2)
   disp("Model validation against test set");
   disp("###########################################################"); 
   disp(["Average Predicted Power [W]: " num2str(mean(pred_power),"%.3f")]);  
-  disp(["Predicted Power Range [%]: " num2str((range(pred_power)./min(pred_power))*100,"%d")]);
+  disp(["Predicted Power Range [%]: " num2str(abs((range(pred_power)./min(pred_power))*100),"%d")]);
   disp("###########################################################"); 
   disp(["Average Absolute Error [W]: " num2str(avg_abs_err,"%.5f")]);
   disp(["Absolute Error Standart Deviation [W]: " num2str(std_dev_err,"%.5f")]);

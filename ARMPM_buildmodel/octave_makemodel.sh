@@ -684,6 +684,13 @@ if [[ -n $MODEL_TYPE ]]; then
 		echo "Use -h flag for more information on the available model types." >&2
 	    	echo -e "===================="
 	    	exit 1
+	fi
+	#Check if valid input
+	if [[ "$MODEL_TYPE" == "3" && -z $EVENTS_LIST ]]; then 
+		echo "Invalid operation: -c $MODEL_TYPE! Cannot use event cross correlation as model minimisation criteria when just using events pool. Use a starting list [-e NUMBER LIST] to ensure a starting optimisation point." >&2
+		echo "Use -h flag for more information on the available model types." >&2
+	    	echo -e "===================="
+	    	exit 1
 	fi	
 fi
 
@@ -1101,7 +1108,6 @@ if [[ -n $AUTO_SEARCH ]]; then
 					#Split data and collect output, then cleanup
 					touch "train_set.data" "test_set.data"
 					awk -v START="$RESULT_START_LINE" -v SEP='\t' -v BENCH_COL="$RESULT_BENCH_COL" -v BENCH_SET="${TRAIN_SET[*]}" 'BEGIN{FS = SEP;len=split(BENCH_SET,ARRAY," ")}{if (NR >= START){for (i = 1; i <= len; i++){if ($BENCH_COL == ARRAY[i]){print $0;next}}}}' < "$RESULT_FILE" > "train_set.data"
-					echo "here1"
 					if [[ -n $TEST_FILE ]]; then
 						awk -v START="$TEST_START_LINE" -v SEP='\t' -v BENCH_COL="$TEST_BENCH_COL" -v BENCH_SET="${TEST_SET[*]}" 'BEGIN{FS = SEP;len=split(BENCH_SET,ARRAY," ")}{if (NR >= START){for (i = 1; i <= len; i++){if ($BENCH_COL == ARRAY[i]){print $0;next}}}}' < "$TEST_FILE" > "test_set.data"
 					else
