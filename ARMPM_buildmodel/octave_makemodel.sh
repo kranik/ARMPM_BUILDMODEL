@@ -1495,6 +1495,9 @@ do
 	#Compute events list error and store as new max
 	#Initiate events list start depending on input mode
 	[[ -n $EVENTS_LIST ]] && EVENTS_LIST_TEMP="$EVENTS_LIST,$EVENTS_POOL" || EVENTS_LIST_TEMP="$EVENTS_POOL"
+	EVENTS_LIST_TEMP_LABELS=$(awk -v SEP='\t' -v START=$((RESULT_START_LINE-1)) -v COLUMNS="$EVENTS_LIST_TEMP" 'BEGIN{FS = SEP;len=split(COLUMNS,ARRAY,",")}{if (NR == START){for (i = 1; i <= len; i++){print $ARRAY[i]}}}' < "$RESULT_FILE" | tr "\n" "," | head -c -1)
+	echo -e "Temp events list:" >&1
+	echo "$EVENTS_LIST_TEMP -> $EVENTS_LIST_TEMP_LABELS" >&1
 	echo -e "--------------------" >&1
 	unset -v data_count				
 	if [[ -n $ALL_FREQUENCY ]]; then
@@ -1634,13 +1637,13 @@ do
 	[[ $(echo "$EVENTS_LIST_TEMP" | tr "," "\n" | wc -l) -ge 2 ]] && echo "Model max event cross-correlation $EVENTS_POOL_MAX_EV_CROSS_CORR is at ${FREQ_LIST[$EVENTS_POOL_MAX_EV_CROSS_CORR_IND]} MHz between $EVENTS_POOL_MAX_EV_CROSS_CORR_EV_LABELS" >&1
 	case $MODEL_TYPE in
 	1)
-		EVENTS_LIST_MIN=$EVENTS_POOL_MEAN_REL_AVG_ABS_ERR
+		EVENTS_POOL_MIN=$EVENTS_POOL_MEAN_REL_AVG_ABS_ERR
 		;;
 	2)
-		EVENTS_LIST_MIN=$EVENTS_POOL_MEAN_REL_AVG_ABS_ERR_STD_DEV
+		EVENTS_POOL_MIN=$EVENTS_POOL_MEAN_REL_AVG_ABS_ERR_STD_DEV
 		;;
 	3)
-		EVENTS_LIST_MIN=$EVENTS_POOL_MAX_EV_CROSS_CORR
+		EVENTS_POOL_MIN=$EVENTS_POOL_MAX_EV_CROSS_CORR
 		;;
 	esac
 	#Start top-down by spacing the pool and iterating the events
@@ -1790,7 +1793,7 @@ do
 		[[ $(echo "$EVENTS_LIST_TEMP" | tr "," "\n" | wc -l) -ge 2 ]] && MAX_EV_CROSS_CORR=${max_ev_cross_corr[$MAX_EV_CROSS_CORR_IND]}
 		[[ $(echo "$EVENTS_LIST_TEMP" | tr "," "\n" | wc -l) -ge 2 ]] && MAX_EV_CROSS_CORR_EV_LABELS=$(awk -v SEP='\t' -v START=$((RESULT_START_LINE-1)) -v COLUMNS="${max_ev_cross_corr_ev1[$MAX_EV_CROSS_CORR_IND]},${max_ev_cross_corr_ev2[$MAX_EV_CROSS_CORR_IND]}" 'BEGIN{FS = SEP;len=split(COLUMNS,ARRAY,",")}{if (NR == START){for (i = 1; i <= len; i++){print $ARRAY[i]}}}' < "$RESULT_FILE" | tr "\n" "," | head -c -1)
 		echo "Mean model relative error -> $MEAN_REL_AVG_ABS_ERR" >&1
-		echo "Mean model relative error stdandart deviation -> $MEAN_REL_AVG_ABS_ERR_STD_DEV" >&1
+		[[ -z $CM_MODE || -z $ALL_FREQUENCY ]] && echo "Mean model relative error stdandart deviation -> $MEAN_REL_AVG_ABS_ERR_STD_DEV" >&1
 		[[ $(echo "$EVENTS_LIST_TEMP" | tr "," "\n" | wc -l) -ge 2 ]] && echo "Mean model average event cross-correlation -> $MEAN_AVG_EV_CROSS_CORR" >&1
 		[[ $(echo "$EVENTS_LIST_TEMP" | tr "," "\n" | wc -l) -ge 2 ]] && echo "Mean model max event cross-correlation -> $MEAN_MAX_EV_CROSS_CORR" >&1
 		[[ $(echo "$EVENTS_LIST_TEMP" | tr "," "\n" | wc -l) -ge 2 ]] && echo "Model max event cross-correlation $MAX_EV_CROSS_CORR is at ${FREQ_LIST[$MAX_EV_CROSS_CORR_IND]} MHz between $MAX_EV_CROSS_CORR_EV_LABELS" >&1
@@ -1839,6 +1842,15 @@ do
 		echo -e "********************" >&1
 		#reset EV_REMOVE too see if we can find another one and decrement counter
 		unset -v EV_REMOVE
+		EVENTS_POOL_SIZE=$(echo "$EVENTS_POOL" | tr "," "\n" | wc -l) 
+		if [[ $EVENTS_POOL_SIZE == $NUM_MODEL_EVENTS ]]; then
+			echo -e "--------------------" >&1
+			echo "Events list reached $EVENTS_POOL_SIZE events." >&1
+			EVENTS_LIST=$EVENTS_POOL
+			echo -e "--------------------" >&1
+			echo -e "====================" >&1
+			break
+		fi
 	else
 		EVENTS_POOL_SIZE=$(echo "$EVENTS_POOL" | tr "," "\n" | wc -l)
 		#We did not find a new event to remove from list. Just output and break loop (list saturated)		
