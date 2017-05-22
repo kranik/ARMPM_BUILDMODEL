@@ -1845,21 +1845,22 @@ do
 		EVENTS_POOL_SIZE=$(echo "$EVENTS_POOL" | tr "," "\n" | wc -l) 
 		if [[ $EVENTS_POOL_SIZE == $NUM_MODEL_EVENTS ]]; then
 			echo -e "--------------------" >&1
-			echo "Events list reached $EVENTS_POOL_SIZE events." >&1
-			EVENTS_LIST=$EVENTS_POOL
+			[[ -n $EVENTS_LIST ]] && EVENTS_LIST="$EVENTS_LIST,$EVENTS_POOL" || EVENTS_LIST="$EVENTS_POOL"
+			EVENTS_LIST_SIZE=$(echo "$EVENTS_LIST" | tr "," "\n" | wc -l) 				
+			echo "Events list reached $EVENTS_LIST_SIZE events." >&1
 			echo -e "--------------------" >&1
 			echo -e "====================" >&1
 			break
 		fi
 	else
-		EVENTS_POOL_SIZE=$(echo "$EVENTS_POOL" | tr "," "\n" | wc -l)
+		[[ -n $EVENTS_LIST ]] && EVENTS_LIST="$EVENTS_LIST,$EVENTS_POOL" || EVENTS_LIST="$EVENTS_POOL"
+		EVENTS_LIST_SIZE=$(echo "$EVENTS_LIST" | tr "," "\n" | wc -l) 				
 		#We did not find a new event to remove from list. Just output and break loop (list saturated)		
 		echo -e "--------------------" >&1
-		echo "No new improving event found. Events list minimised at $EVENTS_POOL_SIZE events." >&1
+		echo "No new improving event found. Events list minimised at $EVENTS_LIST_SIZE events." >&1
 		echo -e "--------------------" >&1
 		echo -e "====================" >&1
 		echo -e "Optimal events list found:" >&1
-		[[ -n $EVENTS_LIST ]] && EVENTS_LIST="$EVENTS_LIST,$EVENTS_POOL" || EVENTS_LIST="$EVENTS_POOL"
 		EVENTS_LIST_LABELS=$(awk -v SEP='\t' -v START=$((RESULT_START_LINE-1)) -v COLUMNS="$EVENTS_LIST" 'BEGIN{FS = SEP;len=split(COLUMNS,ARRAY,",")}{if (NR == START){for (i = 1; i <= len; i++){print $ARRAY[i]}}}' < "$RESULT_FILE" | tr "\n" "," | head -c -1)
 		echo "$EVENTS_LIST -> $EVENTS_LIST_LABELS" >&1
 		echo -e "Mean model relative error -> $EVENTS_POOL_MEAN_REL_AVG_ABS_ERR" >&1
