@@ -1066,6 +1066,7 @@ else
 fi
 echo -e "--------------------" >&1
 
+:<<'skip'
 #Trim constant events from events pool
 if [[ -n $AUTO_SEARCH ]]; then
 	echo -e "====================" >&1
@@ -1206,7 +1207,7 @@ if [[ -n $AUTO_SEARCH ]]; then
 	echo -e "--------------------" >&1
 	echo -e "====================" >&1
 fi
-
+skip
 
 #Automatic model generation.
 #It will keep going as long as we have not saturated the model (no further events contribute) or we reach max number of model events as specified by user
@@ -1884,7 +1885,7 @@ if [[ $AUTO_SEARCH == 3 ]]; then
 	while [[ -z $octave_output ]]
 	do				
 		octave_output=$(octave --silent --eval "COMBINATIONS=nchoosek(str2num('$EVENTS_POOL'),$NUM_MODEL_EVENTS);disp(COMBINATIONS);" 2> /dev/null)
-		IFS=";" read -a EVENTS_LIST_COMBINATIONS <<< $(echo -e "$octave_output" | awk -v SEP=' ' 'BEGIN{FS=SEP}{ print $0 }' | tr "\n" ";" | head -c -1)
+		IFS=";" read -a EVENTS_LIST_COMBINATIONS <<< $(echo -e "$octave_output" | awk -v SEP=' ' 'BEGIN{FS=SEP}{ print $0 }' | sed 's/^[ \t]*//;s/[ \t]*$//' | tr "\n" ";" | head -c -1)
 	done
 	echo "Total number of combinations -> ${#EVENTS_LIST_COMBINATIONS[@]}" >&1
 	echo -e "--------------------" >&1
