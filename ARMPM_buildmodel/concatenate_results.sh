@@ -25,7 +25,7 @@ do
 	        ;;
         #Specify the save directory, if no save directory is chosen the results are saved in the $PWD
         r)
-		if [[ -n  "$RESULTS_DIR" ]]; then
+		if [[ -n "$RESULTS_DIR" ]]; then
 			echo "Invalid input: option -r has already been used!" >&2
 			exit 1                
 		fi
@@ -40,15 +40,6 @@ do
 			if [[ $NUM_RUNS -eq 0 ]]; then
 				echo "Directory specified with -r flag does not contain any results." >&2
 				exit 1                
-			else
-				if [[ $(echo "$RESULTS_DIR" | grep -c 'LITTLE') -gt 0 ]]; then
-					CORETYPE="LITTLE"	
-				elif [[ $(echo "$RESULTS_DIR" | grep -c 'big') -gt 0 ]]; then
-					CORETYPE="big"
-				else	
-					echo "Directory specified with -r flag does not specify core type." >&2
-			    		exit 1                        				
-				fi
 			fi
 		fi
 		;;
@@ -143,18 +134,9 @@ do
 		BENCH_END_COLUMN=$(awk -v SEP='\t' -v START=$((BENCHMARKS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /End/) { print i; exit} } } }' < "$BENCHMARKS_FILE")
 		
 		#Sensors
-		case $CORETYPE in
-			big)
-				SENSORS_COL_START=$(awk -v SEP='\t' -v START=$((SENSORS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /A7 Power/) { print (i+1); exit} } } }' < "$SENSORS_FILE")
-				SENSORS_COL_END=$(awk -v SEP='\t' -v START=$((SENSORS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /A15 Power/) { print i; exit} } } }' < "$SENSORS_FILE")
-				SENSORS_LABELS=$(awk -v SEP='\t' -v START=$((SENSORS_BEGIN_LINE-1)) -v COL_START="$SENSORS_COL_START" -v COL_END="$SENSORS_COL_END" 'BEGIN{FS=SEP}{if(NR==START){ for(i=COL_START;i<=COL_END;i++) print $i} }' < "$SENSORS_FILE" | tr "\n" "\t" | head -c -1)
-				;;
-			LITTLE)
-				SENSORS_COL_START=$(awk -v SEP='\t' -v START=$((SENSORS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i !~ /Timestamp/) { print i; exit} } } }' < "$SENSORS_FILE")
-				SENSORS_COL_END=$(awk -v SEP='\t' -v START=$((SENSORS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /A7 Power/) { print i; exit} } } }' < "$SENSORS_FILE")
-				SENSORS_LABELS=$(awk -v SEP='\t' -v START=$((SENSORS_BEGIN_LINE-1)) -v COL_START="$SENSORS_COL_START" -v COL_END="$SENSORS_COL_END" 'BEGIN{FS=SEP}{if(NR==START){ for(i=COL_START;i<=COL_END;i++) print $i} }' < "$SENSORS_FILE" | tr "\n" "\t" | head -c -1)
-				;;
-		esac
+		SENSORS_COL_START=$(awk -v SEP='\t' -v START=$((SENSORS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i !~ /Timestamp/) { print i; exit} } } }' < "$SENSORS_FILE")
+		SENSORS_COL_END=$(awk -v SEP='\t' -v START=$((SENSORS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /A15 Power/) { print i; exit} } } }' < "$SENSORS_FILE")
+		SENSORS_LABELS=$(awk -v SEP='\t' -v START=$((SENSORS_BEGIN_LINE-1)) -v COL_START="$SENSORS_COL_START" -v COL_END="$SENSORS_COL_END" 'BEGIN{FS=SEP}{if(NR==START){ for(i=COL_START;i<=COL_END;i++) print $i} }' < "$SENSORS_FILE" | tr "\n" "\t" | head -c -1)
 		
 		#Events
 		if [[ -n $WITH_EVENTS ]]; then

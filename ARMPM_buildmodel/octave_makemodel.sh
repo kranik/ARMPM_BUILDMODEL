@@ -1066,7 +1066,6 @@ else
 fi
 echo -e "--------------------" >&1
 
-:<<'skip'
 #Trim constant events from events pool
 if [[ -n $AUTO_SEARCH ]]; then
 	echo -e "====================" >&1
@@ -1207,7 +1206,6 @@ if [[ -n $AUTO_SEARCH ]]; then
 	echo -e "--------------------" >&1
 	echo -e "====================" >&1
 fi
-skip
 
 #Automatic model generation.
 #It will keep going as long as we have not saturated the model (no further events contribute) or we reach max number of model events as specified by user
@@ -2265,7 +2263,7 @@ else
 						done
 					done
 					#Compute average per-freq runtime
-					avg_total_runtime[$count]=$(echo "scale=0;$total_runtime/(($RESULT_RUN_END-$RESULT_RUN_START+1)*$TIME_CONVERT);" | bc )
+					avg_total_runtime[$count]=$(echo "scale=9;$total_runtime/(($RESULT_RUN_END-$RESULT_RUN_START+1)*$TIME_CONVERT);" | bc )
 				fi
 				
 				#Collect output for the frequency. Extract freqeuncy level from full set and pass it into octave
