@@ -11,7 +11,7 @@ COL_SEP="\t"
 #time_convert=1000000000
 
 #requires getops, but this should not be an issue since ints built in bash
-while getopts ":r:n:esh" opt;
+while getopts ":r:n:mesh" opt;
 do
     case $opt in
         h)
@@ -20,12 +20,13 @@ do
         	echo "-n [RUNS] -> specify list of runs to be concatenated. -n 3 for run Number 3. -n 1,3 for runs 1 and 3."
         	echo "-s -> Enable saving of events in results directory."
 		echo "-e -> Specify the inclusion of events or not (for cases where we do not hve PMU events i.e. overhead analysis)."
+		echo "-m -> Specify the multicluster option which includes all information.."
         	cho "Mandatory options are: -r [DIR] -n [NUM]"
         	exit 0 
 	        ;;
         #Specify the save directory, if no save directory is chosen the results are saved in the $PWD
         r)
-		if [[ -n "$RESULTS_DIR" ]]; then
+		if [[ -n  "$RESULTS_DIR" ]]; then
 			echo "Invalid input: option -r has already been used!" >&2
 			exit 1                
 		fi
@@ -36,11 +37,6 @@ do
 		else
 			#directory does exists and we can analyse results
 			RESULTS_DIR=$OPTARG
-			NUM_RUNS=$(ls "$RESULTS_DIR" | grep -c 'Run')
-			if [[ $NUM_RUNS -eq 0 ]]; then
-				echo "Directory specified with -r flag does not contain any results." >&2
-				exit 1                
-			fi
 		fi
 		;;
         #Specify if yo uwant to save resutls file where events_raw file was (easier scripts) if not print on stdout
@@ -64,20 +60,8 @@ do
 			exit 1
 		fi
 
-		spaced_OPTARG="${OPTARG//,/ }"
+		RUNS="${OPTARG//,/ }"
 
-		#Go throught the selected frequecnies and make sure they are not out of bounds
-		#Also make sure they are present in the frequency table located at /sys/devices/system/cpu/cpufreq/iks-cpufreq/freq_table because the kernel rounds up
-		#Specifying a higher/lower frequency or an odd frequency is now wrong, jsut the kernel handles it in the background and might lead to collection of unwanted resutls
-		for RUN_SELECT in $spaced_OPTARG
-		do
-			if [[ $RUN_SELECT -gt $NUM_RUNS || $RUN_SELECT -lt 1 ]]; then 
-				echo "selected run $RUN_SELECT for -$opt is out of bounds. Runs are [1:$NUM_RUNS]"
-				exit 1
-			else
-				[[ -z "$RUNS" ]] && RUNS="$RUN_SELECT" || RUNS+=" $RUN_SELECT"
-			fi
-		done
 		;;  
 	e)
 		if [[ -n $WITH_EVENTS ]]; then
@@ -85,6 +69,13 @@ do
 	    		exit 1                
 		fi
 	    	WITH_EVENTS=1
+	    	;;
+	m)
+		if [[ -n $MULTICLUSTER ]]; then
+	    		echo "Invalid input: option -m has already been used!" >&2
+	    		exit 1                
+		fi
+	    	MULTICLUSTER=1
 	    	;;  
         :)
 		echo "Option: -$OPTARG requires an argument" >&2
@@ -100,10 +91,43 @@ done
 if [[ -z "$RESULTS_DIR" ]]; then
     	echo "Nothing to run. Expected -r flag!" >&2
     	exit 1
+else
+	NUM_RUNS=$(ls "$RESULTS_DIR" | grep -c 'Run')
+	if [[ $NUM_RUNS -eq 0 ]]; then
+		echo "Directory specified with -r flag does not contain any results." >&2
+		exit 1                
+	else
+		if [[ -z $MULTICLUSTER ]]; then
+			if [[ $(echo "$RESULTS_DIR" | grep -c 'LITTLE') -gt 0 ]]; then
+				CORETYPE="LITTLE"	
+			elif [[ $(echo "$RESULTS_DIR" | grep -c 'big') -gt 0 ]]; then
+				CORETYPE="big"
+			else	
+				echo "Directory specified with -r flag does not specify core type." >&2
+		    		exit 1                        				
+			fi
+		fi
+	fi
 fi
 
 if [[ -z $RUNS ]]; then
     	echo "Nothing to run. Expected -n flag!" >&2
+    	exit 1
+else
+	#Go throught the selected frequecnies and make sure they are not out of bounds
+	#Also make sure they are present in the frequency table located at /sys/devices/system/cpu/cpufreq/iks-cpufreq/freq_table because the kernel rounds up
+	#Specifying a higher/lower frequency or an odd frequency is now wrong, jsut the kernel handles it in the background and might lead to collection of unwanted resutls
+	for RUN_SELECT in $RUNS
+	do
+		if [[ $RUN_SELECT -gt $NUM_RUNS || $RUN_SELECT -lt 1 ]]; then 
+			echo "selected run $RUN_SELECT for -n is out of bounds. Runs are [1:$NUM_RUNS]"
+			exit 1
+		fi
+	done
+fi
+
+if [[ -n $WITH_EVENTS && -n $MULTICLUSTER ]]; then
+    	echo "-e and -m flags cannot be used together!" >&2
     	exit 1
 fi
 
@@ -134,9 +158,24 @@ do
 		BENCH_END_COLUMN=$(awk -v SEP='\t' -v START=$((BENCHMARKS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /End/) { print i; exit} } } }' < "$BENCHMARKS_FILE")
 		
 		#Sensors
-		SENSORS_COL_START=$(awk -v SEP='\t' -v START=$((SENSORS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i !~ /Timestamp/) { print i; exit} } } }' < "$SENSORS_FILE")
-		SENSORS_COL_END=$(awk -v SEP='\t' -v START=$((SENSORS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /A15 Power/) { print i; exit} } } }' < "$SENSORS_FILE")
-		SENSORS_LABELS=$(awk -v SEP='\t' -v START=$((SENSORS_BEGIN_LINE-1)) -v COL_START="$SENSORS_COL_START" -v COL_END="$SENSORS_COL_END" 'BEGIN{FS=SEP}{if(NR==START){ for(i=COL_START;i<=COL_END;i++) print $i} }' < "$SENSORS_FILE" | tr "\n" "\t" | head -c -1)
+		if [[ -n $MULTICLUSTER ]]; then
+			SENSORS_COL_START=$(awk -v SEP='\t' -v START=$((SENSORS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i !~ /Timestamp/) { print i; exit} } } }' < "$SENSORS_FILE")
+			SENSORS_COL_END=$(awk -v SEP='\t' -v START=$((SENSORS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /A15 Power/) { print i; exit} } } }' < "$SENSORS_FILE")
+			SENSORS_LABELS=$(awk -v SEP='\t' -v START=$((SENSORS_BEGIN_LINE-1)) -v COL_START="$SENSORS_COL_START" -v COL_END="$SENSORS_COL_END" 'BEGIN{FS=SEP}{if(NR==START){ for(i=COL_START;i<=COL_END;i++) print $i} }' < "$SENSORS_FILE" | tr "\n" "\t" | head -c -1)
+		else
+			case $CORETYPE in
+				big)
+					SENSORS_COL_START=$(awk -v SEP='\t' -v START=$((SENSORS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /A7 Power/) { print (i+1); exit} } } }' < "$SENSORS_FILE")
+					SENSORS_COL_END=$(awk -v SEP='\t' -v START=$((SENSORS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /A15 Power/) { print i; exit} } } }' < "$SENSORS_FILE")
+					SENSORS_LABELS=$(awk -v SEP='\t' -v START=$((SENSORS_BEGIN_LINE-1)) -v COL_START="$SENSORS_COL_START" -v COL_END="$SENSORS_COL_END" 'BEGIN{FS=SEP}{if(NR==START){ for(i=COL_START;i<=COL_END;i++) print $i} }' < "$SENSORS_FILE" | tr "\n" "\t" | head -c -1)
+					;;
+				LITTLE)
+					SENSORS_COL_START=$(awk -v SEP='\t' -v START=$((SENSORS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i !~ /Timestamp/) { print i; exit} } } }' < "$SENSORS_FILE")
+					SENSORS_COL_END=$(awk -v SEP='\t' -v START=$((SENSORS_BEGIN_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /A7 Power/) { print i; exit} } } }' < "$SENSORS_FILE")
+					SENSORS_LABELS=$(awk -v SEP='\t' -v START=$((SENSORS_BEGIN_LINE-1)) -v COL_START="$SENSORS_COL_START" -v COL_END="$SENSORS_COL_END" 'BEGIN{FS=SEP}{if(NR==START){ for(i=COL_START;i<=COL_END;i++) print $i} }' < "$SENSORS_FILE" | tr "\n" "\t" | head -c -1)
+					;;
+			esac
+		fi
 		
 		#Events
 		if [[ -n $WITH_EVENTS ]]; then

@@ -7,7 +7,7 @@ fi
 
 
 #requires getops, but this should not be an issue since ints built in bash
-while getopts ":r:n:s:eh" opt;
+while getopts ":r:n:s:meh" opt;
 do
 	case $opt in
         	h)
@@ -16,6 +16,7 @@ do
 			echo "-n [RUNS] -> specify list of runs to be concatenated. -n 3 for run Number 3. -n 1,3 for runs 1 and 3."
 			echo "-s [DIRECTORY] -> Specify the save directory for the concatenated results."
 			echo "-e -> Specify the inclusion of events or not (for cases where we do not hve PMU events i.e. overhead analysis)."
+			echo "-m -> Specify the multicluster option which includes all information. Can only be used without -e."
 			echo "Mandatory options are: ..."
 			exit 0 
         		;;
@@ -103,7 +104,14 @@ do
 		    		exit 1                
 			fi
 		    	WITH_EVENTS=1
-		    	;;           
+		    	;;  
+		m)
+			if [[ -n $MULTICLUSTER ]]; then
+		    		echo "Invalid input: option -m has already been used!" >&2
+		    		exit 1                
+			fi
+		    	MULTICLUSTER=1
+		    	;;         
 		
 		:)
 			echo "Option: -$OPTARG requires an argument" >&2
@@ -125,6 +133,12 @@ if [[ -z $RUNS ]]; then
     	echo "Nothing to run. Expected -n flag!" >&2
     	exit 1
 fi
+
+if [[ -n $WITH_EVENTS && -n $MULTICLUSTER ]]; then
+    	echo "-e and -m flags cannot be used together!" >&2
+    	exit 1
+fi
+
 						
 FREQ_LIST=$(ls "$RESULTS_DIR/Run_${RUNS%% *}" | tr " " "\n" | sort -gr | tr "\n" " ")						
 
@@ -133,7 +147,11 @@ if [[ -n $WITH_EVENTS ]]; then
 	./process_raw_events.sh -r "$RESULTS_DIR" -n "${RUNS// /,}" -s
 	./concatenate_results.sh -r "$RESULTS_DIR" -n "${RUNS// /,}" -e -s
 else
-	./concatenate_results.sh -r "$RESULTS_DIR" -n "${RUNS// /,}" -s
+	if [[ -n $MULTICLUSTER ]]; then
+		./concatenate_results.sh -r "$RESULTS_DIR" -n "${RUNS// /,}" -s -m
+	else
+		./concatenate_results.sh -r "$RESULTS_DIR" -n "${RUNS// /,}" -s
+	fi
 fi
 #Go into results directories and concatenate all the results files in to a big beast!
 for i in $RUNS;
