@@ -36,7 +36,7 @@
 ./XU3_results.sh -r ../../Results/cset_experiments/XU3_1/PARSEC/Multithread/cset_perfcpu_PARSEC_green_eMMC_trimmedevents_c1/big/events_list_9/ -n 1,2 -e -s Concatenated_Results/cset_data/xu3_1/PARSEC/Multithread/allevents/big/c1/xu3_1_eMMC_perfcpu_cset_PARSEC_greenbench_big_c1_el9.data &
 
 #NE
-./XU3_results.sh -r ../../Results/cset_experiments/XU3_1/PARSEC/Multithread/cset_perfcpu_PARSEC_green_eMMC_trimmedevents_c1/big/noevents/ -n 1,2 -e -s Concatenated_Results/cset_data/xu3_1/PARSEC/Multithread/allevents/big/c1/xu3_1_eMMC_perfcpu_cset_PARSEC_greenbench_big_c1_noevents.data &
+./XU3_results.sh -r ../../Results/cset_experiments/XU3_1/PARSEC/Multithread/cset_perfcpu_PARSEC_green_eMMC_trimmedevents_c1/big/noevents/ -n 1,2 -s Concatenated_Results/cset_data/xu3_1/PARSEC/Multithread/allevents/big/c1/xu3_1_eMMC_perfcpu_cset_PARSEC_greenbench_big_c1_noevents.data &
 
 #IDLE
 ./XU3_results.sh -r ../../Results/cset_experiments/XU3_1/PARSEC/Multithread/cset_perfcpu_PARSEC_green_eMMC_trimmedevents_c1/big/idle/ -n 1 -s Concatenated_Results/cset_data/xu3_1/PARSEC/Multithread/allevents/big/c1/xu3_1_eMMC_perfcpu_cset_PARSEC_greenbench_big_c1_idle.data &
@@ -69,11 +69,8 @@
 #E8
 ./XU3_results.sh -r ../../Results/cset_experiments/XU3_1/PARSEC/Multithread/cset_perfcpu_PARSEC_green_eMMC_trimmedevents_c1/LITTLE/events_list_8/ -n 1,2 -e -s Concatenated_Results/cset_data/xu3_1/PARSEC/Multithread/allevents/LITTLE/c1/xu3_1_eMMC_perfcpu_cset_PARSEC_greenbench_LITTLE_c1_el8.data &
 
-#E9
-./XU3_results.sh -r ../../Results/cset_experiments/XU3_1/PARSEC/Multithread/cset_perfcpu_PARSEC_green_eMMC_trimmedevents_c1/LITTLE/events_list_9/ -n 1,2 -e -s Concatenated_Results/cset_data/xu3_1/PARSEC/Multithread/allevents/LITTLE/c1/xu3_1_eMMC_perfcpu_cset_PARSEC_greenbench_LITTLE_c1_el9.data &
-
 #NE
-./XU3_results.sh -r ../../Results/cset_experiments/XU3_1/PARSEC/Multithread/cset_perfcpu_PARSEC_green_eMMC_trimmedevents_c1/LITTLE/noevents/ -n 1,2 -e -s Concatenated_Results/cset_data/xu3_1/PARSEC/Multithread/allevents/LITTLE/c1/xu3_1_eMMC_perfcpu_cset_PARSEC_greenbench_LITTLE_c1_noevents.data &
+./XU3_results.sh -r ../../Results/cset_experiments/XU3_1/PARSEC/Multithread/cset_perfcpu_PARSEC_green_eMMC_trimmedevents_c1/LITTLE/noevents/ -n 1,2 -s Concatenated_Results/cset_data/xu3_1/PARSEC/Multithread/allevents/LITTLE/c1/xu3_1_eMMC_perfcpu_cset_PARSEC_greenbench_LITTLE_c1_noevents.data &
 
 #IDLE
 ./XU3_results.sh -r ../../Results/cset_experiments/XU3_1/PARSEC/Multithread/cset_perfcpu_PARSEC_green_eMMC_trimmedevents_c1/LITTLE/idle/ -n 1 -s Concatenated_Results/cset_data/xu3_1/PARSEC/Multithread/allevents/LITTLE/c1/xu3_1_eMMC_perfcpu_cset_PARSEC_greenbench_LITTLE_c1_idle.data &
@@ -114,7 +111,7 @@
 ./XU3_results.sh -r ../../Results/cset_experiments/XU3_1/PARSEC/Multithread/cset_perfcpu_PARSEC_green_eMMC_trimmedevents_c2/big/events_list_9/ -n 1,2 -e -s Concatenated_Results/cset_data/xu3_1/PARSEC/Multithread/allevents/big/c2/xu3_1_eMMC_perfcpu_cset_PARSEC_greenbench_big_c2_el9.data &
 
 #NE
-./XU3_results.sh -r ../../Results/cset_experiments/XU3_1/PARSEC/Multithread/cset_perfcpu_PARSEC_green_eMMC_trimmedevents_c2/big/noevents/ -n 1,2 -e -s Concatenated_Results/cset_data/xu3_1/PARSEC/Multithread/allevents/big/c2/xu3_1_eMMC_perfcpu_cset_PARSEC_greenbench_big_c2_noevents.data &
+./XU3_results.sh -r ../../Results/cset_experiments/XU3_1/PARSEC/Multithread/cset_perfcpu_PARSEC_green_eMMC_trimmedevents_c2/big/noevents/ -n 1,2 -s Concatenated_Results/cset_data/xu3_1/PARSEC/Multithread/allevents/big/c2/xu3_1_eMMC_perfcpu_cset_PARSEC_greenbench_big_c2_noevents.data &
 
 #IDLE
 ./XU3_results.sh -r ../../Results/cset_experiments/XU3_1/PARSEC/Multithread/cset_perfcpu_PARSEC_green_eMMC_trimmedevents_c2/big/idle/ -n 1 -s Concatenated_Results/cset_data/xu3_1/PARSEC/Multithread/allevents/big/c2/xu3_1_eMMC_perfcpu_cset_PARSEC_greenbench_big_c2_idle.data &
@@ -147,11 +144,8 @@
 #E8
 ./XU3_results.sh -r ../../Results/cset_experiments/XU3_1/PARSEC/Multithread/cset_perfcpu_PARSEC_green_eMMC_trimmedevents_c2/LITTLE/events_list_8/ -n 1,2 -e -s Concatenated_Results/cset_data/xu3_1/PARSEC/Multithread/allevents/LITTLE/c2/xu3_1_eMMC_perfcpu_cset_PARSEC_greenbench_LITTLE_c2_el8.data &
 
-#E9
-./XU3_results.sh -r ../../Results/cset_experiments/XU3_1/PARSEC/Multithread/cset_perfcpu_PARSEC_green_eMMC_trimmedevents_c2/LITTLE/events_list_9/ -n 1,2 -e -s Concatenated_Results/cset_data/xu3_1/PARSEC/Multithread/allevents/LITTLE/c2/xu3_1_eMMC_perfcpu_cset_PARSEC_greenbench_LITTLE_c2_el9.data &
-
 #NE
-./XU3_results.sh -r ../../Results/cset_experiments/XU3_1/PARSEC/Multithread/cset_perfcpu_PARSEC_green_eMMC_trimmedevents_c2/LITTLE/noevents/ -n 1,2 -e -s Concatenated_Results/cset_data/xu3_1/PARSEC/Multithread/allevents/LITTLE/c2/xu3_1_eMMC_perfcpu_cset_PARSEC_greenbench_LITTLE_c2_noevents.data &
+./XU3_results.sh -r ../../Results/cset_experiments/XU3_1/PARSEC/Multithread/cset_perfcpu_PARSEC_green_eMMC_trimmedevents_c2/LITTLE/noevents/ -n 1,2 -s Concatenated_Results/cset_data/xu3_1/PARSEC/Multithread/allevents/LITTLE/c2/xu3_1_eMMC_perfcpu_cset_PARSEC_greenbench_LITTLE_c2_noevents.data &
 
 #IDLE
 ./XU3_results.sh -r ../../Results/cset_experiments/XU3_1/PARSEC/Multithread/cset_perfcpu_PARSEC_green_eMMC_trimmedevents_c2/LITTLE/idle/ -n 1 -s Concatenated_Results/cset_data/xu3_1/PARSEC/Multithread/allevents/LITTLE/c2/xu3_1_eMMC_perfcpu_cset_PARSEC_greenbench_LITTLE_c2_idle.data &
@@ -192,7 +186,7 @@
 ./XU3_results.sh -r ../../Results/cset_experiments/XU3_1/PARSEC/Multithread/cset_perfcpu_PARSEC_green_eMMC_trimmedevents_c3/big/events_list_9/ -n 1,2 -e -s Concatenated_Results/cset_data/xu3_1/PARSEC/Multithread/allevents/big/c3/xu3_1_eMMC_perfcpu_cset_PARSEC_greenbench_big_c3_el9.data &
 
 #NE
-./XU3_results.sh -r ../../Results/cset_experiments/XU3_1/PARSEC/Multithread/cset_perfcpu_PARSEC_green_eMMC_trimmedevents_c3/big/noevents/ -n 1,2 -e -s Concatenated_Results/cset_data/xu3_1/PARSEC/Multithread/allevents/big/c3/xu3_1_eMMC_perfcpu_cset_PARSEC_greenbench_big_c3_noevents.data &
+./XU3_results.sh -r ../../Results/cset_experiments/XU3_1/PARSEC/Multithread/cset_perfcpu_PARSEC_green_eMMC_trimmedevents_c3/big/noevents/ -n 1,2 -s Concatenated_Results/cset_data/xu3_1/PARSEC/Multithread/allevents/big/c3/xu3_1_eMMC_perfcpu_cset_PARSEC_greenbench_big_c3_noevents.data &
 
 #IDLE
 ./XU3_results.sh -r ../../Results/cset_experiments/XU3_1/PARSEC/Multithread/cset_perfcpu_PARSEC_green_eMMC_trimmedevents_c3/big/idle/ -n 1 -s Concatenated_Results/cset_data/xu3_1/PARSEC/Multithread/allevents/big/c3/xu3_1_eMMC_perfcpu_cset_PARSEC_greenbench_big_c3_idle.data &
@@ -225,11 +219,8 @@
 #E8
 ./XU3_results.sh -r ../../Results/cset_experiments/XU3_1/PARSEC/Multithread/cset_perfcpu_PARSEC_green_eMMC_trimmedevents_c3/LITTLE/events_list_8/ -n 1,2 -e -s Concatenated_Results/cset_data/xu3_1/PARSEC/Multithread/allevents/LITTLE/c3/xu3_1_eMMC_perfcpu_cset_PARSEC_greenbench_LITTLE_c3_el8.data &
 
-#E9
-./XU3_results.sh -r ../../Results/cset_experiments/XU3_1/PARSEC/Multithread/cset_perfcpu_PARSEC_green_eMMC_trimmedevents_c3/LITTLE/events_list_9/ -n 1,2 -e -s Concatenated_Results/cset_data/xu3_1/PARSEC/Multithread/allevents/LITTLE/c3/xu3_1_eMMC_perfcpu_cset_PARSEC_greenbench_LITTLE_c3_el9.data &
-
 #NE
-./XU3_results.sh -r ../../Results/cset_experiments/XU3_1/PARSEC/Multithread/cset_perfcpu_PARSEC_green_eMMC_trimmedevents_c3/LITTLE/noevents/ -n 1,2 -e -s Concatenated_Results/cset_data/xu3_1/PARSEC/Multithread/allevents/LITTLE/c3/xu3_1_eMMC_perfcpu_cset_PARSEC_greenbench_LITTLE_c3_noevents.data &
+./XU3_results.sh -r ../../Results/cset_experiments/XU3_1/PARSEC/Multithread/cset_perfcpu_PARSEC_green_eMMC_trimmedevents_c3/LITTLE/noevents/ -n 1,2 -s Concatenated_Results/cset_data/xu3_1/PARSEC/Multithread/allevents/LITTLE/c3/xu3_1_eMMC_perfcpu_cset_PARSEC_greenbench_LITTLE_c3_noevents.data &
 
 #IDLE
 ./XU3_results.sh -r ../../Results/cset_experiments/XU3_1/PARSEC/Multithread/cset_perfcpu_PARSEC_green_eMMC_trimmedevents_c3/LITTLE/idle/ -n 1 -s Concatenated_Results/cset_data/xu3_1/PARSEC/Multithread/allevents/LITTLE/c3/xu3_1_eMMC_perfcpu_cset_PARSEC_greenbench_LITTLE_c3_idle.data &
@@ -270,7 +261,7 @@
 ./XU3_results.sh -r ../../Results/cset_experiments/XU3_1/PARSEC/Multithread/cset_perfcpu_PARSEC_green_eMMC_trimmedevents_c4/big/events_list_9/ -n 1,2 -e -s Concatenated_Results/cset_data/xu3_1/PARSEC/Multithread/allevents/big/c4/xu3_1_eMMC_perfcpu_cset_PARSEC_greenbench_big_c4_el9.data &
 
 #NE
-./XU3_results.sh -r ../../Results/cset_experiments/XU3_1/PARSEC/Multithread/cset_perfcpu_PARSEC_green_eMMC_trimmedevents_c4/big/noevents/ -n 1,2 -e -s Concatenated_Results/cset_data/xu3_1/PARSEC/Multithread/allevents/big/c4/xu3_1_eMMC_perfcpu_cset_PARSEC_greenbench_big_c4_noevents.data &
+./XU3_results.sh -r ../../Results/cset_experiments/XU3_1/PARSEC/Multithread/cset_perfcpu_PARSEC_green_eMMC_trimmedevents_c4/big/noevents/ -n 1,2 -s Concatenated_Results/cset_data/xu3_1/PARSEC/Multithread/allevents/big/c4/xu3_1_eMMC_perfcpu_cset_PARSEC_greenbench_big_c4_noevents.data &
 
 #IDLE
 ./XU3_results.sh -r ../../Results/cset_experiments/XU3_1/PARSEC/Multithread/cset_perfcpu_PARSEC_green_eMMC_trimmedevents_c4/big/idle/ -n 1 -s Concatenated_Results/cset_data/xu3_1/PARSEC/Multithread/allevents/big/c4/xu3_1_eMMC_perfcpu_cset_PARSEC_greenbench_big_c4_idle.data &
@@ -303,11 +294,8 @@
 #E8
 ./XU3_results.sh -r ../../Results/cset_experiments/XU3_1/PARSEC/Multithread/cset_perfcpu_PARSEC_green_eMMC_trimmedevents_c4/LITTLE/events_list_8/ -n 1,2 -e -s Concatenated_Results/cset_data/xu3_1/PARSEC/Multithread/allevents/LITTLE/c4/xu3_1_eMMC_perfcpu_cset_PARSEC_greenbench_LITTLE_c4_el8.data &
 
-#E9
-./XU3_results.sh -r ../../Results/cset_experiments/XU3_1/PARSEC/Multithread/cset_perfcpu_PARSEC_green_eMMC_trimmedevents_c4/LITTLE/events_list_9/ -n 1,2 -e -s Concatenated_Results/cset_data/xu3_1/PARSEC/Multithread/allevents/LITTLE/c4/xu3_1_eMMC_perfcpu_cset_PARSEC_greenbench_LITTLE_c4_el9.data &
-
 #NE
-./XU3_results.sh -r ../../Results/cset_experiments/XU3_1/PARSEC/Multithread/cset_perfcpu_PARSEC_green_eMMC_trimmedevents_c4/LITTLE/noevents/ -n 1,2 -e -s Concatenated_Results/cset_data/xu3_1/PARSEC/Multithread/allevents/LITTLE/c4/xu3_1_eMMC_perfcpu_cset_PARSEC_greenbench_LITTLE_c4_noevents.data &
+./XU3_results.sh -r ../../Results/cset_experiments/XU3_1/PARSEC/Multithread/cset_perfcpu_PARSEC_green_eMMC_trimmedevents_c4/LITTLE/noevents/ -n 1,2 -s Concatenated_Results/cset_data/xu3_1/PARSEC/Multithread/allevents/LITTLE/c4/xu3_1_eMMC_perfcpu_cset_PARSEC_greenbench_LITTLE_c4_noevents.data &
 
 #IDLE
 ./XU3_results.sh -r ../../Results/cset_experiments/XU3_1/PARSEC/Multithread/cset_perfcpu_PARSEC_green_eMMC_trimmedevents_c4/LITTLE/idle/ -n 1 -s Concatenated_Results/cset_data/xu3_1/PARSEC/Multithread/allevents/LITTLE/c4/xu3_1_eMMC_perfcpu_cset_PARSEC_greenbench_LITTLE_c4_idle.data &
