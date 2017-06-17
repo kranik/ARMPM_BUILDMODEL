@@ -2128,11 +2128,7 @@ if [[ -n $ALL_FREQUENCY ]]; then
 						runtime_st=$(awk -v START="$TEST_START_LINE" -v SEP='\t' -v RUNCOL="$TEST_RUN_COL" -v RUN="$runnum" -v BENCHCOL="$TEST_BENCH_COL" -v BENCH="${TEST_SET[$benchname]}" 'BEGIN{FS = SEP}{if (NR >= START && $RUNCOL == RUN && $BENCHCOL == BENCH){print $1;exit}}' < "$TEST_FILE")
 						#Use previous line timestamp (so this is reverse which means the next sensor reading) as final timestamp
 						runtime_nd_nr=$(tac "$TEST_FILE" | awk -v START=1 -v SEP='\t' -v RUNCOL="$TEST_RUN_COL" -v RUN="$runnum" -v BENCHCOL="$TEST_BENCH_COL" -v BENCH="${TEST_SET[$benchname]}" 'BEGIN{FS = SEP}{if (NR >= START && $RUNCOL == RUN && $BENCHCOL == BENCH){print NR;exit}}' < "$TEST_FILE")
-						#If we are at the last (first in reverse) line, then increment to avoid going out of bounds when decrementing the line for the runtime_nd extraction
-						if [[ $runtime_nd_nr == 1 ]];then
-							runtime_nd_nr=$(echo "$runtime_nd_nr+1;" | bc )
-						fi
-						runtime_nd=$(tac "$TEST_FILE" | awk -v START=$((runtime_nd_nr-1)) -v SEP='\t' 'BEGIN{FS = SEP}{if (NR == START){print $1;exit}}')
+						runtime_nd=$(tac "$TEST_FILE" | awk -v START=$runtime_nd_nr -v SEP='\t' 'BEGIN{FS = SEP}{if (NR == START){print $1;exit}}')
 						total_runtime=$(echo "scale=0;$total_runtime+($runtime_nd-$runtime_st);" | bc )
 					done
 				done
@@ -2147,11 +2143,7 @@ if [[ -n $ALL_FREQUENCY ]]; then
 						runtime_st=$(awk -v START="$RESULT_START_LINE" -v SEP='\t' -v RUNCOL="$RESULT_RUN_COL" -v RUN="$runnum" -v BENCHCOL="$RESULT_BENCH_COL" -v BENCH="${TEST_SET[$benchname]}" 'BEGIN{FS = SEP}{if (NR >= START && $RUNCOL == RUN && $BENCHCOL == BENCH){print $1;exit}}' < "$RESULT_FILE")
 						#Use previous line timestamp (so this is reverse which means the next sensor reading) as final timestamp
 						runtime_nd_nr=$(tac "$RESULT_FILE" | awk -v START=1 -v SEP='\t' -v RUNCOL="$RESULT_RUN_COL" -v RUN="$runnum" -v BENCHCOL="$RESULT_BENCH_COL" -v BENCH="${TEST_SET[$benchname]}" 'BEGIN{FS = SEP}{if (NR >= START && $RUNCOL == RUN && $BENCHCOL == BENCH){print NR;exit}}' < "$RESULT_FILE")
-						#If we are at the last (first in reverse) line, then increment to avoid going out of bounds when decrementing the line for the runtime_nd extraction
-						if [[ $runtime_nd_nr == 1 ]];then
-							runtime_nd_nr=$(echo "$runtime_nd_nr+1;" | bc )
-						fi
-						runtime_nd=$(tac "$RESULT_FILE" | awk -v START=$((runtime_nd_nr-1)) -v SEP='\t' 'BEGIN{FS = SEP}{if (NR == START){print $1;exit}}')
+						runtime_nd=$(tac "$RESULT_FILE" | awk -v START=$runtime_nd_nr -v SEP='\t' 'BEGIN{FS = SEP}{if (NR == START){print $1;exit}}')
 						total_runtime=$(echo "scale=0;$total_runtime+($runtime_nd-$runtime_st);" | bc )
 					done
 				done
@@ -2234,11 +2226,7 @@ else
 							runtime_st=$(awk -v START="$TEST_START_LINE" -v SEP='\t' -v RUNCOL="$TEST_RUN_COL" -v RUN="$runnum" -v BENCHCOL="$TEST_BENCH_COL" -v BENCH="${TEST_SET[$benchcount]}" -v FREQCOL="$TEST_FREQ_COL" -v FREQ="${FREQ_LIST[$count]}" 'BEGIN{FS = SEP}{if (NR >= START && $RUNCOL == RUN && $BENCHCOL == BENCH && $FREQCOL == FREQ){print $1;exit}}' < "$TEST_FILE")
 							#Use previous line timestamp (so this is reverse which means the next sensor reading) as final timestamp
 							runtime_nd_nr=$(tac "$TEST_FILE" | awk -v START=1 -v SEP='\t' -v RUNCOL="$TEST_RUN_COL" -v RUN="$runnum" -v BENCHCOL="$TEST_BENCH_COL" -v BENCH="${TEST_SET[$benchcount]}" -v FREQCOL="$TEST_FREQ_COL" -v FREQ="${FREQ_LIST[$count]}" 'BEGIN{FS = SEP}{if (NR >= START && $RUNCOL == RUN && $BENCHCOL == BENCH && $FREQCOL == FREQ){print NR;exit}}')
-							#If we are at the last (first in reverse) line, then increment to avoid going out of bounds when decrementing the line for the runtime_nd extraction
-							if [[ $runtime_nd_nr == 1 ]];then
-								runtime_nd_nr=$(echo "$runtime_nd_nr+1;" | bc )
-							fi
-							runtime_nd=$(tac "$TEST_FILE" | awk -v START=$((runtime_nd_nr-1)) -v SEP='\t' 'BEGIN{FS = SEP}{if (NR == START){print $1;exit}}')
+							runtime_nd=$(tac "$TEST_FILE" | awk -v START=$runtime_nd_nr -v SEP='\t' 'BEGIN{FS = SEP}{if (NR == START){print $1;exit}}')
 							total_runtime=$(echo "scale=0;$total_runtime+($runtime_nd-$runtime_st);" | bc )
 						done
 					done
@@ -2254,11 +2242,7 @@ else
 							runtime_st=$(awk -v START="$RESULT_START_LINE" -v SEP='\t' -v RUNCOL="$RESULT_RUN_COL" -v RUN="$runnum" -v BENCHCOL="$RESULT_BENCH_COL" -v BENCH="${TEST_SET[$benchcount]}" -v FREQCOL="$RESULT_FREQ_COL" -v FREQ="${FREQ_LIST[$count]}" 'BEGIN{FS = SEP}{if (NR >= START && $RUNCOL == RUN && $BENCHCOL == BENCH && $FREQCOL == FREQ){print $1;exit}}' < "$RESULT_FILE")
 							#Use previous line timestamp (so this is reverse which means the next sensor reading) as final timestamp
 							runtime_nd_nr=$(tac "$RESULT_FILE" | awk -v START=1 -v SEP='\t' -v RUNCOL="$RESULT_RUN_COL" -v RUN="$runnum" -v BENCHCOL="$RESULT_BENCH_COL" -v BENCH="${TEST_SET[$benchcount]}" -v FREQCOL="$RESULT_FREQ_COL" -v FREQ="${FREQ_LIST[$count]}" 'BEGIN{FS = SEP}{if (NR >= START && $RUNCOL == RUN && $BENCHCOL == BENCH && $FREQCOL == FREQ){print NR;exit}}')
-							#If we are at the last (first in reverse) line, then increment to avoid going out of bounds when decrementing the line for the runtime_nd extraction
-							if [[ $runtime_nd_nr == 1 ]];then
-								runtime_nd_nr=$(echo "$runtime_nd_nr+1;" | bc )
-							fi
-							runtime_nd=$(tac "$RESULT_FILE" | awk -v START=$((runtime_nd_nr-1)) -v SEP='\t' 'BEGIN{FS = SEP}{if (NR == START){print $1;exit}}')
+							runtime_nd=$(tac "$RESULT_FILE" | awk -v START=$runtime_nd_nr -v SEP='\t' 'BEGIN{FS = SEP}{if (NR == START){print $1;exit}}')
 							total_runtime=$(echo "scale=0;$total_runtime+($runtime_nd-$runtime_st);" | bc )
 						done
 					done

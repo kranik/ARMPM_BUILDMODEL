@@ -477,6 +477,7 @@ echo -e "--------------------" >&1
 spaced_A7_FREQ_LIST="${A7_FREQ_LIST//,/ }"
 spaced_A15_FREQ_LIST="${A15_FREQ_LIST//,/ }"
 count=0
+unset -v FREQ_LIST
 for i in $(seq 0 $((${#FREQ_COMB[@]}-1)))
 do
 	echo "Combination $i: ${FREQ_COMB[$i]}"
@@ -537,11 +538,7 @@ do
 				runtime_st=$(awk -v START="$RESULT_START_LINE" -v SEP='\t' -v RUNCOL="$RESULT_RUN_COL" -v RUN="$runnum" -v BENCHCOL="$RESULT_BENCH_COL" -v BENCH="${TEST_SET[$benchcount]}" -v A7FREQCOL="$A7_FREQ_COL" -v A7FREQ="${TEMP_FREQ[0]}" -v A15FREQCOL="$A15_FREQ_COL" -v A15FREQ="${TEMP_FREQ[1]}" 'BEGIN{FS = SEP}{if (NR >= START && $RUNCOL == RUN && $BENCHCOL == BENCH && $A7FREQCOL == A7FREQ && $A15FREQCOL == A15FREQ){print $1;exit}}' < "$RESULT_FILE")
 				#Use previous line timestamp (so this is reverse which means the next sensor reading) as final timestamp
 				runtime_nd_nr=$(tac "$RESULT_FILE" | awk -v START=1 -v SEP='\t' -v RUNCOL="$RESULT_RUN_COL" -v RUN="$runnum" -v BENCHCOL="$RESULT_BENCH_COL" -v BENCH="${TEST_SET[$benchcount]}" -v A7FREQCOL="$A7_FREQ_COL" -v A7FREQ="${TEMP_FREQ[0]}" -v A15FREQCOL="$A15_FREQ_COL" -v A15FREQ="${TEMP_FREQ[1]}" 'BEGIN{FS = SEP}{if (NR >= START && $RUNCOL == RUN && $BENCHCOL == BENCH && $A7FREQCOL == A7FREQ && $A15FREQCOL == A15FREQ){print NR;exit}}')
-				#If we are at the last (first in reverse) line, then increment to avoid going out of bounds when decrementing the line for the runtime_nd extraction
-				if [[ $runtime_nd_nr == 1 ]];then
-					runtime_nd_nr=$(echo "$runtime_nd_nr+1;" | bc )
-				fi
-				runtime_nd=$(tac "$RESULT_FILE" | awk -v START=$((runtime_nd_nr-1)) -v SEP='\t' 'BEGIN{FS = SEP}{if (NR == START){print $1;exit}}')
+				runtime_nd=$(tac "$RESULT_FILE" | awk -v START=$runtime_nd_nr -v SEP='\t' 'BEGIN{FS = SEP}{if (NR == START){print $1;exit}}')
 				total_runtime=$(echo "scale=0;$total_runtime+($runtime_nd-$runtime_st);" | bc )
 			done
 		done
