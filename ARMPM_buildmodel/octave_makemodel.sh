@@ -353,7 +353,12 @@ else
 	fi
 
 	#Extract events columns from result file
-	RESULT_EVENTS_COL_START=$RESULT_FREQ_COL
+	RESULT_CORES_COL=$(awk -v SEP='\t' -v START=$((RESULT_START_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /Cores/) { print i; exit} } } }' < "$RESULT_FILE")
+	if [[ -z $RESULT_CORES_COL ]]; then
+		RESULT_EVENTS_COL_START=$RESULT_FREQ_COL
+	else
+		RESULT_EVENTS_COL_START=$RESULT_CORES_COL
+	fi
 	RESULT_EVENTS_COL_END=$(awk -v SEP='\t' -v START=$((RESULT_START_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ print NF; exit } }' < "$RESULT_FILE")
 	if [[ "$RESULT_EVENTS_COL_START" -eq "$RESULT_EVENTS_COL_END" ]]; then
 		echo "No events present in result files!" >&2
@@ -431,7 +436,12 @@ if [[ -n $TEST_FILE ]]; then
 		fi
 
 		#Extract events columns from test/cross file
-		TEST_EVENTS_COL_START=$TEST_FREQ_COL
+		TEST_CORES_COL=$(awk -v SEP='\t' -v START=$((TEST_START_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /Cores/) { print i; exit} } } }' < "$TEST_FILE")
+		if [[ -z $TEST_CORES_COL ]]; then
+			TEST_EVENTS_COL_START=$TEST_FREQ_COL
+		else
+			TEST_EVENTS_COL_START=$TEST_CORES_COL
+		fi
 		TEST_EVENTS_COL_END=$(awk -v SEP='\t' -v START=$((TEST_START_LINE-1)) 'BEGIN{FS=SEP}{if(NR==START){ print NF; exit } }' < "$TEST_FILE")
 		if [[ "$TEST_EVENTS_COL_START" -eq "$TEST_EVENTS_COL_END" ]]; then
 			echo "No events present in test/cross file!" >&2
@@ -492,8 +502,8 @@ if [[ -e "$BENCH_FILE" ]]; then
 		echo -e "===================="
 		exit 1
 	fi
-	IFS=";" read -a TRAIN_SET <<< "$(awk -v SEP='\t' -v START="$BENCH_START_LINE" 'BEGIN{FS=SEP}{if (NR >= START){ print $1 }}' < "$BENCH_FILE" | sort -d | tr "\n" ";" | head -c -1 )"
-	IFS=";" read -a TEST_SET <<< "$(awk -v SEP='\t' -v START="$BENCH_START_LINE" 'BEGIN{FS=SEP}{if (NR >= START){ print $2 }}' < "$BENCH_FILE" | sort -d | tr "\n" ";" |  head -c -1 )"
+	IFS=";" read -a TRAIN_SET <<< "$(awk -v SEP='\t' -v START="$BENCH_START_LINE" 'BEGIN{FS=SEP}{if (NR >= START && $1 != '\n' ){ print $1 }}' < "$BENCH_FILE" | sort -d | tr "\n" ";" | head -c -1 )"
+	IFS=";" read -a TEST_SET <<< "$(awk -v SEP='\t' -v START="$BENCH_START_LINE" 'BEGIN{FS=SEP}{if (NR >= START && $2 != '\n' ){ print $2 }}' < "$BENCH_FILE" | sort -d | tr "\n" ";" |  head -c -1 )"
 	#Check if we have successfully extracted benchmark sets 
 	if [[ ${#TRAIN_SET[@]} == 0 || ${#TEST_SET[@]} == 0 ]]; then
 		echo "Unable to extract train or test set from benchmarks file!" >&2
@@ -532,7 +542,7 @@ if [[ -e "$BENCH_FILE" ]]; then
 		       	 	exit 1
 			fi
 		done
-	fi 
+	fi
 fi
 
 #-p flag

@@ -224,10 +224,10 @@ MAIN_LINE=$RESULTS_START_LINE_1
 #It has a built in tab between main and events header due to a leading comma at the events header
 if [[ -z $SAVE_FILE ]]; then
 	echo -e "====================" >&1
-	echo -e "$MAIN_HEADER$RESULTS_EV_HEADER" | tr "," "\t" >&1
+	echo -e "$MAIN_HEADER,$RESULTS_EV_HEADER" | tr "," "\t" >&1
 	echo -e "====================" >&1
 else
-	echo -e "$MAIN_HEADER$RESULTS_EV_HEADER" | tr "," "\t" > "$SAVE_FILE"
+	echo -e "$MAIN_HEADER,$RESULTS_EV_HEADER" | tr "," "\t" > "$SAVE_FILE"
 fi
 
 for i in $(seq 1 $RF_NUM)
