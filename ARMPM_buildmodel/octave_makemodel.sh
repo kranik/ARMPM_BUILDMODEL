@@ -998,24 +998,19 @@ if [[ -n $AUTO_SEARCH ]]; then
 			;;
 		2) 
 			echo "$AUTO_SEARCH -> Use top-down approach. Heuristically remove events until we cannot improve model or we reach limit -> $NUM_MODEL_EVENTS" >&1
-
-			#If top-down mode and events list manually selected update the num_model_events to reflect only the required events to be colected from the events pool
-			if [[ -n $EVENTS_LIST ]]; then
-				EVENTS_LIST_SIZE=$(echo "$EVENTS_LIST" | tr "," "\n" | wc -l)
-				NUM_MODEL_EVENTS=$((NUM_MODEL_EVENTS-EVENTS_LIST_SIZE))
-		
-			fi
 			;;
 		3) 
 			echo "$AUTO_SEARCH -> Use exhaustive approach. Try all possible combinations of $NUM_MODEL_EVENTS events and use the best one." >&1
-			#If exhaustive search mode and events list manually selected update the num_model_events to reflect only the required events to be colected from the events pool
-			if [[ -n $EVENTS_LIST ]]; then
-				EVENTS_LIST_SIZE=$(echo "$EVENTS_LIST" | tr "," "\n" | wc -l)
-				NUM_MODEL_EVENTS=$((NUM_MODEL_EVENTS-EVENTS_LIST_SIZE))
-		
-			fi
 			;;
 	esac
+
+	#If events list manually selected update the num_model_events to reflect only the required events to be colected from the events pool
+	if [[ -n $EVENTS_LIST ]]; then
+		EVENTS_LIST_SIZE=$(echo "$EVENTS_LIST" | tr "," "\n" | wc -l)
+		NUM_MODEL_EVENTS=$((NUM_MODEL_EVENTS-EVENTS_LIST_SIZE))
+
+	fi
+
 	#Optimisation criteria sanity checks
 	echo -e "--------------------" >&1
 	echo "Specified optimisation criteria:" >&1
@@ -1840,19 +1835,19 @@ do
 	#Once going through all events see if we can populate events list
 	if [[ -n $EV_REMOVE ]]; then
 		#We found an new event to remove from the list
-		EVENTS_POOL=$(echo "$EVENTS_POOL" | sed "s/^$EV_REMOVE,//g;s/,$EV_REMOVE,/,/g;s/,$EV_REMOVE$//g;s/^$EV_REMOVE$//g")
 		EV_REMOVE_LABEL=$(awk -v SEP='\t' -v START=$((RESULT_START_LINE-1)) -v COL="$EV_REMOVE" 'BEGIN{FS=SEP}{if(NR==START){ print $COL; exit } }' < "$RESULT_FILE")
-		EVENTS_POOL_LABELS=$(awk -v SEP='\t' -v START=$((RESULT_START_LINE-1)) -v COLUMNS="$EVENTS_POOL" 'BEGIN{FS = SEP;len=split(COLUMNS,ARRAY,",")}{if (NR == START){for (i = 1; i <= len; i++){print $ARRAY[i]}}}' < "$RESULT_FILE" | tr "\n" "," | head -c -1)
-		#Remove from events pool
 		echo -e "--------------------" >&1
 		echo -e "********************" >&1
 		echo "Remove worst event from events pool:"
 		echo "$EV_REMOVE -> $EV_REMOVE_LABEL" >&1
 		echo -e "********************" >&1
-		#reset EV_REMOVE too see if we can find another one and decrement counter
+		#Remove from events pool
+		EVENTS_POOL=$(echo "$EVENTS_POOL" | sed "s/^$EV_REMOVE,//g;s/,$EV_REMOVE,/,/g;s/,$EV_REMOVE$//g;s/^$EV_REMOVE$//g")
+		EVENTS_POOL_LABELS=$(awk -v SEP='\t' -v START=$((RESULT_START_LINE-1)) -v COLUMNS="$EVENTS_POOL" 'BEGIN{FS = SEP;len=split(COLUMNS,ARRAY,",")}{if (NR == START){for (i = 1; i <= len; i++){print $ARRAY[i]}}}' < "$RESULT_FILE" | tr "\n" "," | head -c -1)
+		#reset EV_REMOVE too see if we can find another one and decrement counter		
 		unset -v EV_REMOVE
 		EVENTS_POOL_SIZE=$(echo "$EVENTS_POOL" | tr "," "\n" | wc -l) 
-		if [[ $EVENTS_POOL_SIZE == $NUM_MODEL_EVENTS ]]; then
+		if [[ $EVENTS_POOL_SIZE -eq $NUM_MODEL_EVENTS ]]; then
 			echo -e "--------------------" >&1
 			[[ -n $EVENTS_LIST ]] && EVENTS_LIST="$EVENTS_LIST,$EVENTS_POOL" || EVENTS_LIST="$EVENTS_POOL"
 			EVENTS_LIST_SIZE=$(echo "$EVENTS_LIST" | tr "," "\n" | wc -l) 				
@@ -2110,11 +2105,20 @@ if [[ $AUTO_SEARCH == 3 ]]; then
 	echo -e "====================" >&1
 fi
 
-echo -e "====================" >&1
+
 EVENTS_LIST_LABELS=$(awk -v SEP='\t' -v START=$((RESULT_START_LINE-1)) -v COLUMNS="$EVENTS_LIST" 'BEGIN{FS = SEP;len=split(COLUMNS,ARRAY,",")}{if (NR == START){for (i = 1; i <= len; i++){print $ARRAY[i]}}}' < "$RESULT_FILE" | tr "\n" "," | head -c -1)
-echo -e "Using events list:" >&1
-echo "$EVENTS_LIST -> $EVENTS_LIST_LABELS" >&1
-echo -e "====================" >&1
+if [[ -z $SAVE_FILE ]]; then
+	echo -e "====================" >&1
+	echo -e "Using events list:" >&1
+	echo "$EVENTS_LIST -> $EVENTS_LIST_LABELS" >&1
+	echo -e "====================" >&1
+else
+	echo -e "====================" > "$SAVE_FILE"
+	echo -e "Using events list:" >> "$SAVE_FILE"
+	echo "$EVENTS_LIST -> $EVENTS_LIST_LABELS" >> "$SAVE_FILE"
+	echo -e "====================" >> "$SAVE_FILE"
+fi
+
 
 #This part is for outputing a specified events list or just using the automatically generated one and passing it onto octave
 #Anyhow its mandatory to extract results so its always executed even if we skip automatic generation
@@ -2467,7 +2471,7 @@ if [[ -z $SAVE_FILE ]]; then
 	echo -e "$HEADER"
 	echo -e "--------------------" >&1
 else
-	echo -e "$HEADER" > "$SAVE_FILE"
+	echo -e "$HEADER" >> "$SAVE_FILE"
 fi
 for i in $(seq 0 $((${#FREQ_LIST[@]}-1)))
 do
