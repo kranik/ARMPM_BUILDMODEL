@@ -1071,6 +1071,7 @@ else
 fi
 echo -e "--------------------" >&1
 
+:<<'skip'
 #Trim constant events from events pool
 if [[ -n $AUTO_SEARCH ]]; then
 	echo -e "====================" >&1
@@ -1211,6 +1212,7 @@ if [[ -n $AUTO_SEARCH ]]; then
 	echo -e "--------------------" >&1
 	echo -e "====================" >&1
 fi
+skip
 
 #Automatic model generation.
 #It will keep going as long as we have not saturated the model (no further events contribute) or we reach max number of model events as specified by user
