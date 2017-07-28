@@ -100,7 +100,30 @@ if (mode == 2)
 
 %  %Rodriguez
 %  EVLIST=train_set(:,str2num(events_col).-start_col);
-%  train_reg=[ones(size(train_set,1),1),EVLIST(:,1),EVLIST(:,2).+EVLIST(:,3),EVLIST(:,4:end)];
+%  FREQ=EVLIST(:,1);
+%  L1IACC=EVLIST(:,2);
+%  L2DACC=EVLIST(:,3);
+%  EXCTAKEN=EVLIST(:,4);
+%  BRMISSPRED=EVLIST(:,5);
+%  train_reg=[ones(size(train_set,1),1),L1IACC,L2DACC,EXCTAKEN.+BRMISSPRED];
+
+%  %Rethinagiri
+%  EVLIST=train_set(:,str2num(events_col).-start_col);
+%  FREQ=EVLIST(:,1);
+%  CYCLES=EVLIST(:,2);
+%  INSTR=EVLIST(:,3);
+%  L1IREF=EVLIST(:,4);
+%  L1DREF=EVLIST(:,5);
+%  L2DREF=EVLIST(:,6);
+%  train_reg=[ones(size(train_set,1),1),INSTR./CYCLES,L1IREF.+L1DREF,L2DREF];
+%  %allfreq  
+%  train_reg=[ones(size(train_set,1),1),FREQ,INSTR./CYCLES,L1IREF.+L1DREF,L2DREF];
+
+%  %Takouna
+%  EVLIST=train_set(:,str2num(events_col).-start_col);
+%  FREQ=EVLIST(:,1);
+%  NUMCORES=EVLIST(:,2);
+%  train_reg=[ones(size(train_set,1),1),FREQ.^2,FREQ,NUMCORES];  
 
   %Compute model
   [m, maxcorr, maxcorrindices, avgcorr] = build_model(train_reg,train_set(:,power_col.-start_col));
@@ -127,8 +150,32 @@ if (mode == 2)
   
 %  %Rodriguez
 %  EVLIST=test_set(:,str2num(events_col).-start_col);
-%  test_reg=[ones(size(test_set,1),1),EVLIST(:,1),EVLIST(:,2).+EVLIST(:,3),EVLIST(:,4:end)];
-  
+%  FREQ=EVLIST(:,1);
+%  L1IACC=EVLIST(:,2);
+%  L2DACC=EVLIST(:,3);
+%  EXCTAKEN=EVLIST(:,4);
+%  BRMISSPRED=EVLIST(:,5);
+%  test_reg=[ones(size(test_set,1),1),L1IACC,L2DACC,EXCTAKEN.+BRMISSPRED];
+
+
+%  %Rethinagiri
+%  EVLIST=test_set(:,str2num(events_col).-start_col);
+%  FREQ=EVLIST(:,1);
+%  CYCLES=EVLIST(:,2);
+%  INSTR=EVLIST(:,3);
+%  L1IREF=EVLIST(:,4);
+%  L1DREF=EVLIST(:,5);
+%  L2DREF=EVLIST(:,6);
+%  test_reg=[ones(size(test_set,1),1),INSTR./CYCLES,L1IREF.+L1DREF,L2DREF];
+%  %allfreq
+%  test_reg=[ones(size(test_set,1),1),FREQ,INSTR./CYCLES,L1IREF.+L1DREF,L2DREF];  
+
+%  %Takouna
+%  EVLIST=test_set(:,str2num(events_col).-start_col);
+%  FREQ=EVLIST(:,1);
+%  NUMCORES=EVLIST(:,2);
+%  test_reg=[ones(size(test_set,1),1),FREQ.^2,FREQ,NUMCORES];  
+
   %Extract measured power and range from test data
   test_power=test_set(:,power_col.-start_col);
 

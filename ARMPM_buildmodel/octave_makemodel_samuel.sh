@@ -520,10 +520,9 @@ do
 	echo "Combination $i: ${FREQ_LIST[$i]}"
 done
 
-unset -v octave_output
 while [[ $data_count -ne ${#FREQ_LIST[@]} ]]
 do
-	#echo "data_count="$data_count"/${#FREQ_LIST[@]}"
+	unset -v octave_output
 	for count in $(seq 0 $((${#FREQ_LIST[@]}-1)))
 	do
 		IFS="," read -a TEMP_FREQ <<< "${FREQ_LIST[$count]}"
@@ -554,7 +553,8 @@ do
 	done
 	#Collect data count depending on mode to ensure we got the right data. Octave sometimes hangs so this is necessary to overcome "skipping" frequencies
 	data_count=$(echo -e "$octave_output" | awk -v SEP=' ' 'BEGIN{FS=SEP;count=0}{if ($1=="Average" && $2=="A7" && $3=="Power"){ count++ }}END{print count}' )
-	echo $data_count
+	echo "data_count=$data_count"
+	echo "numfreqs=${#FREQ_LIST[@]}"
 done	
 
 #Extract relevant informaton from octave. Some of these will be empty depending on mode
