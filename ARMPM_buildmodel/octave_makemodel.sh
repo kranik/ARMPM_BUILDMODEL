@@ -957,7 +957,8 @@ if [[ -n $CM_MODE ]]; then
 				TEST_RUN_END=$RESULT_RUN_END
 				TEST_FREQ_COL=$RESULT_FREQ_COL
 				TEST_BENCH_COL=$RESULT_BENCH_COL
-				TEST_EVENTS_COL_START=$TEST_FREQ_COL
+				TEST_EVENTS_COL_START=$RESULT_EVENTS_COL_START
+
 			fi
 			echo "$CM_MODE -> Intra-core cross-model;" >&1
 			echo "Using -r frequency list." >&1
@@ -1901,7 +1902,7 @@ if [[ $AUTO_SEARCH == 3 ]]; then
 	unset -v octave_output
 	while [[ -z $octave_output ]]
 	do				
-		octave_output=$(octave --silent --eval "COMBINATIONS=nchoosek(str2num('$EVENTS_POOL'),$NUM_MODEL_EVENTS);disp(COMBINATIONS);" 2> /dev/null)
+		octave_output=$(octave --silent --eval "COMBINATIONS=nchoosek(str2num('$EVENTS_POOL'),$NUM_MODEL_EVENTS);format free;disp(COMBINATIONS);" 2> /dev/null)
 		IFS=";" read -a EVENTS_LIST_COMBINATIONS <<< $(echo -e "$octave_output" | awk -v SEP=' ' 'BEGIN{FS=SEP}{ print $0 }' | sed 's/^[ \t]*//;s/[ \t]*$//' | tr "\n" ";" | head -c -1)
 	done
 	echo "Total number of combinations -> ${#EVENTS_LIST_COMBINATIONS[@]}" >&1
@@ -2135,7 +2136,6 @@ else
 	echo "$EVENTS_LIST -> $EVENTS_LIST_LABELS" >> "$SAVE_FILE"
 	echo -e "====================" >> "$SAVE_FILE"
 fi
-
 
 #This part is for outputing a specified events list or just using the automatically generated one and passing it onto octave
 #Anyhow its mandatory to extract results so its always executed even if we skip automatic generation
@@ -2374,6 +2374,8 @@ else
 						awk -v START="$RESULT_START_LINE" -v SEP='\t' -v FREQ_COL="$RESULT_FREQ_COL" -v FREQ="${FREQ_LIST[$count]}" -v BENCH_COL="$RESULT_BENCH_COL" -v BENCH_SET="${TEST_SET[*]}" 'BEGIN{FS = SEP;len=split(BENCH_SET,ARRAY," ")}{if (NR >= START && $FREQ_COL == FREQ){for (i = 1; i <= len; i++){if ($BENCH_COL == ARRAY[i]){print $0;next}}}}' < "$RESULT_FILE" > "test_set_$seed.data"
 					fi			
 					octave_output+=$(octave --silent --eval "load_build_model(2,'train_set_$seed.data','test_set_$seed.data',0,$((RESULT_EVENTS_COL_START-1)),$POWER_COL,'$EVENTS_LIST')" 2> /dev/null)
+					echo "load_build_model(2,'train_set_$seed.data','test_set_$seed.data',0,$((RESULT_EVENTS_COL_START-1)),$POWER_COL,'$EVENTS_LIST')"
+					exit
 					#Cleanup
 					rm "train_set_$seed.data" "test_set_$seed.data"
 				fi

@@ -1,0 +1,5 @@
+#Train Set	Test Set
+parsec.facesim	parsec.dedup
+splash2x.radiosity
+splash2x.raytrace
+splash2x.water_nsquared

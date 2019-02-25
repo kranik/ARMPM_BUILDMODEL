@@ -47,6 +47,7 @@ function [m, maxcorr, maxcorrindices, avgcorr] = build_model(X,Y)
 
     m   = inv(X'*X)*X'*Y;   # calculate model coefficients
 
+
     Err = (X*m-Y)./Y;       # valculate % model error
 
     epsilon     = Y-X*m;

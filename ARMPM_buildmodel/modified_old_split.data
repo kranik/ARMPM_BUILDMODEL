@@ -1,0 +1,16 @@
+#Train Benchmarks	Test Benchmarks
+telecom_CRC32	consumer_jpeg_d
+consumer_tiffdither
+telecom_gsm
+bzip2d
+consumer_tiffmedian
+consumer_jpeg_c
+office_stringsearch1
+office_ispell
+automotive_susan_s
+security_pgp_e
+telecom_adpcm_d
+automotive_susan_c
+security_sha
+security_rijndael_d
+consumer_tiff2rgba

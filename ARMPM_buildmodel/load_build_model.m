@@ -136,7 +136,7 @@ if (mode == 2)
   %Again extract test data from specified file.
   %Events columns are same as train file
   test_reg=[ones(size(test_set,1),1),test_set(:,str2num(events_col).-start_col)];
-
+  
 %  %Pricopi
 %  EVLIST=test_set(:,str2num(events_col).-start_col);
 %  CYCLES=EVLIST(:,1);
@@ -236,7 +236,9 @@ if (mode == 3)
   start_col_2=varargin{9};
   
   power_col=varargin{10};
-  events_col=varargin{11};
+  events_col=varargin{11}
+  
+  
   
   %Extract train and test set for file 1
   fid = fopen (train_set_1, "r");
@@ -258,6 +260,12 @@ if (mode == 3)
   train_events_mean_1=mean(train_set_1(:,str2num(events_col).-start_col_1),1);
   train_events_mean_2=mean(train_set_2(:,str2num(events_col).-start_col_2),1);
   scaling_factors=train_events_mean_2./train_events_mean_1;
+  
+%% Multi-Thread scaling factors (ommit scaling the num_core) event
+%  train_events_mean_1=mean(train_set_1(:,str2num(events_col(2:end)).-start_col_1),1);
+%  train_events_mean_2=mean(train_set_2(:,str2num(events_col(2:end)).-start_col_2),1);
+%  scaling_factors=[1,train_events_mean_2./train_events_mean_1];
+  
   
   %Extract train data from the second file
   train_reg=[ones(size(train_set_2,1),1),train_set_2(:,str2num(events_col).-start_col_2)];

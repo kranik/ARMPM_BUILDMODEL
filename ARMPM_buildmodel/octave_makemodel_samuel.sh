@@ -232,6 +232,21 @@ else
 	fi
 
 	#Exctract power columns
+	A7_VOLTAGE_COL=$(awk -v SEP='\t' -v START=$((RESULT_START_LINE-1)) -v STRING="A7 Voltage(V)" 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i == STRING) { print i; exit} } } }' < "$RESULT_FILE")
+	if [[ -z $A7_VOLTAGE_COL ]]; then
+		echo "Results file contains no LITTLE voltage column!" >&2
+		echo -e "===================="
+		exit 1
+	fi
+
+	A15_VOLTAGE_COL=$(awk -v SEP='\t' -v START=$((RESULT_START_LINE-1)) -v STRING="A15 Voltage(V)" 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i == STRING) { print i; exit} } } }' < "$RESULT_FILE")
+	if [[ -z $A15_VOLTAGE_COL ]]; then
+		echo "Results file contains no big voltage column!" >&2
+		echo -e "===================="
+		exit 1
+	fi
+
+	#Exctract power columns
 	A7_POWER_COL=$(awk -v SEP='\t' -v START=$((RESULT_START_LINE-1)) -v STRING="A7 Power(W)" 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i == STRING) { print i; exit} } } }' < "$RESULT_FILE")
 	if [[ -z $A7_POWER_COL ]]; then
 		echo "Results file contains no LITTLE power column!" >&2
@@ -448,8 +463,10 @@ if [[ ${#TRAIN_SET[@]} != ${#TEST_SET[@]} ]]; then
 	echo "Warning! Benchmark sets are different sizes [${#TRAIN_SET[@]};${#TEST_SET[@]}]" >&1
 fi
 
-#Power column (regressand) sanity check
-#-p number
+echo -e "--------------------" >&1
+echo -e "A7 Voltage: -> $A7_VOLTAGE_COL" >&1
+echo -e "A15 Voltage: -> $A15_VOLTAGE_COL" >&1
+
 echo -e "--------------------" >&1
 echo -e "A7 Power: -> $A7_POWER_COL" >&1
 echo -e "A15 Power: -> $A15_POWER_COL" >&1
@@ -547,7 +564,7 @@ do
 		touch "test_set.data"
 
 		awk -v START="$RESULT_START_LINE" -v SEP='\t' -v A7FREQCOL="$A7_FREQ_COL" -v A7FREQ="${TEMP_FREQ[0]}" -v A15FREQCOL="$A15_FREQ_COL" -v A15FREQ="${TEMP_FREQ[1]}" -v BENCHCOL="$RESULT_BENCH_COL" -v BENCH_SET="${TEST_SET[*]}" 'BEGIN{FS = SEP;len=split(BENCH_SET,ARRAY," ")}{if (NR >= START && $A7FREQCOL == A7FREQ && $A15FREQCOL == A15FREQ){for (i = 1; i <= len; i++){if ($BENCHCOL == ARRAY[i]){print $0;next}}}}' < "$RESULT_FILE" > "test_set.data"
-		octave_output+=$(octave --silent --eval "load_build_model_samuel('test_set.data',0,3,$A7_POWER_COL,$A15_POWER_COL)" 2> /dev/null)
+		octave_output+=$(octave --silent --eval "load_build_model_samuel('test_set.data',0,3,$A7_VOLTAGE_COL,$A15_VOLTAGE_COL,$A7_POWER_COL,$A15_POWER_COL)" 2> /dev/null)
 		#Cleanup
 		rm "test_set.data"
 	done
@@ -559,6 +576,9 @@ done
 
 #Extract relevant informaton from octave. Some of these will be empty depending on mode
 #Physical information
+#Avg. Voltage
+IFS=";" read -a avg_volt_a7 <<< $(echo -e "$octave_output" |awk -v SEP=' ' 'BEGIN{FS=SEP}{if ($1=="Average" && $2=="A7" && $3=="Voltage"){ print $5 }}' | tr "\n" ";" | head -c -1)
+IFS=";" read -a avg_volt_a15 <<< $(echo -e "$octave_output" |awk -v SEP=' ' 'BEGIN{FS=SEP}{if ($1=="Average" && $2=="A15" && $3=="Voltage"){ print $5 }}' | tr "\n" ";" | head -c -1)
 #Avg. Power
 IFS=";" read -a avg_pow_a7 <<< $(echo -e "$octave_output" |awk -v SEP=' ' 'BEGIN{FS=SEP}{if ($1=="Average" && $2=="A7" && $3=="Power"){ print $5 }}' | tr "\n" ";" | head -c -1)
 IFS=";" read -a avg_pow_a15 <<< $(echo -e "$octave_output" |awk -v SEP=' ' 'BEGIN{FS=SEP}{if ($1=="Average" && $2=="A15" && $3=="Power"){ print $5 }}' | tr "\n" ";" | head -c -1)
@@ -566,8 +586,8 @@ IFS=";" read -a avg_pow_a15 <<< $(echo -e "$octave_output" |awk -v SEP=' ' 'BEGI
 #Adjust output depending on mode  	
 #I store the varaible references as special characters in the DATA string then eval to evoke subsittution. Eliminates repetitive code.
 
-HEADER="A7 Frequency\tA15 Frequency\tAverage A7 Power [W]\tAverage A15 Power [W]\tTotal Runtime [s]"
-DATA="\${TEMP_FREQ[0]}\t\${TEMP_FREQ[1]}\t\${avg_pow_a7[\$i]}\t\${avg_pow_a15[\$i]}\t\${avg_total_runtime[\$i]}"
+HEADER="A7 Frequency\tA15 Frequency\tA7 Voltage\tA15 Voltage\tAverage A7 Power [W]\tAverage A15 Power [W]\tTotal Runtime [s]"
+DATA="\${TEMP_FREQ[0]}\t\${TEMP_FREQ[1]}\t\${avg_volt_a7[\$i]}\t\${avg_volt_a15[\$i]}\t\${avg_pow_a7[\$i]}\t\${avg_pow_a15[\$i]}\t\${avg_total_runtime[\$i]}"
 
 #Output to file or terminal. First header, then data depending on model
 #If per-frequency models, iterate frequencies then print
