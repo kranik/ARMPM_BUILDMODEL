@@ -12,8 +12,6 @@ The scripts contained in this repo represent the second part of the power modell
 
 The whole model generation and validation process takes multiple steps:
 
-
-
 ### Prerequisites
 
 ### Installing
@@ -38,4 +36,5 @@ This project is licensed under the BSD-3 License - please see [LICENSE.md](LICEN
 
 ## Acknowledgements
 
-The primary project supervisor was [Dr Jose Nunez-Yanez](http://www.bristol.ac.uk/engineering/people/jose-l-nunez-yanez/overview.html). This work was initially supported by ARM Research funding, through an EPSRC iCASE studentship and the University of Bristol and by the EPSRC ENEAC grant number EP/N002539/1.
+The primary project supervisor was [Dr Jose Nunez-Yanez](http://www.bristol.ac.uk/engineering/people/jose-l-nunez-yanez/overview.html). This work was initially supported by [ARM Research](https://www.arm.com/resources/research) funding, through an EPSRC iCASE studentship and the [University of Bristol](http://www.bristol.ac.uk/doctoral-college/) and by the EPSRC ENEAC grant number EP/N002539/1. Industrial project supervisor was [Dr Matt Horsnell](https://uk.linkedin.com/in/matthorsnell)
+
