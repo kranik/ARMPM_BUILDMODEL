@@ -7,7 +7,7 @@ The primary project supervisor was [Dr Jose Nunez-Yanez](http://www.bristol.ac.u
 
 **As of March 2018, I have officially graduated so this project is currently independent!**
 
-Full details about the methodology are presented in my dissertation _Power Modelling and Analysis on Heterogeneous Embedded Systems_.
+Full details about the methodology are presented in my dissertation [_Power Modelling and Analysis on Heterogeneous Embedded Systems_](https://seis.bristol.ac.uk/~eejlny/downloads/kris_thesis.pdf).
 
 **As of February 2019 the code is no loger actively maintained, though I have some plans for a possuble update on the multi-thread model methodology!**
 
