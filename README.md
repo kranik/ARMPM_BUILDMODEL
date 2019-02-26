@@ -1,4 +1,4 @@
-# Power Model generation for ARM big.LITTLE on ODROID XU3 platform.
+# Power Model generation for ARM big.LITTLE aka _ARMPM\_BUILDMODEL_
 
 **As of March 2018, I have officially graduated, so this project is currently closed.**
 
@@ -25,8 +25,6 @@ The whole model generation and validation process takes multiple steps:
 ## Versioning
 
 ## Author
-
-**_Kris Nikov 2016_**
 
 The work presented here was carried out by me, [Dr Kris Nikov](kris.nikov@bris.ac.uk) as part of my PhD project in the Department of Electrical and Electronic Enginnering at the Univeristy of Bristol,UK.
 
