@@ -1,10 +1,13 @@
 # Power Model generation for ARM big.LITTLE aka _ARMPM\_BUILDMODEL_
 
-**As of March 2018, I have officially graduated, so this project is currently closed.**
+**September 2017 - The code is no loger actively maintained, though I have some plans for a possuble update on the multi-thread model methodology!**
+
+**March 2018 - I have officially graduated, so this project is currently closed.**
+
+**February 2019 - Project reopened due to interested from other academic parties.**
 
 Full details about the methodology and the produced models are presented in the dissertation [_Power Modelling and Analysis on Heterogeneous Embedded Systems_](https://seis.bristol.ac.uk/~eejlny/downloads/kris_thesis.pdf).
 
-**As of February 2019 the code is no loger actively maintained, though I have some plans for a possuble update on the multi-thread model methodology!**
 
 ## Getting Started
 
