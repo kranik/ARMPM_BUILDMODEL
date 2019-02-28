@@ -15,11 +15,11 @@ while getopts ":r:n:sh" opt;
 do
     	case $opt in
         h)
-        	echo "Available flags and options:" >&2
-        	echo "-r [DIRECTORY] -> Specify the save directory for the results of the different runs."
-        	echo "-n [INTEGER] -> specify list of runs to be concatenated. -n 3 for run Number 3. -n 1,3 for runs 1 and 3."
-        	echo "-s -> Enable saving of events in results directory."
-        	cho "Mandatory options are: -r [DIR] -n [NUM]"
+        	echo "Available flags and options:" >&1
+        	echo "-r [DIRECTORY] -> Specify the save directory for the results of the different runs." >&1
+        	echo "-n [INTEGER] -> specify list of runs to be concatenated. -n 3 for run Number 3. -n 1,3 for runs 1 and 3." >&1
+        	echo "-s -> Enable saving of events in results directory. If not - output to terminal." >&1
+        	echo "Mandatory options are: -r [DIR] -n [NUM]" >&1
         	exit 0 
         	;;
         #Specify the save directory, if no save directory is chosen the results are saved in the $PWD

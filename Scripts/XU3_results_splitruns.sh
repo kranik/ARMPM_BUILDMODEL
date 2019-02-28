@@ -10,10 +10,10 @@ while getopts ":r:n:s:h" opt;
 do
 	case $opt in
         	h)
-			echo "Available flags and options:" >&2
-			echo "-r [File] -> Specify the results file to be split."
-			echo "-s [DIRECTORY] -> Specify the save directory for the split results."
-			echo "Mandatory options are: -r -s "
+			echo "Available flags and options:" >&1
+			echo "-r [FILEPATH] -> Specify the results file to be split." >&1
+			echo "-s [DIRECTORY] -> Specify the save directory for the split results." >&1
+			echo "Mandatory options are: -r [FILE] -s [DIR]" >&1
 			exit 0 
         		;;
 		#Specify the results file

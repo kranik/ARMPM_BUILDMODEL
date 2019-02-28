@@ -92,7 +92,7 @@ do
 			echo "-r [FILEPATH] -> Specify the concatednated result file to be analyzed." >&1
 			echo "-t [FILEPATH] -> Specify the concatednated result file to be used to test model." >&1
 			echo "-f [FREQENCY LIST][MHz] -> Specify the frequencies to be analyzed, separated by commas." >&1
-			echo "-b [FILEPATH] -> Specify the benchmark split file for the analyzed results. Can also use an unused filename to generate new split."
+			echo "-b [FILEPATH] -> Specify the benchmark split file for the analyzed results. Can also use an unused filename to generate new split." >&1
 			echo "-p [NUMBER] -> Specify power column." >&1
 			echo "-e [NUMBER LIST] -> Specify events list." >&1
 			echo "-a -> Use flag to specify all frequencies model instead of per frequency one." >&1
@@ -103,8 +103,9 @@ do
 			echo "-l [NUMBER LIST] -> Specify events pool." >&1
 			echo "-n [NUMBER] -> Specify max number of events to include in automatic model generation." >&1
 			echo "-o [NUMBER: 1:$NUM_OUTPUT_MODES]-> Output mode: 1 -> Measured platform physical data; 2 -> Model detailed performance and coefficients; 3 -> Model shortened performance; 4 -> Platform selected event totals; 5 -> Platform selected event averages;" >&1
-			echo "-s [FILEPATH] -> Specify the save file for the analyzed results." >&1
-			echo "Mandatory options are: -r, -b, -p, -e/(-m -c -n -l), -o"
+			echo "-s [FILEPATH] -> Specify the save file for the analyzed results. If no save file - output to terminal." >&1
+			echo "Mandatory options are: -r [FILE] -b [FILE] -p [NUM] -e [LIST]/(-m [NUM] -c [NUM] -n [NUM] -l [NUM]) -o [NUM]" >&1
+			echo "You can either explicitly specify the events list to be used for the model with -e [LIST] or use the automatic selection flags -m [NUM] -c [NUM] -n [NUM] -l [NUM]) -o [NUM]." >&1
 			exit 0 
 			;;
 

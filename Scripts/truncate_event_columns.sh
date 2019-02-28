@@ -1,7 +1,5 @@
 #!/bin/bash
 
-echo -e "===================="
-
 if [[ "$#" -eq 0 ]]; then
 	echo "This program requires inputs. Type -h for help." >&2
 	echo -e "===================="
@@ -13,12 +11,12 @@ while getopts ":r:m:e:s:h" opt;
 do
 	case $opt in
         	h)
-			echo "Available flags and options:" >&2
-			echo "-r [FILE] -> Specify the results file."
-			echo "-m [NUMBER] -> Specify the mode: 1 - extract selected event columns, 2 - remove selected event columns."
-			echo "-e [NUMBER LIST] -> Specify the event column list for extraction/removal."		
-			echo "-s [FILE] -> Specify the save file for the concatenated results."
-			echo "Mandatory options are: -r"
+			echo "Available flags and options:" >&1
+			echo "-r [FILEPATH] -> Specify the results file to edit." >&1
+			echo "-m [NUMBER] -> Specify the mode: 1 - extract selected event columns, 2 - remove selected event columns." >&1
+			echo "-e [NUMBER LIST] -> Specify the event column list for extraction/removal." >&1
+			echo "-s [FILE] -> Specify the save file for the updated results file. If no save file - output to terminal." >&1
+			echo "Mandatory options are: -r [FILE] -m [NUM] -e [LIST]" >&1
 			exit 0 
         		;;
 		#Specify the results file

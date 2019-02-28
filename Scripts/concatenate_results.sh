@@ -15,13 +15,13 @@ while getopts ":r:n:mesh" opt;
 do
     case $opt in
         h)
-        	echo "Available flags and options:" >&2
-        	echo "-r [DIRECTORY] -> Specify the save directory for the results of the different runs."
-        	echo "-n [RUNS] -> specify list of runs to be concatenated. -n 3 for run Number 3. -n 1,3 for runs 1 and 3."
-        	echo "-s -> Enable saving of events in results directory."
-		echo "-e -> Specify the inclusion of events or not (for cases where we do not hve PMU events i.e. overhead analysis)."
-		echo "-m -> Specify the multicluster option which includes all information.."
-        	cho "Mandatory options are: -r [DIR] -n [NUM]"
+        	echo "Available flags and options:" >&1
+        	echo "-r [DIRECTORY] -> Specify the save directory for the results of the different runs." >&1
+        	echo "-n [RUNS] -> specify list of runs to be concatenated. -n 3 for run Number 3. -n 1,3 for runs 1 and 3." >&1
+        	echo "-s -> Enable saving of events in results directory. If not - output to terminal." >&1
+		echo "-e -> Specify the inclusion of events for cases where we do not hve PMU events i.e. overhead analysis. Default is no events (no -e)." >&1
+		echo "-m -> Specify the multi-cluster option which includes all information. Default is single-cluster (no -m). Can only be used without -e." >&1
+        	echo "Mandatory options are: -r [DIR] -n [NUM]" >&1
         	exit 0 
 	        ;;
         #Specify the save directory, if no save directory is chosen the results are saved in the $PWD

@@ -12,10 +12,10 @@ while getopts ":r:s:h" opt;
 do
 	case $opt in
         	h)
-			echo "Available flags and options:" >&2
-			echo "-r [DIRECTORY] -> Specify the results files."
-			echo "-s [DIRECTORY] -> Specify the save directory for the concatenated results."
-			echo "Mandatory options are: -r"
+			echo "Available flags and options:" >&1
+			echo "-r [FILEPATH] -> Specify the results files." >&1
+			echo "-s [FILEPATH] -> Specify the save file for the concatenated results. If no save file - output to terminal." >&1
+			echo "Mandatory options are: -r [FILE1] -r [FILE2]" >&1
 			exit 0 
         		;;
 		#Specify the results file
