@@ -85,45 +85,7 @@ if (mode == 2)
 
   %Extract train data from the file train clomuns specified. 
   %The ones in front are for the constant coefficiant for linear regression
-  train_reg=[ones(size(train_set,1),1),train_set(:,str2num(events_col).-start_col)];
-
-%  %Pricopi
-%  EVLIST=train_set(:,str2num(events_col).-start_col);
-%  CYCLES=EVLIST(:,1);
-%  INSTR=EVLIST(:,2);
-%  INT=EVLIST(:,3);
-%  VFP=EVLIST(:,4);
-%  L1DACC=EVLIST(:,5);
-%  L2DACC=EVLIST(:,6);
-%  L2DREF=EVLIST(:,7);
-%  train_reg=[ones(size(train_set,1),1),INSTR./CYCLES,INT./INSTR,VFP./INSTR,L1DACC./INSTR,L2DACC./INSTR,L2DREF./INSTR];
-
-%  %Rodriguez
-%  EVLIST=train_set(:,str2num(events_col).-start_col);
-%  FREQ=EVLIST(:,1);
-%  L1IACC=EVLIST(:,2);
-%  L2DACC=EVLIST(:,3);
-%  EXCTAKEN=EVLIST(:,4);
-%  BRMISSPRED=EVLIST(:,5);
-%  train_reg=[ones(size(train_set,1),1),L1IACC,L2DACC,EXCTAKEN.+BRMISSPRED];
-
-%  %Rethinagiri
-%  EVLIST=train_set(:,str2num(events_col).-start_col);
-%  FREQ=EVLIST(:,1);
-%  CYCLES=EVLIST(:,2);
-%  INSTR=EVLIST(:,3);
-%  L1IREF=EVLIST(:,4);
-%  L1DREF=EVLIST(:,5);
-%  L2DREF=EVLIST(:,6);
-%  train_reg=[ones(size(train_set,1),1),INSTR./CYCLES,L1IREF.+L1DREF,L2DREF];
-%  %allfreq  
-%  train_reg=[ones(size(train_set,1),1),FREQ,INSTR./CYCLES,L1IREF.+L1DREF,L2DREF];
-
-%  %Takouna
-%  EVLIST=train_set(:,str2num(events_col).-start_col);
-%  FREQ=EVLIST(:,1);
-%  NUMCORES=EVLIST(:,2);
-%  train_reg=[ones(size(train_set,1),1),FREQ.^2,FREQ,NUMCORES];  
+  train_reg=[ones(size(train_set,1),1),train_set(:,str2num(events_col).-start_col)]; 
 
   %Compute model
   [m, maxcorr, maxcorrindices, avgcorr] = build_model(train_reg,train_set(:,power_col.-start_col));
@@ -136,45 +98,6 @@ if (mode == 2)
   %Again extract test data from specified file.
   %Events columns are same as train file
   test_reg=[ones(size(test_set,1),1),test_set(:,str2num(events_col).-start_col)];
-  
-%  %Pricopi
-%  EVLIST=test_set(:,str2num(events_col).-start_col);
-%  CYCLES=EVLIST(:,1);
-%  INSTR=EVLIST(:,2);
-%  INT=EVLIST(:,3);
-%  VFP=EVLIST(:,4);
-%  L1DACC=EVLIST(:,5);
-%  L2DACC=EVLIST(:,6);
-%  L2DREF=EVLIST(:,7);
-%  test_reg=[ones(size(test_set,1),1),INSTR./CYCLES,INT./INSTR,VFP./INSTR,L1DACC./INSTR,L2DACC./INSTR,L2DREF./INSTR]; 
-  
-%  %Rodriguez
-%  EVLIST=test_set(:,str2num(events_col).-start_col);
-%  FREQ=EVLIST(:,1);
-%  L1IACC=EVLIST(:,2);
-%  L2DACC=EVLIST(:,3);
-%  EXCTAKEN=EVLIST(:,4);
-%  BRMISSPRED=EVLIST(:,5);
-%  test_reg=[ones(size(test_set,1),1),L1IACC,L2DACC,EXCTAKEN.+BRMISSPRED];
-
-
-%  %Rethinagiri
-%  EVLIST=test_set(:,str2num(events_col).-start_col);
-%  FREQ=EVLIST(:,1);
-%  CYCLES=EVLIST(:,2);
-%  INSTR=EVLIST(:,3);
-%  L1IREF=EVLIST(:,4);
-%  L1DREF=EVLIST(:,5);
-%  L2DREF=EVLIST(:,6);
-%  test_reg=[ones(size(test_set,1),1),INSTR./CYCLES,L1IREF.+L1DREF,L2DREF];
-%  %allfreq
-%  test_reg=[ones(size(test_set,1),1),FREQ,INSTR./CYCLES,L1IREF.+L1DREF,L2DREF];  
-
-%  %Takouna
-%  EVLIST=test_set(:,str2num(events_col).-start_col);
-%  FREQ=EVLIST(:,1);
-%  NUMCORES=EVLIST(:,2);
-%  test_reg=[ones(size(test_set,1),1),FREQ.^2,FREQ,NUMCORES];  
 
   %Extract measured power and range from test data
   test_power=test_set(:,power_col.-start_col);
