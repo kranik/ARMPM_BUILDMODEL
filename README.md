@@ -68,7 +68,7 @@ splash2x.water_nsquared	splash2x.barnes
 	splash2x.fmm
 ```  
 
-The benchmark split file needs to have a specific header and two columns for the train and test set with the benchmark names distributed between the two categories. The `octave` scripts that I have produced, namely [`build_model.m`](Scripts/build_model.m) and [`load_build_model.m`](Scripts/load_build_model.sh) use the train set and test set data passed to them by [`octave_makemodel.sh`](Scripts/octave_makemodel.m) and use Ordinary Lease Squares to fit the model on the train set and validate the resulting model error using the test set. More information about what heuristics I use to identify the best set of events and the model optimisation criteria are explained in details in my [dissertation](https://seis.bristol.ac.uk/~eejlny/downloads/kris_thesis.pdf). 
+The benchmark split file needs to have a specific header and two columns for the train and test set with the benchmark names distributed between the two categories. The `octave` scripts that I have produced, namely [`build_model.m`](Scripts/build_model.m) and [`load_build_model.m`](Scripts/load_build_model.m) use the train set and test set data passed to them by [`octave_makemodel.sh`](Scripts/octave_makemodel.sh) and use Ordinary Lease Squares to fit the model on the train set and validate the resulting model error using the test set. More information about what heuristics I use to identify the best set of events and the model optimisation criteria are explained in details in my [dissertation](https://seis.bristol.ac.uk/~eejlny/downloads/kris_thesis.pdf). 
 
 ### Troubleshooting
 
