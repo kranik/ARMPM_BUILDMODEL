@@ -2,7 +2,6 @@
 
 if [[ "$#" -eq 0 ]]; then
 	echo "This program requires inputs. Type -h for help." >&2
-	echo -e "===================="
 	exit 1
 fi
 

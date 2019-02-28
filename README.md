@@ -25,7 +25,7 @@ This repo contains only the control scripts and does not include a version of oc
 
 The script use `GNU bash, version 4.3.48(1)-release (x86_64-pc-linux-gnu)` and the platform is built on `Ubuntu 16.04.3 LTS (Xenial Xerus)`, kernel version `4.4.0-116-generic`. However the mothodology should be portable to other systems, since the scripts primarily use standart command line programs, such as `awk`, `sed`, `bc`, etc. and calls to `octave`. The project uses `GNU Octave, version 4.0.2` and should work with higher versions as well. Please check with your distro package database for the appropriate octave version or download and compile from [_here_](https://ftp.gnu.org/gnu/octave/).
 
-**DISCLAIMER - I haven't really tested the scripts on other setups but my own so please let me know if you have any issues via [_email_](kris.nikov@bris.ac.uk).**
+**DISCLAIMER - I haven't really tested the scripts on other setups but my own so please let me know if you have any issues via [_email_](mailto:kris.nikov@bris.ac.uk).**
 
 ### Setup
 
@@ -102,7 +102,7 @@ So far I am the sole contributor, but if this project gets traction I will gener
 
 ## Author
 
-The work presented here was carried out almost entirely by me (so far), [Dr Kris Nikov](kris.nikov@bris.ac.uk) as part of my PhD project in the Department of Electrical and Electronic Enginnering at the Univeristy of Bristol, UK. I have received some minor contrubutions such as the initial code for the OLS model fitting in octave, given to me by my academic supervisor [Dr Jose Nunez-Yanez](http://www.bristol.ac.uk/engineering/people/jose-l-nunez-yanez/overview.html). I have also used a kernel patch, provided by my industrial supervisor [Dr Matt Horsnell](https://uk.linkedin.com/in/matthorsnell), which enables the on-board PMU on the ODROID-XU3 development board.
+The work presented here was carried out almost entirely by me (so far), [Dr Kris Nikov](mailto:kris.nikov@bris.ac.uk) as part of my PhD project in the Department of Electrical and Electronic Enginnering at the Univeristy of Bristol, UK. I have received some minor contrubutions such as the initial code for the OLS model fitting in octave, given to me by my academic supervisor [Dr Jose Nunez-Yanez](http://www.bristol.ac.uk/engineering/people/jose-l-nunez-yanez/overview.html). I have also used a kernel patch, provided by my industrial supervisor [Dr Matt Horsnell](https://uk.linkedin.com/in/matthorsnell), which enables the on-board PMU on the ODROID-XU3 development board.
 
 ## Licence
 
