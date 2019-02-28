@@ -98,7 +98,7 @@ The code is also heavily commented, so please check the source first before send
 
 ## Contributing
 
-So far I am the sole contributor, but if this project gets traction I will generate a proper Code of Conduct document and set some rules. For now please use the [_shellcheck_](https://www.shellcheck.net/) bash code linter to verify your code and comment thoroughly. 
+So far I am the sole contributor, but if this project gets traction I will generate a proper Code of Conduct document and set some rules. For now please use the [_ShellCheck_](https://www.shellcheck.net/) bash code linter to verify your code and comment thoroughly. 
 
 ## Author
 

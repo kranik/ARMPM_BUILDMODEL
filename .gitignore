@@ -38,6 +38,18 @@ Thumbs.db
 
 # Project-specific files and folders #
 ######################################
-Scripts/Concatenated_Results/*
+Concatenated_Results/*
 Scripts/octave-workspace
-Scripts/Analysed_Results/*
+Analysed_Results/*
+KFoldsSplits/*
+Parsecsplits/*
+.gitignore
+Scripts/load_build_model_samuel.m
+Scripts/modified_old_split.data
+Scripts/new_bench_split.data
+Scripts/octave_makemodel_samuel.sh
+Scripts/old_bench_split.data
+Scripts/PARSEC_fullset.data
+Scripts/PARSEC_modified_split.data
+Scripts/PARSEC_split.data
+Scripts/wrap_*

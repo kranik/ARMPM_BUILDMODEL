@@ -17,7 +17,7 @@ do
 			echo "-s [DIRECTORY] -> Specify the save directory for the concatenated results."
 			echo "-e -> Specify the inclusion of events or not (for cases where we do not hve PMU events i.e. overhead analysis)."
 			echo "-m -> Specify the multicluster option which includes all information. Can only be used without -e."
-			echo "Mandatory options are: ..."
+			echo "Mandatory options are: -r [DIR] -n [NUM]"
 			exit 0 
         		;;
 		#Specify the save directory, if no save directory is chosen the results are saved in the $PWD

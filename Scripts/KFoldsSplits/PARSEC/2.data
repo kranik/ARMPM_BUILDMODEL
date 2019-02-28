@@ -1,9 +1,0 @@
-#Train Set	Test Set
-parsec.facesim	parsec.dedup
-parsec.freqmine
-parsec.streamcluster
-splash2x.radiosity
-splash2x.raytrace
-splash2x.water_nsquared
-splash2x.barnes
-splash2x.fmm
