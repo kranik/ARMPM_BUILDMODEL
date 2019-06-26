@@ -196,18 +196,23 @@ do
 		fi		
 		
 		#Extract sensor and event information
-		for BENCH_LINE in $(seq "$BENCHMARKS_BEGIN_LINE" "$(wc -l "$BENCHMARKS_FILE" | awk '{print $1}')")
+		echo $BENCHMARKS_BEGIN_LINE
+		echo $(wc -l "$BENCHMARKS_FILE" | awk '{print $1}')
+		echo $(seq "$BENCHMARKS_BEGIN_LINE" "$(wc -l "$BENCHMARKS_FILE" | awk '{print $1}')")
+		for BENCH_LINE in $(seq 2 2) #$(seq "$BENCHMARKS_BEGIN_LINE" "$(wc -l "$BENCHMARKS_FILE" | awk '{print $1}')")
 		do 
 			#Get start and end of each benchmark
 			BENCH_NAME=$(awk -v START="$BENCH_LINE" -v SEP=$COL_SEP -v COL="$BENCH_NAME_COLUMN" 'BEGIN{FS=SEP}{if (NR == START){print $COL;exit}}' < "$BENCHMARKS_FILE")
 			BENCH_START=$(awk -v START="$BENCH_LINE" -v SEP=$COL_SEP -v COL="$BENCH_START_COLUMN" 'BEGIN{FS=SEP}{if (NR == START){print $COL;exit}}' < "$BENCHMARKS_FILE")
 			BENCH_FINISH=$(awk -v START="$BENCH_LINE" -v SEP=$COL_SEP -v COL="$BENCH_END_COLUMN" 'BEGIN{FS=SEP}{if (NR == START){print $COL;exit}}' < "$BENCHMARKS_FILE")
+			echo $BENCH_START
 			#BENCH_RUNTIME=$(echo "scale = 10; ($BENCH_FINISH-$BENCH_START)/$time_convert;" | bc) 
 			for SENSORS_LINE in $(awk -v START="$SENSORS_BEGIN_LINE" -v SEP=' ' -v B_ST="$BENCH_START" -v B_F="$BENCH_FINISH" 'BEGIN{FS = SEP} {if (NR >= START && $1 >= B_ST && $1 <= B_F) print NR }' < "$SENSORS_FILE")
 			do
 				SENSORS_TIMESTAMP=$(awk -v START="$SENSORS_LINE" -v SEP=' ' 'BEGIN{FS=SEP}{if (NR==START){print $1;exit}}'  < "$SENSORS_FILE")
 				SENSORS_TIMESTAMP_NEXT=$(awk -v START=$((SENSORS_LINE+1)) -v SEP=' ' 'BEGIN{FS=SEP}{if (NR==START){print $1;exit}}'  < "$SENSORS_FILE")
 				SENSORS_DATA=$(awk -v START="$SENSORS_LINE" -v SEP=' ' -v COL_START="$SENSORS_COL_START" -v COL_END="$SENSORS_COL_END" 'BEGIN{FS = SEP}{if(NR==START){ for(i=COL_START;i<=COL_END;i++) print $i} }' < "$SENSORS_FILE" | tr "\n" "\t" | head -c -1)
+				echo $SENSORS_DATA
 				if [[ -n $WITH_EVENTS ]]; then
 					for EVENTS_LINE in $(awk -v START="$EVENTS_BEGIN_LINE" -v SEP="\t" -v S_ST="$SENSORS_TIMESTAMP" -v S_F="$SENSORS_TIMESTAMP_NEXT" 'BEGIN{FS=SEP}{if (NR >= START && $1 >= S_ST && $1 < S_F){print NR;exit}}' < "$EVENTS_FILE")
 					do

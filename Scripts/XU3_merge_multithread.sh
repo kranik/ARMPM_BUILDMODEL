@@ -8,14 +8,15 @@ fi
 RF_NUM=0
 
 #requires getops, but this should not be an issue since ints built in bash
-while getopts ":r:s:h" opt;
+while getopts ":r:c:s:h" opt;
 do
 	case $opt in
         	h)
 			echo "Available flags and options:" >&1
-			echo "-r [FILEPATH] -> Specify the multi-thread results files. Please list in order of cores/threads." >&1
+			echo "-r [FILEPATH] -> Specify the multi-thread results files." >&1
+			echo "-c [INTEGER LIST] -> Specify the cpu cores list file by file. This allows to just merge 2Core and 4Core results for example. The list needs to be in order of the results files specified with the -r flag." >&1	
 			echo "-s [FILEPATH] -> Specify the save file for the concatenated results. If no save file - output to terminal." >&1
-			echo "Mandatory options are: -r [FILE1] -r [FILE2]" >&1
+			echo "Mandatory options are: -r [FILE1] -r [FILE2] -c [LIST]" >&1
 			exit 0 
         		;;
 		#Specify the results file
@@ -29,16 +30,16 @@ do
 				((RF_NUM++))
 				#Extract file information
 				eval RESULTS_FILE_$RF_NUM="$OPTARG"
-				eval RESULTS_START_LINE_$RF_NUM=$(awk -v SEP='\t' 'BEGIN{FS=SEP}{ if($1 !~ /#/){print (NR);exit} }' < $(eval echo -e "\$RESULTS_FILE_$RF_NUM"))
+				eval RESULTS_START_LINE_$RF_NUM="$(awk -v SEP='\t' 'BEGIN{FS=SEP}{ if($1 !~ /#/){print (NR);exit} }' < "$(eval echo -e "\$RESULTS_FILE_$RF_NUM")")"
 				#Check if results file contains data
 			    	if [[ -z $(eval echo -e "\$RESULTS_START_LINE_$RF_NUM") ]]; then 
-					echo "ERROR: Results file "$(eval echo -e "\$RESULTS_FILE_$RF_NUM") "contains no data!" >&2
+					echo "ERROR: Results file ""$(eval echo -e "\$RESULTS_FILE_$RF_NUM")""contains no data!" >&2
 					exit 1
 				fi
 
 				#Exctract sync point 1 (run) information and do checks
-				eval RESULTS_RUN_COLUMN_$RF_NUM=$(awk -v SEP='\t' -v START=$(( $(eval echo -e "\$RESULTS_START_LINE_$RF_NUM") - 1 )) 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /Run/) { print i; exit} } } }' < $(eval echo -e "\$RESULTS_FILE_$RF_NUM"))
-				eval RESULTS_RUN_LIST_$RF_NUM=$(awk -v SEP='\t' -v START=$(eval echo -e "\$RESULTS_START_LINE_$RF_NUM") -v DATA=0 -v COL=$(eval echo -e "\$RESULTS_RUN_COLUMN_$RF_NUM") 'BEGIN{FS=SEP}{ if(NR >= START && $COL != DATA){print ($COL);DATA=$COL} }' < $(eval echo -e "\$RESULTS_FILE_$RF_NUM") | sort -u | sort -g | tr "\n" "," | head -c -1 )
+				eval RESULTS_RUN_COLUMN_$RF_NUM="$(awk -v SEP='\t' -v START="$(( $(eval echo -e "\$RESULTS_START_LINE_$RF_NUM") - 1 ))" 'BEGIN{FS=SEP}{if(NR==START){ for(i=1;i<=NF;i++){ if($i ~ /Run/) { print i; exit} } } }' < "$(eval echo -e "\$RESULTS_FILE_$RF_NUM")")"
+				eval RESULTS_RUN_LIST_$RF_NUM="$(awk -v SEP='\t' -v START=$(eval echo -e "\$RESULTS_START_LINE_$RF_NUM") -v DATA=0 -v COL=$(eval echo -e "\$RESULTS_RUN_COLUMN_$RF_NUM") 'BEGIN{FS=SEP}{ if(NR >= START && $COL != DATA){print ($COL);DATA=$COL} }' < $(eval echo -e "\$RESULTS_FILE_$RF_NUM") | sort -u | sort -g | tr "\n" "," | head -c -1 )"
 
 				#Compare run column information
 				if [[ -z $RESULTS_RUN_LIST ]]; then
@@ -111,7 +112,16 @@ do
 					fi
 				fi
 		    	fi
-		    	;;    
+		    	;;
+		c)
+			if [[ -n  $CORES_LIST ]]; then
+		    		echo "Invalid input: option -c has already been used!" >&2
+				echo -e "===================="
+		    		exit 1
+			else
+				CORES_LIST="$OPTARG"
+                	fi
+		    	;;
 		#Specify the save file, if no save directory is chosen the results are printed on terminal
 		s)
 			if [[ -n $SAVE_FILE ]]; then
@@ -159,10 +169,42 @@ if [[ "$RF_NUM" -eq 0 ]]; then
     	exit 1
 fi
 
-if [[ "$RF_NUM" -eq 1 ]]; then
-    	echo "Please input more that one files to merge. Expected 2 or more -r flags!" >&2
+if [[ -z $CORES_LIST ]]; then
+    	echo "No cores list specified! Expected -c flag." >&2
+    	echo -e "====================" >&1
     	exit 1
 fi
+
+
+#-c flag
+if [[ -n $CORES_LIST ]]; then
+	spaced_CORES_LIST="${CORES_LIST//,/ }"
+	for CORE in $spaced_CORES_LIST
+	do
+		#Check if events list is in bounds
+		if [[ "$CORE" -gt 4 || "$CORE" -lt 1 ]]; then 
+			echo "Selected core -c $CORE is out of bounds/invalid to result file events. Needs to be an integer value betweeen [1:4](for the ODROID-XU3)." >&2
+			echo -e "===================="
+			exit 1
+		fi
+	done
+	#Check cores list against number of files
+	if [[ $(echo "$spaced_CORES_LIST" | awk -F " " '{print NF}') -ne "$RF_NUM" ]]; then
+		echo "Selected core list -c $CORES_LIST does not match the number of files specified with -r ($RF_NUM)." >&2
+		echo -e "===================="
+		exit 1
+	fi
+fi
+
+#Checkif events string contains duplicates
+if [[ $(echo "$CORES_LIST" | tr "," "\n" | wc -l) -gt $(echo "$CORES_LIST" | tr "," "\n" | sort | uniq | wc -l) ]]; then
+	echo "Selected event list -c $CORES_LIST contains duplicates." >&2
+	echo -e "===================="
+	exit 1
+fi
+
+#Put the string into an array
+IFS=',' read -r -a CORES_ARRAY <<< "$CORES_LIST"
 
 #Sanity checks and events header preparation
 for i in $(seq 1 $RF_NUM)
@@ -247,11 +289,11 @@ do
 		POWER=$(awk -v SEP='\t' -v START=$LINE -v COL=$(eval echo -e "\$RESULTS_POWER_COLUMN_$i") 'BEGIN{FS=SEP}{if(NR==START){print $COL;exit}}' < $(eval echo -e "\$RESULTS_FILE_$i"))
 		CCYCLES=$(awk -v SEP='\t' -v START=$LINE -v COL=$(eval echo -e "\$RESULTS_CCYCLES_COLUMN_$i") 'BEGIN{FS=SEP}{if(NR==START){print $COL;exit}}' < $(eval echo -e "\$RESULTS_FILE_$i"))
 		EVENTS=$(awk -v SEP='\t' -v START=$LINE -v COL_START=$(eval echo -e "\$RESULTS_EV_START_COLUMN_$i") 'BEGIN{FS=SEP}{if(NR==START){for(i=COL_START;i<=NF;i++){print $i}}}' < $(eval echo -e "\$RESULTS_FILE_$i") | tr "\n" "\t" | head -c -1)
-
+		DATA="$TIMESTAMP\t$BENCH\t$RUN\t\${CORES_ARRAY[\$((\$i-1))]}\t$FREQ\t$TEMP\t$VOLT\t$CURR\t$POWER\t$CCYCLES\t$EVENTS"
 		if [[ -z $SAVE_FILE ]]; then
-			echo -e "$TIMESTAMP\t$BENCH\t$RUN\t$i\t$FREQ\t$TEMP\t$VOLT\t$CURR\t$POWER\t$CCYCLES\t$EVENTS" >&1
+			echo -e "$(eval echo "$(echo -e "$DATA")")" | tr " " "\t" >&1
 		else
-			echo -e "$TIMESTAMP\t$BENCH\t$RUN\t$i\t$FREQ\t$TEMP\t$VOLT\t$CURR\t$POWER\t$CCYCLES\t$EVENTS" >> "$SAVE_FILE"
+			echo -e "$(eval echo "$(echo -e "$DATA")")" | tr " " "\t" >> "$SAVE_FILE"
 		fi
 		
 		((LINE++))
