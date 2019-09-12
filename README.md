@@ -10,6 +10,12 @@
 
 Full details about the methodology and the produced models are presented in the dissertation [**Power Modelling and Analysis on Heterogeneous Embedded Systems**](https://seis.bristol.ac.uk/~eejlny/downloads/kris_thesis.pdf).
 
+## Publications:
+
+Nikov, Krastin, Jose L. Nunez-Yanez, and Matthew Horsnell. "Evaluation of hybrid run-time power models for the ARM big. LITTLE architecture." 2015 IEEE 13th International Conference on Embedded and Ubiquitous Computing.[**PDF**](https://ieeexplore.ieee.org/abstract/document/7363640)
+
+Nikov, Krastin and Jose L. Nunez-Yanez. "Intra- and inter-core power modelling for single-ISA heterogeneous processors." International Journal of Embedded Systems. DOI: 10.1504/IJES.2020.10021023 (accepted and awaiting publication) [**PDF**](https://seis.bristol.ac.uk/~eejlny/downloads/nikov_power.pdf)
+
 ## Getting Started
 
 The scripts contained in this repo represent the second part of the power modelling and analysis methodology, that I have developed as part of my PhD, namely the offline model generation and analysis. They work with the on-platform data gathered by the [ARMPM\_DATACOLLECT](https://github.com/kranik/ARMPM_DATACOLLECT) scripts. 
