@@ -12,9 +12,9 @@ Full details about the methodology and the produced models are presented in the 
 
 ## Publications:
 
-Nikov, Krastin, Jose L. Nunez-Yanez, and Matthew Horsnell. "Evaluation of hybrid run-time power models for the ARM big. LITTLE architecture." 2015 IEEE 13th International Conference on Embedded and Ubiquitous Computing.[**PDF**](https://ieeexplore.ieee.org/abstract/document/7363640)
+Nikov, Krastin, Jose L. Nunez-Yanez, and Matthew Horsnell. "Evaluation of hybrid run-time power models for the ARM big. LITTLE architecture." 2015 IEEE 13th International Conference on Embedded and Ubiquitous Computing. [**PDF**](https://ieeexplore.ieee.org/abstract/document/7363640)
 
-Nikov, Krastin and Jose L. Nunez-Yanez. "Intra- and inter-core power modelling for single-ISA heterogeneous processors." International Journal of Embedded Systems. DOI: 10.1504/IJES.2020.10021023 (accepted and awaiting publication) [**PDF**](https://seis.bristol.ac.uk/~eejlny/downloads/nikov_power.pdf)
+Nikov, Krastin and Jose L. Nunez-Yanez. "Intra- and inter-core power modelling for single-ISA heterogeneous processors." International Journal of Embedded Systems. DOI: 10.1504/IJES.2020.10021023 (accepted and awaiting publication). [**PDF**](https://seis.bristol.ac.uk/~eejlny/downloads/nikov_power.pdf)
 
 ## Getting Started
 
