@@ -5,6 +5,7 @@ if [[ "$#" -eq 0 ]]; then
 	exit 1
 fi
 #Internal parameters
+OCTAVE_DEBUG=0
 TIME_CONVERT=1000000000
 
 #Internal variable for quickly setting maximum number of modes and model types
@@ -99,7 +100,7 @@ do
 			echo "-x [NUMBER: 1:$NUM_CROSS_MODES]-> Select cross model computation mode: 1 -> Intra-core model (no -t, just use -r onto intself but with a cross-model methodology); 2 -> Inter-core cross-model (-r file to -t file and they should have differing frequency information, but same events list);" >&1
 			echo "-q [FREQENCY LIST][MHz] -> Specify the frequencies to be used in cross-model for the second core (specified with -t flag)." >&1
 			echo "-m [NUMBER: 1:$NUM_ML_METHODS]-> Type of automatic machine learning search method: 1 -> Bottom-up; 2 -> Top-down; 3 -> Exhaustive search;" >&1
-			echo "-c [NUMBER: 1:$NUM_OPT_CRITERIA]-> Select minimization criteria for model optimisation: 1 -> Absolute error; 2 -> Absolute error standart deviation; 3 -> Maximum event cross-correlation; 4 -> Average event cross-correlation;" >&1
+			echo "-c [NUMBER: 1:$NUM_OPT_CRITERIA]-> Select minimization criteria for model optimisation: 1 -> Average relative error; 2 -> Average relative error standart deviation; 3 -> Maximum event cross-correlation; 4 -> Average event cross-correlation;" >&1
 			echo "-l [NUMBER LIST] -> Specify events pool." >&1
 			echo "-n [NUMBER] -> Specify max number of events to include in automatic model generation." >&1
 			echo "-o [NUMBER: 1:$NUM_OUTPUT_MODES]-> Output mode: 1 -> Measured platform physical data; 2 -> Model detailed performance and coefficients; 3 -> Model shortened performance; 4 -> Platform selected event totals; 5 -> Platform selected event averages;" >&1
@@ -1018,10 +1019,10 @@ if [[ -n $AUTO_SEARCH ]]; then
 	echo "Specified optimisation criteria:" >&1
 	case $MODEL_TYPE in
 		1)
-			echo "$MODEL_TYPE -> Minimize model absolute error." >&1
+			echo "$MODEL_TYPE -> Minimize model average relative error." >&1
 			;;
 		2) 
-			echo "$MODEL_TYPE -> Minimize model absolute error standart deviation." >&1
+			echo "$MODEL_TYPE -> Minimize model average relative error standart deviation." >&1
 			;;
 		3) 
 			echo "$MODEL_TYPE -> Minimize model maximum event cross-correlation." >&1
@@ -2372,7 +2373,12 @@ else
 					else
 						awk -v START="$RESULT_START_LINE" -v SEP='\t' -v FREQ_COL="$RESULT_FREQ_COL" -v FREQ="${FREQ_LIST[$count]}" -v BENCH_COL="$RESULT_BENCH_COL" -v BENCH_SET="${TEST_SET[*]}" 'BEGIN{FS = SEP;len=split(BENCH_SET,ARRAY," ")}{if (NR >= START && $FREQ_COL == FREQ){for (i = 1; i <= len; i++){if ($BENCH_COL == ARRAY[i]){print $0;next}}}}' < "$RESULT_FILE" > "test_set_$seed.data"
 					fi			
-					octave_output+=$(octave --silent --eval "load_build_model(2,'train_set_$seed.data','test_set_$seed.data',0,$((RESULT_EVENTS_COL_START-1)),$POWER_COL,'$EVENTS_LIST')" 2> /dev/null)
+					if [[ $OCTAVE_DEBUG == 1 ]]; then
+					    echo "load_build_model(2,'train_set_$seed.data','test_set_$seed.data',0,$((RESULT_EVENTS_COL_START-1)),$POWER_COL,'$EVENTS_LIST')"
+					    exit
+					else
+					    octave_output+=$(octave --silent --eval "load_build_model(2,'train_set_$seed.data','test_set_$seed.data',0,$((RESULT_EVENTS_COL_START-1)),$POWER_COL,'$EVENTS_LIST')" 2> /dev/null)
+					fi
 					#Cleanup
 					rm "train_set_$seed.data" "test_set_$seed.data"
 				fi

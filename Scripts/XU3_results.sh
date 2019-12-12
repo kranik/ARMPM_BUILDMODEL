@@ -142,15 +142,15 @@ fi
 						
 FREQ_LIST=$(ls "$RESULTS_DIR/Run_${RUNS%% *}" | tr " " "\n" | sort -gr | tr "\n" " ")						
 
-#If we have event selection enabled then process raw events and concatenated with events, else jsut concatenate sensor data
+#If we have event selection enabled then process raw events and concatenated with events, else just concatenate sensor data
 if [[ -n $WITH_EVENTS ]]; then
-	./process_raw_events.sh -r "$RESULTS_DIR" -n "${RUNS// /,}" -s
-	./concatenate_results.sh -r "$RESULTS_DIR" -n "${RUNS// /,}" -e -s
+	./process_raw_events.sh -r "$results_dir" -n "${runs// /,}" -s
+	./concatenate_results.sh -r "$results_dir" -n "${runs// /,}" -e -s
 else
-	if [[ -n $MULTICLUSTER ]]; then
-		./concatenate_results.sh -r "$RESULTS_DIR" -n "${RUNS// /,}" -s -m
+	if [[ -n $multicluster ]]; then
+		./concatenate_results.sh -r "$results_dir" -n "${runs// /,}" -s -m
 	else
-		./concatenate_results.sh -r "$RESULTS_DIR" -n "${RUNS// /,}" -s
+		./concatenate_results.sh -r "$results_dir" -n "${runs// /,}" -s
 	fi
 fi
 #Go into results directories and concatenate all the results files in to a big beast!
