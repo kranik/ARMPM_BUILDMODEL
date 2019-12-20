@@ -20,6 +20,8 @@ if ( mode == 0 )
   disp("Need to pass 7 arguments to load_build_model(mode,train_set,test_set,start_row,start_col,power_col,events_col)")
   disp("3) Cross-model generation with detailed output.")
   disp("Need to pass 11 arguments to load_build_model(mode,train_set_1,test_set_1,start_row_1,start_col_1,train_set_2,test_set_2,start_row_2,start_col_2,power_col,events_col)")
+  disp("4) Model generation with per-sample model performance.")
+  disp("Need to pass 7 arguments to load_build_model(mode,train_set,test_set,start_row,start_col,power_col,events_col)")
   return
 endif
 
@@ -51,7 +53,7 @@ if ( mode == 1 )
   disp("###########################################################");
   disp("Platform physical characteristics");
   disp("###########################################################");
-  disp(["Average Power [W]: " num2str(mean(power),"%.3f")]); 
+  disp(["Average Power [W]: " num2str(mean(power),"%.5f")]); 
   disp(["Measured Power Range [%]: " num2str((range(power)./min(power))*100,"%d")]);
   disp("###########################################################");
   disp(["Data set event totals: " num2str(sum(evts),"%G\t")]);
@@ -105,6 +107,14 @@ if (mode == 2)
   %Compute predicted power using model and events
   pred_power=(test_reg(:,:)*m);
 
+  %Adjust model residual
+  offset=mean(pred_power)-mean(test_power);    
+  m_offset=m;
+  m_offset(1,:)=m_offset(1,:)-offset;
+  
+  %Recompute predicted power
+  pred_power=(test_reg(:,:)*m_offset);
+ 
   %Compute absolute model errors
   err=(test_power-pred_power);
   abs_err=abs(err);
@@ -118,7 +128,7 @@ if (mode == 2)
   disp("###########################################################");
   disp("Model validation against test set");
   disp("###########################################################"); 
-  disp(["Average Predicted Power [W]: " num2str(mean(pred_power),"%.3f")]);  
+  disp(["Average Predicted Power [W]: " num2str(mean(pred_power),"%.5f")]);  
   disp(["Predicted Power Range [%]: " num2str(abs((range(pred_power)./min(pred_power))*100),"%d")]);
   disp("###########################################################"); 
   disp(["Average Absolute Error [W]: " num2str(avg_abs_err,"%.5f")]);
@@ -214,7 +224,7 @@ if (mode == 3)
   disp("###########################################################");
   disp("Model validation against test set");
   disp("###########################################################"); 
-  disp(["Average Predicted Power [W]: " num2str(mean(pred_power),"%.3f")]); 
+  disp(["Average Predicted Power [W]: " num2str(mean(pred_power),"%.5f")]); 
   disp(["Predicted Power Range [%]: " num2str(abs((range(pred_power)./min(pred_power))*100),"%d")]);
   disp("###########################################################"); 
   disp(["Average Absolute Error [W]: " num2str(abs_err,"%.5f")]);
@@ -229,6 +239,88 @@ if (mode == 3)
   disp("###########################################################");
   disp(["Model Coefficients: " num2str(m',"%G\t")]);
   disp("###########################################################");
+  
+endif
+
+if (mode == 4)
+
+  %Sanity check argument number
+  if ( length (varargin) != 7 )
+      error ("Need to pass 7 arguments to load_build_model() for mode 2");
+      error ("Please use load_build_model(0) for more info");
+      return
+  endif
+  
+  %Read input data
+  train_set=varargin{2};
+  test_set=varargin{3};
+  start_row=varargin{4};
+  start_col=varargin{5};
+  power_col=varargin{6};
+  events_col=varargin{7};
+  
+  %Open train set file
+  fid = fopen (train_set, "r");
+  train_set = dlmread(fid,'\t',start_row,start_col);
+  fclose (fid);
+
+  %Extract train data from the file train clomuns specified. 
+  %The ones in front are for the constant coefficiant for linear regression
+  train_reg=[ones(size(train_set,1),1),train_set(:,str2num(events_col).-start_col)]; 
+
+  %Compute model
+  [m, maxcorr, maxcorrindices, avgcorr] = build_model(train_reg,train_set(:,power_col.-start_col));
+
+  %Open test set file
+  fid = fopen (test_set, "r");
+  test_set = dlmread(fid,'\t',start_row,start_col);
+  fclose (fid);
+
+  %Again extract test data from specified file.
+  %Events columns are same as train file
+  test_reg=[ones(size(test_set,1),1),test_set(:,str2num(events_col).-start_col)];
+
+  %Extract measured power and range from test data
+  test_power=test_set(:,power_col.-start_col);
+
+  %Compute predicted power using model and events
+  pred_power=(test_reg(:,:)*m);
+  
+  %Adjust model residual
+  offset=mean(pred_power)-mean(test_power);    
+  m_offset=m;
+  m_offset(1,:)=m_offset(1,:)-offset;
+  
+  %Recompute predicted power
+  pred_power=(test_reg(:,:)*m_offset);
+  
+  pred_temp=(pred_power(:,:).*(test_reg(:,3)./80000000));
+  pred_power=pred_temp;
+
+  %Compute absolute model errors
+  err=(test_power-pred_power);
+  abs_err=abs(err);
+  avg_abs_err=mean(abs_err);
+  std_dev_err=std(abs_err,1);
+  %compute realtive model errors and deviation
+  rel_abs_err=abs(err./test_power)*100;
+  rel_avg_abs_err=mean(rel_abs_err);
+  rel_err_std_dev=std(rel_abs_err,1);
+  
+  disp("###########################################################");
+  disp("Model validation against test set");
+  disp("###########################################################"); 
+  disp(["Average Predicted Power [W]: " num2str(mean(pred_power),"%.5f")]);
+  disp("###########################################################");
+  disp(["Total Number of Samples [W]: " num2str(size(pred_power,1),"%d")]);
+  disp("###########################################################");
+  disp("Sample[#]\tPredicted Power [W]\tAbsolute Error [W]\tRelative Error [%]");
+  disp("###########################################################");
+  %format short g
+  %output=horzcat([1:1:size(pred_power)]',pred_power,abs_err,rel_abs_err));
+  for sample = 1:size(pred_power,1)
+    disp([num2str(sample,"%d") "\t" num2str(pred_power(sample),"%.5f") "\t" num2str(abs_err(sample),"%.5f") "\t" num2str(rel_abs_err(sample),"%.5f")]);
+  endfor
   
 endif
 
