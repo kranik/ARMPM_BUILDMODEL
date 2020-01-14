@@ -1,0 +1,7 @@
+#Timestamp	Benchmark	Run(#)	GPU Frequency (MHz)	GPU Temperature(C)	GPU Voltage(V)	GPU Power(W)	inst_executed_cs	sm_inst_executed_texture	sm_inst_executed_global_loads	m_inst_executed_global_stores	threads_launched	gpu_busy	sm_executed_ipc	sm_issued_ipc	l2_write_bytes	l2_read_bytes	sm_active_cycles	sm_active_warps	sm_warps_launched
+2627904 radixSortThrust 1 921 33 1.020000 7.605000  nan nan nan nan nan nan nan nan nan nan nan nan 0.036965
+2628416 radixSortThrust 1 921 31 1.020000 2.462400  nan nan nan nan nan nan nan nan nan nan nan nan 0.008326
+2628928 radixSortThrust 1 921 31 1.020000 3.047400  nan nan nan nan nan nan nan nan nan nan nan nan 0.069804
+2629440 radixSortThrust 1 921 30 1.020000 4.662000  nan nan nan nan nan nan nan nan nan nan nan nan 0.110623
+2629952 radixSortThrust 1 921 30 1.020000 4.309400  nan nan nan nan nan nan nan nan nan nan nan nan 0.110514
+2630464 radixSortThrust 1 921 30 1.020000 3.048000  nan nan nan nan nan nan nan nan nan nan nan nan 0.107204

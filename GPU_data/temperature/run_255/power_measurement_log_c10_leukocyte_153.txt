@@ -1,0 +1,9 @@
+#Timestamp	Benchmark	Run(#)	GPU Frequency (MHz)	GPU Temperature(C)	GPU Voltage(V)	GPU Power(W)	inst_executed_cs	sm_inst_executed_texture	sm_inst_executed_global_loads	m_inst_executed_global_stores	threads_launched	gpu_busy	sm_executed_ipc	sm_issued_ipc	l2_write_bytes	l2_read_bytes	sm_active_cycles	sm_active_warps	sm_warps_launched
+773960 leukocyte 1 153 30 0.820000 0.862800  nan nan nan nan nan nan nan nan nan nan 52.632977 nan nan
+774464 leukocyte 1 153 31 0.820000 0.739200  nan nan nan nan nan nan nan nan nan nan 163.137918 nan nan
+774976 leukocyte 1 153 31 0.820000 0.770000  nan nan nan nan nan nan nan nan nan nan 182.421162 nan nan
+775488 leukocyte 1 153 30 0.820000 0.831600  nan nan nan nan nan nan nan nan nan nan 194.839849 nan nan
+775992 leukocyte 1 153 30 0.820000 0.831800  nan nan nan nan nan nan nan nan nan nan 184.726620 nan nan
+776512 leukocyte 1 153 29 0.820000 0.770800  nan nan nan nan nan nan nan nan nan nan 176.913761 nan nan
+777032 leukocyte 1 153 29 0.820000 0.832400  nan nan nan nan nan nan nan nan nan nan 189.487867 nan nan
+777544 leukocyte 1 153 28 0.820000 0.770600  nan nan nan nan nan nan nan nan nan nan 166.155456 nan nan

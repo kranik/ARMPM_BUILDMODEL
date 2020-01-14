@@ -1,0 +1,19 @@
+#Timestamp	Benchmark	Run(#)	GPU Frequency (MHz)	GPU Temperature(C)	GPU Voltage(V)	GPU Power(W)	inst_executed_cs	sm_inst_executed_texture	sm_inst_executed_global_loads	m_inst_executed_global_stores	threads_launched	gpu_busy	sm_executed_ipc	sm_issued_ipc	l2_write_bytes	l2_read_bytes	sm_active_cycles	sm_active_warps	sm_warps_launched
+858304 transpose 1 153 27 0.820000 0.446600  nan nan nan nan nan nan nan nan nan nan 1.898671 nan nan
+858816 transpose 1 153 26 0.820000 0.816400  nan nan nan nan nan nan nan nan nan nan 128.006073 nan nan
+859328 transpose 1 153 27 0.820000 0.893600  nan nan nan nan nan nan nan nan nan nan 126.051868 nan nan
+859840 transpose 1 153 28 0.820000 0.846400  nan nan nan nan nan nan nan nan nan nan 143.752388 nan nan
+860352 transpose 1 153 28 0.820000 0.616000  nan nan nan nan nan nan nan nan nan nan 197.968223 nan nan
+860864 transpose 1 153 28 0.820000 0.616000  nan nan nan nan nan nan nan nan nan nan 199.201538 nan nan
+861376 transpose 1 153 27 0.820000 0.616200  nan nan nan nan nan nan nan nan nan nan 199.884485 nan nan
+861888 transpose 1 153 26 0.820000 0.616600  nan nan nan nan nan nan nan nan nan nan 199.370055 nan nan
+862400 transpose 1 153 26 0.820000 0.616000  nan nan nan nan nan nan nan nan nan nan 199.324439 nan nan
+862912 transpose 1 153 27 0.820000 0.554600  nan nan nan nan nan nan nan nan nan nan 142.883605 nan nan
+863424 transpose 1 153 26 0.820000 0.893800  nan nan nan nan nan nan nan nan nan nan 189.593974 nan nan
+863936 transpose 1 153 27 0.820000 0.847400  nan nan nan nan nan nan nan nan nan nan 130.839431 nan nan
+864448 transpose 1 153 26 0.820000 1.001200  nan nan nan nan nan nan nan nan nan nan 196.854582 nan nan
+864960 transpose 1 153 27 0.820000 0.831600  nan nan nan nan nan nan nan nan nan nan 130.332278 nan nan
+865472 transpose 1 153 27 0.820000 0.724600  nan nan nan nan nan nan nan nan nan nan 132.157662 nan nan
+866048 transpose 1 153 26 0.820000 0.970800  nan nan nan nan nan nan nan nan nan nan 199.112403 nan nan
+866560 transpose 1 153 27 0.820000 0.986000  nan nan nan nan nan nan nan nan nan nan 136.236453 nan nan
+867072 transpose 1 153 28 0.820000 1.016400  nan nan nan nan nan nan nan nan nan nan 193.963352 nan nan

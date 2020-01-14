@@ -1,0 +1,1 @@
+./ARMPM_BUILDMODEL/Scripts/octave_makemodel.sh -r ./ARMPM_BUILDMODEL/Examples/Concatenated_Data/PARSEC/xu3_cset_perfcpu_PARSEC_eMMC_1core_big.data -b ./ARMPM_BUILDMODEL/Examples/PARSEC_split.data -p 8 -e 9,10,11,12,13,14,15,16,17,18,19 -o 1

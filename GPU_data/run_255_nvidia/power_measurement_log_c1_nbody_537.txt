@@ -1,0 +1,19 @@
+#Timestamp	Benchmark	Run(#)	GPU Frequency (MHz)	GPU Temperature(C)	GPU Voltage(V)	GPU Power(W)	inst_executed_cs	sm_inst_executed_texture	sm_inst_executed_global_loads	m_inst_executed_global_stores	threads_launched	gpu_busy	sm_executed_ipc	sm_issued_ipc	l2_write_bytes	l2_read_bytes	sm_active_cycles	sm_active_warps	sm_warps_launched
+1864832 nbody 1 537 31 0.820000 3.771000  nan 0.072143 nan nan nan nan nan nan nan nan nan nan nan
+1865344 nbody 1 537 31 0.820000 4.480400  nan 0.145516 nan nan nan nan nan nan nan nan nan nan nan
+1865856 nbody 1 537 31 0.820000 4.465800  nan 0.220683 nan nan nan nan nan nan nan nan nan nan nan
+1866368 nbody 1 537 31 0.820000 4.480400  nan 0.296747 nan nan nan nan nan nan nan nan nan nan nan
+1866880 nbody 1 537 31 0.820000 4.465000  nan 0.310625 nan nan nan nan nan nan nan nan nan nan nan
+1867392 nbody 1 537 31 0.820000 4.480400  nan 0.310675 nan nan nan nan nan nan nan nan nan nan nan
+1867904 nbody 1 537 31 0.820000 4.465000  nan 0.308916 nan nan nan nan nan nan nan nan nan nan nan
+1868416 nbody 1 537 31 0.820000 4.480400  nan 0.309614 nan nan nan nan nan nan nan nan nan nan nan
+1868928 nbody 1 537 31 0.820000 4.465000  nan 0.309555 nan nan nan nan nan nan nan nan nan nan nan
+1869440 nbody 1 537 32 0.820000 4.463400  nan 0.309368 nan nan nan nan nan nan nan nan nan nan nan
+1869952 nbody 1 537 32 0.820000 4.432200  nan 0.310158 nan nan nan nan nan nan nan nan nan nan nan
+1870464 nbody 1 537 32 0.820000 4.463000  nan 0.309933 nan nan nan nan nan nan nan nan nan nan nan
+1870976 nbody 1 537 31 0.820000 4.465000  nan 0.310431 nan nan nan nan nan nan nan nan nan nan nan
+1871488 nbody 1 537 31 0.820000 4.465000  nan 0.309306 nan nan nan nan nan nan nan nan nan nan nan
+1872000 nbody 1 537 31 0.820000 4.465000  nan 0.310523 nan nan nan nan nan nan nan nan nan nan nan
+1872512 nbody 1 537 31 0.820000 4.449600  nan 0.310911 nan nan nan nan nan nan nan nan nan nan nan
+1873024 nbody 1 537 31 0.820000 4.434200  nan 0.310311 nan nan nan nan nan nan nan nan nan nan nan
+1873536 nbody 1 537 31 0.820000 4.434200  nan 0.310920 nan nan nan nan nan nan nan nan nan nan nan

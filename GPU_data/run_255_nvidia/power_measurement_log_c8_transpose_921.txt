@@ -1,0 +1,9 @@
+#Timestamp	Benchmark	Run(#)	GPU Frequency (MHz)	GPU Temperature(C)	GPU Voltage(V)	GPU Power(W)	inst_executed_cs	sm_inst_executed_texture	sm_inst_executed_global_loads	m_inst_executed_global_stores	threads_launched	gpu_busy	sm_executed_ipc	sm_issued_ipc	l2_write_bytes	l2_read_bytes	sm_active_cycles	sm_active_warps	sm_warps_launched
+2632704 transpose 1 921 31 1.020000 3.123800  nan nan nan nan nan nan nan nan 250.653772 nan nan nan nan
+2633216 transpose 1 921 30 1.020000 3.386200  nan nan nan nan nan nan nan nan 358.141974 nan nan nan nan
+2633728 transpose 1 921 31 1.020000 4.216600  nan nan nan nan nan nan nan nan 1587.287367 nan nan nan nan
+2634240 transpose 1 921 31 1.020000 3.878400  nan nan nan nan nan nan nan nan 1623.148623 nan nan nan nan
+2634752 transpose 1 921 31 1.020000 3.524600  nan nan nan nan nan nan nan nan 418.154731 nan nan nan nan
+2635264 transpose 1 921 31 1.020000 3.432600  nan nan nan nan nan nan nan nan 373.243294 nan nan nan nan
+2635776 transpose 1 921 30 1.020000 3.708800  nan nan nan nan nan nan nan nan 382.305536 nan nan nan nan
+2636288 transpose 1 921 30 1.020000 3.863200  nan nan nan nan nan nan nan nan 371.695115 nan nan nan nan

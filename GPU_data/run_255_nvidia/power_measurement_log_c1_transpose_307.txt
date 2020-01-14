@@ -1,0 +1,13 @@
+#Timestamp	Benchmark	Run(#)	GPU Frequency (MHz)	GPU Temperature(C)	GPU Voltage(V)	GPU Power(W)	inst_executed_cs	sm_inst_executed_texture	sm_inst_executed_global_loads	m_inst_executed_global_stores	threads_launched	gpu_busy	sm_executed_ipc	sm_issued_ipc	l2_write_bytes	l2_read_bytes	sm_active_cycles	sm_active_warps	sm_warps_launched
+1333952 transpose 1 307 30 0.820000 0.985400  nan 8.453812 nan nan nan nan nan nan nan nan nan nan nan
+1334464 transpose 1 307 29 0.820000 1.247800  nan 10.210753 nan nan nan nan nan nan nan nan nan nan nan
+1334912 transpose 1 307 30 0.820000 1.016600  nan 9.710272 nan nan nan nan nan nan nan nan nan nan nan
+1335424 transpose 1 307 30 0.820000 1.078000  nan 10.510261 nan nan nan nan nan nan nan nan nan nan nan
+1335936 transpose 1 307 30 0.820000 1.078000  nan 10.132179 nan nan nan nan nan nan nan nan nan nan nan
+1336448 transpose 1 307 31 0.820000 1.247000  nan 7.515759 nan nan nan nan nan nan nan nan nan nan nan
+1336960 transpose 1 307 31 0.820000 1.431400  nan 9.431357 nan nan nan nan nan nan nan nan nan nan nan
+1337472 transpose 1 307 30 0.820000 1.294200  nan 11.010620 nan nan nan nan nan nan nan nan nan nan nan
+1337984 transpose 1 307 30 0.820000 1.232400  nan 13.402514 nan nan nan nan nan nan nan nan nan nan nan
+1338496 transpose 1 307 29 0.820000 1.448000  nan 15.563156 nan nan nan nan nan nan nan nan nan nan nan
+1339008 transpose 1 307 29 0.820000 1.540800  nan 13.551854 nan nan nan nan nan nan nan nan nan nan nan
+1339520 transpose 1 307 30 0.820000 1.109400  nan 12.271147 nan nan nan nan nan nan nan nan nan nan nan

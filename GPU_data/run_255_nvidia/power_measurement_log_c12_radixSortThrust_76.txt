@@ -1,0 +1,22 @@
+#Timestamp	Benchmark	Run(#)	GPU Frequency (MHz)	GPU Temperature(C)	GPU Voltage(V)	GPU Power(W)	inst_executed_cs	sm_inst_executed_texture	sm_inst_executed_global_loads	m_inst_executed_global_stores	threads_launched	gpu_busy	sm_executed_ipc	sm_issued_ipc	l2_write_bytes	l2_read_bytes	sm_active_cycles	sm_active_warps	sm_warps_launched
+517184 radixSortThrust 1 76 27 0.820000 0.508600  nan nan nan nan nan nan nan nan nan nan nan nan 0.243299
+517696 radixSortThrust 1 76 28 0.820000 0.308000  nan nan nan nan nan nan nan nan nan nan nan nan 0.123261
+518208 radixSortThrust 1 76 27 0.820000 0.508200  nan nan nan nan nan nan nan nan nan nan nan nan 0.210582
+518720 radixSortThrust 1 76 26 0.820000 0.493000  nan nan nan nan nan nan nan nan nan nan nan nan 0.276449
+519232 radixSortThrust 1 76 26 0.820000 0.539200  nan nan nan nan nan nan nan nan nan nan nan nan 0.254835
+519808 radixSortThrust 1 76 26 0.820000 0.447000  nan nan nan nan nan nan nan nan nan nan nan nan 0.287588
+520320 radixSortThrust 1 76 26 0.820000 0.446800  nan nan nan nan nan nan nan nan nan nan nan nan 0.255206
+520832 radixSortThrust 1 76 26 0.820000 0.539400  nan nan nan nan nan nan nan nan nan nan nan nan 0.255933
+521344 radixSortThrust 1 76 26 0.820000 0.554400  nan nan nan nan nan nan nan nan nan nan nan nan 0.293663
+521856 radixSortThrust 1 76 26 0.820000 0.323400  nan nan nan nan nan nan nan nan nan nan nan nan 0.249843
+522368 radixSortThrust 1 76 26 0.820000 0.539200  nan nan nan nan nan nan nan nan nan nan nan nan 0.231768
+522880 radixSortThrust 1 76 26 0.820000 0.539600  nan nan nan nan nan nan nan nan nan nan nan nan 0.255039
+523392 radixSortThrust 1 76 26 0.820000 0.446800  nan nan nan nan nan nan nan nan nan nan nan nan 0.291200
+523904 radixSortThrust 1 76 26 0.820000 0.508600  nan nan nan nan nan nan nan nan nan nan nan nan 0.254753
+524416 radixSortThrust 1 76 26 0.820000 0.570000  nan nan nan nan nan nan nan nan nan nan nan nan 0.254986
+524928 radixSortThrust 1 76 26 0.820000 0.539200  nan nan nan nan nan nan nan nan nan nan nan nan 0.296031
+525440 radixSortThrust 1 76 27 0.820000 0.523600  nan nan nan nan nan nan nan nan nan nan nan nan 0.303060
+525952 radixSortThrust 1 76 27 0.820000 0.492800  nan nan nan nan nan nan nan nan nan nan nan nan 0.279394
+526464 radixSortThrust 1 76 26 0.820000 0.508400  nan nan nan nan nan nan nan nan nan nan nan nan 0.301149
+526976 radixSortThrust 1 76 26 0.820000 0.539600  nan nan nan nan nan nan nan nan nan nan nan nan 0.292204
+527488 radixSortThrust 1 76 26 0.820000 0.400400  nan nan nan nan nan nan nan nan nan nan nan nan 0.217964

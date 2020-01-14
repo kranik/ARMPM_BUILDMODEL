@@ -1,0 +1,20 @@
+#Timestamp	Benchmark	Run(#)	GPU Frequency (MHz)	GPU Temperature(C)	GPU Voltage(V)	GPU Power(W)	inst_executed_cs	sm_inst_executed_texture	sm_inst_executed_global_loads	m_inst_executed_global_stores	threads_launched	gpu_busy	sm_executed_ipc	sm_issued_ipc	l2_write_bytes	l2_read_bytes	sm_active_cycles	sm_active_warps	sm_warps_launched
+560704 BlackScholes 1 153 27 0.820000 0.400400  nan nan nan nan nan nan nan nan nan nan nan nan 0.119217
+561216 BlackScholes 1 153 26 0.820000 0.446600  nan nan nan nan nan nan nan nan nan nan nan nan 0.073109
+561728 BlackScholes 1 153 27 0.820000 0.770000  nan nan nan nan nan nan nan nan nan nan nan nan 0.716227
+562240 BlackScholes 1 153 27 0.820000 1.462400  nan nan nan nan nan nan nan nan nan nan nan nan 3.116442
+562752 BlackScholes 1 153 26 0.820000 1.448200  nan nan nan nan nan nan nan nan nan nan nan nan 3.101944
+563264 BlackScholes 1 153 26 0.820000 1.464000  nan nan nan nan nan nan nan nan nan nan nan nan 3.099260
+563776 BlackScholes 1 153 26 0.820000 1.464000  nan nan nan nan nan nan nan nan nan nan nan nan 3.102116
+564288 BlackScholes 1 153 26 0.820000 1.447800  nan nan nan nan nan nan nan nan nan nan nan nan 3.102103
+564864 BlackScholes 1 153 26 0.820000 1.464400  nan nan nan nan nan nan nan nan nan nan nan nan 3.100536
+565376 BlackScholes 1 153 26 0.820000 1.464200  nan nan nan nan nan nan nan nan nan nan nan nan 3.102227
+565888 BlackScholes 1 153 26 0.820000 1.464000  nan nan nan nan nan nan nan nan nan nan nan nan 3.101637
+566400 BlackScholes 1 153 26 0.820000 1.447800  nan nan nan nan nan nan nan nan nan nan nan nan 3.102246
+566912 BlackScholes 1 153 26 0.820000 1.464200  nan nan nan nan nan nan nan nan nan nan nan nan 3.114319
+567424 BlackScholes 1 153 26 0.820000 1.463600  nan nan nan nan nan nan nan nan nan nan nan nan 3.102029
+567936 BlackScholes 1 153 26 0.820000 1.463800  nan nan nan nan nan nan nan nan nan nan nan nan 3.101581
+568448 BlackScholes 1 153 27 0.820000 0.955000  nan nan nan nan nan nan nan nan nan nan nan nan 1.653482
+568960 BlackScholes 1 153 27 0.820000 0.400400  nan nan nan nan nan nan nan nan nan nan nan nan 0.000000
+569472 BlackScholes 1 153 27 0.820000 0.385000  nan nan nan nan nan nan nan nan nan nan nan nan 0.012021
+569984 BlackScholes 1 153 28 0.820000 0.384800  nan nan nan nan nan nan nan nan nan nan nan nan 0.011990

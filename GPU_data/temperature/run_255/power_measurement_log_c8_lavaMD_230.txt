@@ -1,0 +1,11 @@
+#Timestamp	Benchmark	Run(#)	GPU Frequency (MHz)	GPU Temperature(C)	GPU Voltage(V)	GPU Power(W)	inst_executed_cs	sm_inst_executed_texture	sm_inst_executed_global_loads	m_inst_executed_global_stores	threads_launched	gpu_busy	sm_executed_ipc	sm_issued_ipc	l2_write_bytes	l2_read_bytes	sm_active_cycles	sm_active_warps	sm_warps_launched
+1432744 lavaMD 1 230 32 0.820000 0.893200  nan nan nan nan nan nan nan nan 17.874101 nan nan nan nan
+1433248 lavaMD 1 230 32 0.820000 0.924000  nan nan nan nan nan nan nan nan 28.649398 nan nan nan nan
+1433760 lavaMD 1 230 30 0.820000 0.924400  nan nan nan nan nan nan nan nan 24.658964 nan nan nan nan
+1434280 lavaMD 1 230 30 0.820000 0.924600  nan nan nan nan nan nan nan nan 24.392298 nan nan nan nan
+1434800 lavaMD 1 230 30 0.820000 0.924600  nan nan nan nan nan nan nan nan 24.386918 nan nan nan nan
+1435320 lavaMD 1 230 30 0.820000 0.879000  nan nan nan nan nan nan nan nan 24.558826 nan nan nan nan
+1435840 lavaMD 1 230 30 0.820000 0.925000  nan nan nan nan nan nan nan nan 24.508946 nan nan nan nan
+1436352 lavaMD 1 230 30 0.820000 0.924600  nan nan nan nan nan nan nan nan 24.397271 nan nan nan nan
+1436880 lavaMD 1 230 30 0.820000 0.894200  nan nan nan nan nan nan nan nan 24.311196 nan nan nan nan
+1437392 lavaMD 1 230 30 0.820000 0.925200  nan nan nan nan nan nan nan nan 24.034036 nan nan nan nan

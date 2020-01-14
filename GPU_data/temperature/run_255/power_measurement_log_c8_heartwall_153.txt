@@ -1,0 +1,23 @@
+#Timestamp	Benchmark	Run(#)	GPU Frequency (MHz)	GPU Temperature(C)	GPU Voltage(V)	GPU Power(W)	inst_executed_cs	sm_inst_executed_texture	sm_inst_executed_global_loads	m_inst_executed_global_stores	threads_launched	gpu_busy	sm_executed_ipc	sm_issued_ipc	l2_write_bytes	l2_read_bytes	sm_active_cycles	sm_active_warps	sm_warps_launched
+1303392 heartwall 1 153 31 0.820000 0.585400  nan nan nan nan nan nan nan nan 46.550461 nan nan nan nan
+1303912 heartwall 1 153 29 0.820000 0.971200  nan nan nan nan nan nan nan nan 179.976014 nan nan nan nan
+1304440 heartwall 1 153 29 0.820000 0.739800  nan nan nan nan nan nan nan nan 261.767531 nan nan nan nan
+1304952 heartwall 1 153 30 0.820000 1.079400  nan nan nan nan nan nan nan nan 244.804547 nan nan nan nan
+1305480 heartwall 1 153 29 0.820000 0.986000  nan nan nan nan nan nan nan nan 226.467613 nan nan nan nan
+1306000 heartwall 1 153 29 0.820000 1.095000  nan nan nan nan nan nan nan nan 245.049810 nan nan nan nan
+1306512 heartwall 1 153 29 0.820000 1.001600  nan nan nan nan nan nan nan nan 245.900781 nan nan nan nan
+1307024 heartwall 1 153 30 0.820000 0.847200  nan nan nan nan nan nan nan nan 249.699403 nan nan nan nan
+1307528 heartwall 1 153 31 0.820000 0.970200  nan nan nan nan nan nan nan nan 250.775030 nan nan nan nan
+1308040 heartwall 1 153 31 0.820000 1.078000  nan nan nan nan nan nan nan nan 252.205018 nan nan nan nan
+1308552 heartwall 1 153 31 0.820000 0.877800  nan nan nan nan nan nan nan nan 273.562406 nan nan nan nan
+1309064 heartwall 1 153 29 0.820000 0.893600  nan nan nan nan nan nan nan nan 250.808974 nan nan nan nan
+1309584 heartwall 1 153 29 0.820000 1.017400  nan nan nan nan nan nan nan nan 248.772936 nan nan nan nan
+1310104 heartwall 1 153 29 0.820000 1.140600  nan nan nan nan nan nan nan nan 242.511023 nan nan nan nan
+1310624 heartwall 1 153 29 0.820000 1.078800  nan nan nan nan nan nan nan nan 247.213335 nan nan nan nan
+1311136 heartwall 1 153 29 0.820000 1.032600  nan nan nan nan nan nan nan nan 246.316044 nan nan nan nan
+1311656 heartwall 1 153 29 0.820000 0.832200  nan nan nan nan nan nan nan nan 239.127308 nan nan nan nan
+1312168 heartwall 1 153 29 0.820000 0.986600  nan nan nan nan nan nan nan nan 248.704173 nan nan nan nan
+1312688 heartwall 1 153 30 0.820000 0.971600  nan nan nan nan nan nan nan nan 231.712736 nan nan nan nan
+1313200 heartwall 1 153 30 0.820000 0.955600  nan nan nan nan nan nan nan nan 244.064209 nan nan nan nan
+1313720 heartwall 1 153 29 0.820000 1.063400  nan nan nan nan nan nan nan nan 248.948241 nan nan nan nan
+1314232 heartwall 1 153 31 0.820000 0.986200  nan nan nan nan nan nan nan nan 257.696539 nan nan nan nan

@@ -1,0 +1,27 @@
+#Timestamp	Benchmark	Run(#)	GPU Frequency (MHz)	GPU Temperature(C)	GPU Voltage(V)	GPU Power(W)	inst_executed_cs	sm_inst_executed_texture	sm_inst_executed_global_loads	m_inst_executed_global_stores	threads_launched	gpu_busy	sm_executed_ipc	sm_issued_ipc	l2_write_bytes	l2_read_bytes	sm_active_cycles	sm_active_warps	sm_warps_launched
+1508224 nbody 1 384 30 0.820000 1.401000  nan nan nan nan nan nan 0.000000 nan nan nan nan nan nan
+1508736 nbody 1 384 29 0.820000 3.250600  nan nan nan nan nan nan 0.000027 nan nan nan nan nan nan
+1509248 nbody 1 384 29 0.820000 3.358200  nan nan nan nan nan nan 0.000002 nan nan nan nan nan nan
+1509760 nbody 1 384 29 0.820000 3.343000  nan nan nan nan nan nan 0.000002 nan nan nan nan nan nan
+1510272 nbody 1 384 29 0.820000 3.327800  nan nan nan nan nan nan 0.000002 nan nan nan nan nan nan
+1510784 nbody 1 384 29 0.820000 3.312200  nan nan nan nan nan nan 0.000002 nan nan nan nan nan nan
+1511296 nbody 1 384 29 0.820000 3.358600  nan nan nan nan nan nan 0.000002 nan nan nan nan nan nan
+1511808 nbody 1 384 29 0.820000 3.312000  nan nan nan nan nan nan 0.000002 nan nan nan nan nan nan
+1512320 nbody 1 384 29 0.820000 3.328200  nan nan nan nan nan nan 0.000002 nan nan nan nan nan nan
+1512832 nbody 1 384 31 0.820000 3.325400  nan nan nan nan nan nan 0.000002 nan nan nan nan nan nan
+1513344 nbody 1 384 30 0.820000 3.325400  nan nan nan nan nan nan 0.000002 nan nan nan nan nan nan
+1513856 nbody 1 384 29 0.820000 3.341800  nan nan nan nan nan nan 0.000002 nan nan nan nan nan nan
+1514368 nbody 1 384 29 0.820000 3.327800  nan nan nan nan nan nan 0.000002 nan nan nan nan nan nan
+1514880 nbody 1 384 29 0.820000 3.327600  nan nan nan nan nan nan 0.000002 nan nan nan nan nan nan
+1515392 nbody 1 384 29 0.820000 3.219400  nan nan nan nan nan nan 0.000002 nan nan nan nan nan nan
+1515904 nbody 1 384 29 0.820000 3.296600  nan nan nan nan nan nan 0.000002 nan nan nan nan nan nan
+1516416 nbody 1 384 29 0.820000 3.343800  nan nan nan nan nan nan 0.000002 nan nan nan nan nan nan
+1516928 nbody 1 384 29 0.820000 3.312000  nan nan nan nan nan nan 0.000002 nan nan nan nan nan nan
+1517440 nbody 1 384 29 0.820000 3.297000  nan nan nan nan nan nan 0.000002 nan nan nan nan nan nan
+1517952 nbody 1 384 29 0.820000 3.312000  nan nan nan nan nan nan 0.000002 nan nan nan nan nan nan
+1518400 nbody 1 384 29 0.820000 3.327800  nan nan nan nan nan nan 0.000002 nan nan nan nan nan nan
+1518912 nbody 1 384 29 0.820000 3.281200  nan nan nan nan nan nan 0.000002 nan nan nan nan nan nan
+1519424 nbody 1 384 29 0.820000 3.343600  nan nan nan nan nan nan 0.000002 nan nan nan nan nan nan
+1519936 nbody 1 384 29 0.820000 3.326400  nan nan nan nan nan nan 0.000002 nan nan nan nan nan nan
+1520448 nbody 1 384 30 0.820000 3.325800  nan nan nan nan nan nan 0.000002 nan nan nan nan nan nan
+1520960 nbody 1 384 29 0.820000 3.310600  nan nan nan nan nan nan 0.000002 nan nan nan nan nan nan

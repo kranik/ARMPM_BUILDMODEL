@@ -1,0 +1,11 @@
+#Timestamp	Benchmark	Run(#)	GPU Frequency (MHz)	GPU Temperature(C)	GPU Voltage(V)	GPU Power(W)	inst_executed_cs	sm_inst_executed_texture	sm_inst_executed_global_loads	m_inst_executed_global_stores	threads_launched	gpu_busy	sm_executed_ipc	sm_issued_ipc	l2_write_bytes	l2_read_bytes	sm_active_cycles	sm_active_warps	sm_warps_launched
+1724800 BlackScholes 1 537 29 0.820000 0.985600  nan nan nan nan nan nan nan nan nan nan nan 35.804469 nan
+1725312 BlackScholes 1 537 29 0.820000 1.001000  nan nan nan nan nan nan nan nan nan nan nan 50.858653 nan
+1725824 BlackScholes 1 537 29 0.820000 1.600800  nan nan nan nan nan nan nan nan nan nan nan 1905.905666 nan
+1726336 BlackScholes 1 537 29 0.820000 4.001000  nan nan nan nan nan nan nan nan nan nan nan 11833.335295 nan
+1726848 BlackScholes 1 537 29 0.820000 4.001000  nan nan nan nan nan nan nan nan nan nan nan 11378.769649 nan
+1727360 BlackScholes 1 537 29 0.820000 4.001000  nan nan nan nan nan nan nan nan nan nan nan 11684.394584 nan
+1727872 BlackScholes 1 537 29 0.820000 3.847000  nan nan nan nan nan nan nan nan nan nan nan 11184.824553 nan
+1728384 BlackScholes 1 537 29 0.820000 0.954600  nan nan nan nan nan nan nan nan nan nan nan 1441.869539 nan
+1728896 BlackScholes 1 537 29 0.820000 0.970200  nan nan nan nan nan nan nan nan nan nan nan 0.000000 nan
+1729408 BlackScholes 1 537 29 0.820000 0.970200  nan nan nan nan nan nan nan nan nan nan nan 3.472171 nan

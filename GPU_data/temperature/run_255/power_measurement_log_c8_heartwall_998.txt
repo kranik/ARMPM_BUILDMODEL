@@ -1,0 +1,6 @@
+#Timestamp	Benchmark	Run(#)	GPU Frequency (MHz)	GPU Temperature(C)	GPU Voltage(V)	GPU Power(W)	inst_executed_cs	sm_inst_executed_texture	sm_inst_executed_global_loads	m_inst_executed_global_stores	threads_launched	gpu_busy	sm_executed_ipc	sm_issued_ipc	l2_write_bytes	l2_read_bytes	sm_active_cycles	sm_active_warps	sm_warps_launched
+3864504 heartwall 1 998 34 1.070000 4.183400  nan nan nan nan nan nan nan nan 8.288237 nan nan nan nan
+3865016 heartwall 1 998 37 1.070000 7.214200  nan nan nan nan nan nan nan nan 110.101572 nan nan nan nan
+3865528 heartwall 1 998 37 1.070000 6.305600  nan nan nan nan nan nan nan nan 203.732101 nan nan nan nan
+3866040 heartwall 1 998 37 1.070000 8.515800  nan nan nan nan nan nan nan nan 201.147064 nan nan nan nan
+3866552 heartwall 1 998 38 1.070000 7.137200  nan nan nan nan nan nan nan nan 203.138861 nan nan nan nan

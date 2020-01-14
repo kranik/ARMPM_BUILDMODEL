@@ -1,0 +1,9 @@
+#Timestamp	Benchmark	Run(#)	GPU Frequency (MHz)	GPU Temperature(C)	GPU Voltage(V)	GPU Power(W)	inst_executed_cs	sm_inst_executed_texture	sm_inst_executed_global_loads	m_inst_executed_global_stores	threads_launched	gpu_busy	sm_executed_ipc	sm_issued_ipc	l2_write_bytes	l2_read_bytes	sm_active_cycles	sm_active_warps	sm_warps_launched
+2410432 SobolQRNG 1 844 33 0.980000 3.170400  151.125174 nan nan nan nan nan nan nan nan nan nan nan nan
+2410944 SobolQRNG 1 844 33 0.980000 2.154400  14.312366 nan nan nan nan nan nan nan nan nan nan nan nan
+2411456 SobolQRNG 1 844 33 0.980000 2.139800  0.000000 nan nan nan nan nan nan nan nan nan nan nan nan
+2411968 SobolQRNG 1 844 32 0.980000 2.155600  0.000000 nan nan nan nan nan nan nan nan nan nan nan nan
+2412480 SobolQRNG 1 844 32 0.980000 2.140400  0.000000 nan nan nan nan nan nan nan nan nan nan nan nan
+2412992 SobolQRNG 1 844 32 0.980000 2.124400  0.000000 nan nan nan nan nan nan nan nan nan nan nan nan
+2413504 SobolQRNG 1 844 32 0.980000 2.156000  0.000000 nan nan nan nan nan nan nan nan nan nan nan nan
+2414016 SobolQRNG 1 844 33 0.980000 2.140400  0.000000 nan nan nan nan nan nan nan nan nan nan nan nan

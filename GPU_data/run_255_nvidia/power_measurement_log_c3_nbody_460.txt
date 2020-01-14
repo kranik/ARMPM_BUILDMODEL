@@ -1,0 +1,22 @@
+#Timestamp	Benchmark	Run(#)	GPU Frequency (MHz)	GPU Temperature(C)	GPU Voltage(V)	GPU Power(W)	inst_executed_cs	sm_inst_executed_texture	sm_inst_executed_global_loads	m_inst_executed_global_stores	threads_launched	gpu_busy	sm_executed_ipc	sm_issued_ipc	l2_write_bytes	l2_read_bytes	sm_active_cycles	sm_active_warps	sm_warps_launched
+1686912 nbody 1 460 30 0.820000 2.694800  nan nan nan 0.028085 nan nan nan nan nan nan nan nan nan
+1687424 nbody 1 460 30 0.820000 3.912600  nan nan nan 0.051359 nan nan nan nan nan nan nan nan nan
+1687936 nbody 1 460 30 0.820000 3.896400  nan nan nan 0.051413 nan nan nan nan nan nan nan nan nan
+1688448 nbody 1 460 30 0.820000 3.926800  nan nan nan 0.051352 nan nan nan nan nan nan nan nan nan
+1688960 nbody 1 460 30 0.820000 3.912600  nan nan nan 0.051419 nan nan nan nan nan nan nan nan nan
+1689472 nbody 1 460 30 0.820000 3.912600  nan nan nan 0.051369 nan nan nan nan nan nan nan nan nan
+1689984 nbody 1 460 30 0.820000 3.927600  nan nan nan 0.051328 nan nan nan nan nan nan nan nan nan
+1690496 nbody 1 460 30 0.820000 3.912200  nan nan nan 0.051333 nan nan nan nan nan nan nan nan nan
+1691008 nbody 1 460 30 0.820000 3.928000  nan nan nan 0.051361 nan nan nan nan nan nan nan nan nan
+1691456 nbody 1 460 30 0.820000 3.912000  nan nan nan 0.051163 nan nan nan nan nan nan nan nan nan
+1691968 nbody 1 460 32 0.820000 3.739800  nan nan nan 0.051348 nan nan nan nan nan nan nan nan nan
+1692480 nbody 1 460 31 0.820000 3.863200  nan nan nan 0.051396 nan nan nan nan nan nan nan nan nan
+1692992 nbody 1 460 31 0.820000 3.893400  nan nan nan 0.051365 nan nan nan nan nan nan nan nan nan
+1693504 nbody 1 460 30 0.820000 3.880200  nan nan nan 0.051354 nan nan nan nan nan nan nan nan nan
+1694016 nbody 1 460 30 0.820000 3.912200  nan nan nan 0.051376 nan nan nan nan nan nan nan nan nan
+1694528 nbody 1 460 30 0.820000 3.928000  nan nan nan 0.051380 nan nan nan nan nan nan nan nan nan
+1695040 nbody 1 460 30 0.820000 3.911800  nan nan nan 0.051362 nan nan nan nan nan nan nan nan nan
+1695552 nbody 1 460 30 0.820000 3.912600  nan nan nan 0.051445 nan nan nan nan nan nan nan nan nan
+1696064 nbody 1 460 30 0.820000 3.896800  nan nan nan 0.051463 nan nan nan nan nan nan nan nan nan
+1696576 nbody 1 460 30 0.820000 3.928000  nan nan nan 0.051438 nan nan nan nan nan nan nan nan nan
+1697088 nbody 1 460 30 0.820000 3.896400  nan nan nan 0.051423 nan nan nan nan nan nan nan nan nan

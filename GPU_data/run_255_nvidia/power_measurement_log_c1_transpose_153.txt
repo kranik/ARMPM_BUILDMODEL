@@ -1,0 +1,18 @@
+#Timestamp	Benchmark	Run(#)	GPU Frequency (MHz)	GPU Temperature(C)	GPU Voltage(V)	GPU Power(W)	inst_executed_cs	sm_inst_executed_texture	sm_inst_executed_global_loads	m_inst_executed_global_stores	threads_launched	gpu_busy	sm_executed_ipc	sm_issued_ipc	l2_write_bytes	l2_read_bytes	sm_active_cycles	sm_active_warps	sm_warps_launched
+861632 transpose 1 153 30 0.820000 0.431200  nan 10.739166 nan nan nan nan nan nan nan nan nan nan nan
+862144 transpose 1 153 29 0.820000 0.877800  nan 15.389315 nan nan nan nan nan nan nan nan nan nan nan
+862656 transpose 1 153 28 0.820000 0.893400  nan 16.777984 nan nan nan nan nan nan nan nan nan nan nan
+863168 transpose 1 153 28 0.820000 0.739600  nan 17.257748 nan nan nan nan nan nan nan nan nan nan nan
+863680 transpose 1 153 28 0.820000 0.616200  nan 18.658420 nan nan nan nan nan nan nan nan nan nan nan
+864192 transpose 1 153 28 0.820000 0.616200  nan 11.702706 nan nan nan nan nan nan nan nan nan nan nan
+864704 transpose 1 153 28 0.820000 0.616800  nan 7.729641 nan nan nan nan nan nan nan nan nan nan nan
+865216 transpose 1 153 28 0.820000 0.616200  nan 5.859732 nan nan nan nan nan nan nan nan nan nan nan
+865728 transpose 1 153 28 0.820000 0.616200  nan 5.857259 nan nan nan nan nan nan nan nan nan nan nan
+866240 transpose 1 153 29 0.820000 0.616200  nan 6.133257 nan nan nan nan nan nan nan nan nan nan nan
+866752 transpose 1 153 29 0.820000 0.924400  nan 10.857877 nan nan nan nan nan nan nan nan nan nan nan
+867264 transpose 1 153 28 0.820000 0.755000  nan 13.626770 nan nan nan nan nan nan nan nan nan nan nan
+867776 transpose 1 153 29 0.820000 0.801400  nan 17.510343 nan nan nan nan nan nan nan nan nan nan nan
+868288 transpose 1 153 30 0.820000 0.985400  nan 22.382164 nan nan nan nan nan nan nan nan nan nan nan
+868800 transpose 1 153 30 0.820000 0.954800  nan 22.394674 nan nan nan nan nan nan nan nan nan nan nan
+869312 transpose 1 153 31 0.820000 0.985200  nan 23.520766 nan nan nan nan nan nan nan nan nan nan nan
+869824 transpose 1 153 29 0.820000 1.155200  nan 23.339192 nan nan nan nan nan nan nan nan nan nan nan

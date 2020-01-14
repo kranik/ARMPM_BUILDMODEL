@@ -1,0 +1,18 @@
+#Timestamp	Benchmark	Run(#)	GPU Frequency (MHz)	GPU Temperature(C)	GPU Voltage(V)	GPU Power(W)	inst_executed_cs	sm_inst_executed_texture	sm_inst_executed_global_loads	m_inst_executed_global_stores	threads_launched	gpu_busy	sm_executed_ipc	sm_issued_ipc	l2_write_bytes	l2_read_bytes	sm_active_cycles	sm_active_warps	sm_warps_launched
+857664 transpose 1 153 27 0.820000 0.585600  nan nan nan nan nan nan nan nan nan nan nan nan 6.453405
+858176 transpose 1 153 27 0.820000 0.785400  nan nan nan nan nan nan nan nan nan nan nan nan 11.797847
+858688 transpose 1 153 26 0.820000 1.001400  nan nan nan nan nan nan nan nan nan nan nan nan 13.046785
+859200 transpose 1 153 26 0.820000 0.523800  nan nan nan nan nan nan nan nan nan nan nan nan 2.673784
+859712 transpose 1 153 26 0.820000 0.616200  nan nan nan nan nan nan nan nan nan nan nan nan 2.917974
+860224 transpose 1 153 26 0.820000 0.600800  nan nan nan nan nan nan nan nan nan nan nan nan 2.918278
+860736 transpose 1 153 27 0.820000 0.616000  nan nan nan nan nan nan nan nan nan nan nan nan 2.916627
+861248 transpose 1 153 27 0.820000 0.616000  nan nan nan nan nan nan nan nan nan nan nan nan 2.920901
+861760 transpose 1 153 26 0.820000 0.616400  nan nan nan nan nan nan nan nan nan nan nan nan 2.918414
+862272 transpose 1 153 26 0.820000 0.739600  nan nan nan nan nan nan nan nan nan nan nan nan 6.393753
+862784 transpose 1 153 26 0.820000 0.831800  nan nan nan nan nan nan nan nan nan nan nan nan 10.486387
+863296 transpose 1 153 26 0.820000 0.893800  nan nan nan nan nan nan nan nan nan nan nan nan 10.504460
+863808 transpose 1 153 27 0.820000 0.739400  nan nan nan nan nan nan nan nan nan nan nan nan 8.429471
+864320 transpose 1 153 26 0.820000 0.939800  nan nan nan nan nan nan nan nan nan nan nan nan 13.706239
+864832 transpose 1 153 26 0.820000 0.862600  nan nan nan nan nan nan nan nan nan nan nan nan 9.279687
+865344 transpose 1 153 27 0.820000 0.770400  nan nan nan nan nan nan nan nan nan nan nan nan 9.178525
+865856 transpose 1 153 26 0.820000 1.155600  nan nan nan nan nan nan nan nan nan nan nan nan 10.044488

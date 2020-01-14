@@ -1,0 +1,13 @@
+#Timestamp	Benchmark	Run(#)	GPU Frequency (MHz)	GPU Temperature(C)	GPU Voltage(V)	GPU Power(W)	inst_executed_cs	sm_inst_executed_texture	sm_inst_executed_global_loads	m_inst_executed_global_stores	threads_launched	gpu_busy	sm_executed_ipc	sm_issued_ipc	l2_write_bytes	l2_read_bytes	sm_active_cycles	sm_active_warps	sm_warps_launched
+1720112 heartwall 1 307 33 0.820000 0.908400  nan nan nan nan nan 8.097118 nan nan nan nan nan nan nan
+1720616 heartwall 1 307 32 0.820000 1.955800  nan nan nan nan nan 99.748508 nan nan nan nan nan nan nan
+1721128 heartwall 1 307 31 0.820000 1.864200  nan nan nan nan nan 99.024230 nan nan nan nan nan nan nan
+1721648 heartwall 1 307 31 0.820000 1.525600  nan nan nan nan nan 97.864174 nan nan nan nan nan nan nan
+1722160 heartwall 1 307 30 0.820000 1.694800  nan nan nan nan nan 98.368549 nan nan nan nan nan nan nan
+1722672 heartwall 1 307 30 0.820000 1.895800  nan nan nan nan nan 99.016653 nan nan nan nan nan nan nan
+1723184 heartwall 1 307 30 0.820000 1.741600  nan nan nan nan nan 98.454010 nan nan nan nan nan nan nan
+1723696 heartwall 1 307 30 0.820000 1.695200  nan nan nan nan nan 98.112951 nan nan nan nan nan nan nan
+1724216 heartwall 1 307 30 0.820000 1.726200  nan nan nan nan nan 99.305067 nan nan nan nan nan nan nan
+1724728 heartwall 1 307 30 0.820000 1.756800  nan nan nan nan nan 98.713317 nan nan nan nan nan nan nan
+1725240 heartwall 1 307 30 0.820000 1.525200  nan nan nan nan nan 98.009626 nan nan nan nan nan nan nan
+1725752 heartwall 1 307 30 0.820000 1.649000  nan nan nan nan nan 93.270206 nan nan nan nan nan nan nan

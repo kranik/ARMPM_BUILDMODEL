@@ -1,0 +1,12 @@
+#Timestamp	Benchmark	Run(#)	GPU Frequency (MHz)	GPU Temperature(C)	GPU Voltage(V)	GPU Power(W)	inst_executed_cs	sm_inst_executed_texture	sm_inst_executed_global_loads	m_inst_executed_global_stores	threads_launched	gpu_busy	sm_executed_ipc	sm_issued_ipc	l2_write_bytes	l2_read_bytes	sm_active_cycles	sm_active_warps	sm_warps_launched
+674280 myocyte 1 76 30 0.820000 0.308000  nan nan nan nan nan nan nan nan 22.516975 nan nan nan nan
+674792 myocyte 1 76 29 0.820000 0.308000  nan nan nan nan nan nan nan nan 28.486133 nan nan nan nan
+675304 myocyte 1 76 30 0.820000 0.307800  nan nan nan nan nan nan nan nan 13.315986 nan nan nan nan
+675808 myocyte 1 76 30 0.820000 0.308000  nan nan nan nan nan nan nan nan 8.728837 nan nan nan nan
+676312 myocyte 1 76 30 0.820000 0.308000  nan nan nan nan nan nan nan nan 7.033832 nan nan nan nan
+676824 myocyte 1 76 30 0.820000 0.308000  nan nan nan nan nan nan nan nan 4.936346 nan nan nan nan
+677328 myocyte 1 76 30 0.820000 0.308000  nan nan nan nan nan nan nan nan 4.938727 nan nan nan nan
+677840 myocyte 1 76 29 0.820000 0.323400  nan nan nan nan nan nan nan nan 4.842460 nan nan nan nan
+678352 myocyte 1 76 29 0.820000 0.308000  nan nan nan nan nan nan nan nan 4.498889 nan nan nan nan
+678864 myocyte 1 76 29 0.820000 0.308000  nan nan nan nan nan nan nan nan 4.459699 nan nan nan nan
+679376 myocyte 1 76 29 0.820000 0.308000  nan nan nan nan nan nan nan nan 4.441937 nan nan nan nan

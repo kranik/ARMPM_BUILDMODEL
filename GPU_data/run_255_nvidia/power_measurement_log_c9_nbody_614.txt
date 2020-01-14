@@ -1,0 +1,18 @@
+#Timestamp	Benchmark	Run(#)	GPU Frequency (MHz)	GPU Temperature(C)	GPU Voltage(V)	GPU Power(W)	inst_executed_cs	sm_inst_executed_texture	sm_inst_executed_global_loads	m_inst_executed_global_stores	threads_launched	gpu_busy	sm_executed_ipc	sm_issued_ipc	l2_write_bytes	l2_read_bytes	sm_active_cycles	sm_active_warps	sm_warps_launched
+2022528 nbody 1 614 27 0.860000 1.170400  nan nan nan nan nan nan nan nan nan 0.363447 nan nan nan
+2023040 nbody 1 614 29 0.860000 4.586400  nan nan nan nan nan nan nan nan nan 38.890732 nan nan nan
+2023552 nbody 1 614 29 0.860000 5.356200  nan nan nan nan nan nan nan nan nan 82.379198 nan nan nan
+2024064 nbody 1 614 29 0.860000 5.450200  nan nan nan nan nan nan nan nan nan 86.928936 nan nan nan
+2024576 nbody 1 614 29 0.860000 5.418200  nan nan nan nan nan nan nan nan nan 86.942365 nan nan nan
+2025088 nbody 1 614 29 0.860000 5.417600  nan nan nan nan nan nan nan nan nan 86.864226 nan nan nan
+2025600 nbody 1 614 29 0.860000 5.414400  nan nan nan nan nan nan nan nan nan 86.521392 nan nan nan
+2026048 nbody 1 614 29 0.860000 5.399200  nan nan nan nan nan nan nan nan nan 86.570089 nan nan nan
+2026560 nbody 1 614 29 0.860000 5.387400  nan nan nan nan nan nan nan nan nan 86.849865 nan nan nan
+2027072 nbody 1 614 29 0.860000 5.402400  nan nan nan nan nan nan nan nan nan 86.885702 nan nan nan
+2027584 nbody 1 614 29 0.860000 5.402800  nan nan nan nan nan nan nan nan nan 86.893825 nan nan nan
+2028096 nbody 1 614 29 0.860000 5.403200  nan nan nan nan nan nan nan nan nan 86.873830 nan nan nan
+2028608 nbody 1 614 29 0.860000 5.371600  nan nan nan nan nan nan nan nan nan 86.572724 nan nan nan
+2029120 nbody 1 614 29 0.860000 5.402400  nan nan nan nan nan nan nan nan nan 86.951021 nan nan nan
+2029632 nbody 1 614 29 0.860000 5.434000  nan nan nan nan nan nan nan nan nan 87.251161 nan nan nan
+2030144 nbody 1 614 29 0.860000 5.325800  nan nan nan nan nan nan nan nan nan 86.909492 nan nan nan
+2030656 nbody 1 614 29 0.860000 5.434400  nan nan nan nan nan nan nan nan nan 86.859287 nan nan nan

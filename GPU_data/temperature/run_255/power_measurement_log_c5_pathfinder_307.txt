@@ -1,0 +1,7 @@
+#Timestamp	Benchmark	Run(#)	GPU Frequency (MHz)	GPU Temperature(C)	GPU Voltage(V)	GPU Power(W)	inst_executed_cs	sm_inst_executed_texture	sm_inst_executed_global_loads	m_inst_executed_global_stores	threads_launched	gpu_busy	sm_executed_ipc	sm_issued_ipc	l2_write_bytes	l2_read_bytes	sm_active_cycles	sm_active_warps	sm_warps_launched
+1754872 pathfinder 1 307 32 0.820000 0.693000  nan nan nan nan nan 9.692914 nan nan nan nan nan nan nan
+1755384 pathfinder 1 307 32 0.820000 0.646800  nan nan nan nan nan 0.089546 nan nan nan nan nan nan nan
+1755888 pathfinder 1 307 32 0.820000 0.662200  nan nan nan nan nan 0.000000 nan nan nan nan nan nan nan
+1756400 pathfinder 1 307 31 0.820000 0.693000  nan nan nan nan nan 0.000000 nan nan nan nan nan nan nan
+1756912 pathfinder 1 307 32 0.820000 0.693000  nan nan nan nan nan 0.000000 nan nan nan nan nan nan nan
+1757416 pathfinder 1 307 31 0.820000 0.677600  nan nan nan nan nan 0.000000 nan nan nan nan nan nan nan

@@ -1,0 +1,20 @@
+#Timestamp	Benchmark	Run(#)	GPU Frequency (MHz)	GPU Temperature(C)	GPU Voltage(V)	GPU Power(W)	inst_executed_cs	sm_inst_executed_texture	sm_inst_executed_global_loads	m_inst_executed_global_stores	threads_launched	gpu_busy	sm_executed_ipc	sm_issued_ipc	l2_write_bytes	l2_read_bytes	sm_active_cycles	sm_active_warps	sm_warps_launched
+564672 BlackScholes 1 153 29 0.820000 0.508200  nan 0.017188 nan nan nan nan nan nan nan nan nan nan nan
+565184 BlackScholes 1 153 29 0.820000 0.462000  nan 0.057469 nan nan nan nan nan nan nan nan nan nan nan
+565696 BlackScholes 1 153 29 0.820000 0.662400  nan 0.590118 nan nan nan nan nan nan nan nan nan nan nan
+566208 BlackScholes 1 153 28 0.820000 1.464200  nan 4.498219 nan nan nan nan nan nan nan nan nan nan nan
+566720 BlackScholes 1 153 28 0.820000 1.464000  nan 8.412446 nan nan nan nan nan nan nan nan nan nan nan
+567232 BlackScholes 1 153 28 0.820000 1.464000  nan 12.261286 nan nan nan nan nan nan nan nan nan nan nan
+567744 BlackScholes 1 153 28 0.820000 1.386800  nan 15.673672 nan nan nan nan nan nan nan nan nan nan nan
+568256 BlackScholes 1 153 28 0.820000 1.464200  nan 15.723761 nan nan nan nan nan nan nan nan nan nan nan
+568768 BlackScholes 1 153 30 0.820000 1.463000  nan 15.786227 nan nan nan nan nan nan nan nan nan nan nan
+569280 BlackScholes 1 153 30 0.820000 1.462800  nan 15.771031 nan nan nan nan nan nan nan nan nan nan nan
+569792 BlackScholes 1 153 30 0.820000 1.463000  nan 15.713183 nan nan nan nan nan nan nan nan nan nan nan
+570304 BlackScholes 1 153 29 0.820000 1.463200  nan 15.850874 nan nan nan nan nan nan nan nan nan nan nan
+570816 BlackScholes 1 153 29 0.820000 1.464000  nan 15.676979 nan nan nan nan nan nan nan nan nan nan nan
+571328 BlackScholes 1 153 29 0.820000 1.464200  nan 15.737264 nan nan nan nan nan nan nan nan nan nan nan
+571840 BlackScholes 1 153 28 0.820000 1.463200  nan 15.806034 nan nan nan nan nan nan nan nan nan nan nan
+572352 BlackScholes 1 153 29 0.820000 1.063200  nan 14.485288 nan nan nan nan nan nan nan nan nan nan nan
+572864 BlackScholes 1 153 29 0.820000 0.462000  nan 10.544574 nan nan nan nan nan nan nan nan nan nan nan
+573376 BlackScholes 1 153 30 0.820000 0.462000  nan 6.581395 nan nan nan nan nan nan nan nan nan nan nan
+573888 BlackScholes 1 153 29 0.820000 0.446600  nan 2.623387 nan nan nan nan nan nan nan nan nan nan nan

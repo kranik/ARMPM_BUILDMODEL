@@ -1,0 +1,22 @@
+#Timestamp	Benchmark	Run(#)	GPU Frequency (MHz)	GPU Temperature(C)	GPU Voltage(V)	GPU Power(W)	inst_executed_cs	sm_inst_executed_texture	sm_inst_executed_global_loads	m_inst_executed_global_stores	threads_launched	gpu_busy	sm_executed_ipc	sm_issued_ipc	l2_write_bytes	l2_read_bytes	sm_active_cycles	sm_active_warps	sm_warps_launched
+519360 radixSortThrust 1 76 28 0.820000 0.415600  nan nan nan nan 10.251415 nan nan nan nan nan nan nan nan
+519872 radixSortThrust 1 76 28 0.820000 0.308000  nan nan nan nan 0.763993 nan nan nan nan nan nan nan nan
+520384 radixSortThrust 1 76 27 0.820000 0.446800  nan nan nan nan 8.192745 nan nan nan nan nan nan nan nan
+520896 radixSortThrust 1 76 27 0.820000 0.539200  nan nan nan nan 8.211241 nan nan nan nan nan nan nan nan
+521408 radixSortThrust 1 76 27 0.820000 0.539000  nan nan nan nan 8.714472 nan nan nan nan nan nan nan nan
+521920 radixSortThrust 1 76 26 0.820000 0.308000  nan nan nan nan 7.999451 nan nan nan nan nan nan nan nan
+522432 radixSortThrust 1 76 27 0.820000 0.539200  nan nan nan nan 8.244255 nan nan nan nan nan nan nan nan
+523008 radixSortThrust 1 76 27 0.820000 0.523800  nan nan nan nan 8.229921 nan nan nan nan nan nan nan nan
+523520 radixSortThrust 1 76 27 0.820000 0.369600  nan nan nan nan 9.470183 nan nan nan nan nan nan nan nan
+524032 radixSortThrust 1 76 26 0.820000 0.493600  nan nan nan nan 8.216376 nan nan nan nan nan nan nan nan
+524544 radixSortThrust 1 76 26 0.820000 0.539600  nan nan nan nan 8.212703 nan nan nan nan nan nan nan nan
+525056 radixSortThrust 1 76 26 0.820000 0.524000  nan nan nan nan 9.489552 nan nan nan nan nan nan nan nan
+525568 radixSortThrust 1 76 26 0.820000 0.462400  nan nan nan nan 7.494058 nan nan nan nan nan nan nan nan
+526080 radixSortThrust 1 76 27 0.820000 0.539400  nan nan nan nan 9.887010 nan nan nan nan nan nan nan nan
+526592 radixSortThrust 1 76 27 0.820000 0.538800  nan nan nan nan 9.668875 nan nan nan nan nan nan nan nan
+527104 radixSortThrust 1 76 28 0.820000 0.554400  nan nan nan nan 9.782264 nan nan nan nan nan nan nan nan
+527616 radixSortThrust 1 76 28 0.820000 0.477400  nan nan nan nan 11.052582 nan nan nan nan nan nan nan nan
+528128 radixSortThrust 1 76 27 0.820000 0.446600  nan nan nan nan 8.218882 nan nan nan nan nan nan nan nan
+528640 radixSortThrust 1 76 27 0.820000 0.570200  nan nan nan nan 7.494172 nan nan nan nan nan nan nan nan
+529152 radixSortThrust 1 76 27 0.820000 0.585600  nan nan nan nan 9.093872 nan nan nan nan nan nan nan nan
+529664 radixSortThrust 1 76 28 0.820000 0.308000  nan nan nan nan 7.723269 nan nan nan nan nan nan nan nan

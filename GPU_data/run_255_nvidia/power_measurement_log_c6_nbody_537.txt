@@ -1,0 +1,20 @@
+#Timestamp	Benchmark	Run(#)	GPU Frequency (MHz)	GPU Temperature(C)	GPU Voltage(V)	GPU Power(W)	inst_executed_cs	sm_inst_executed_texture	sm_inst_executed_global_loads	m_inst_executed_global_stores	threads_launched	gpu_busy	sm_executed_ipc	sm_issued_ipc	l2_write_bytes	l2_read_bytes	sm_active_cycles	sm_active_warps	sm_warps_launched
+1860672 nbody 1 537 31 0.820000 1.692800  nan nan nan nan nan nan 0.001064 nan nan nan nan nan nan
+1861184 nbody 1 537 31 0.820000 4.294200  nan nan nan nan nan nan 0.000000 nan nan nan nan nan nan
+1861696 nbody 1 537 30 0.820000 4.464600  nan nan nan nan nan nan 0.000001 nan nan nan nan nan nan
+1862208 nbody 1 537 30 0.820000 4.465000  nan nan nan nan nan nan 0.000001 nan nan nan nan nan nan
+1862720 nbody 1 537 30 0.820000 4.465400  nan nan nan nan nan nan 0.000001 nan nan nan nan nan nan
+1863232 nbody 1 537 30 0.820000 4.480400  nan nan nan nan nan nan 0.000001 nan nan nan nan nan nan
+1863744 nbody 1 537 30 0.820000 4.511200  nan nan nan nan nan nan 0.000001 nan nan nan nan nan nan
+1864256 nbody 1 537 30 0.820000 4.480400  nan nan nan nan nan nan 0.000001 nan nan nan nan nan nan
+1864768 nbody 1 537 30 0.820000 4.465000  nan nan nan nan nan nan 0.000001 nan nan nan nan nan nan
+1865280 nbody 1 537 30 0.820000 4.450000  nan nan nan nan nan nan 0.000001 nan nan nan nan nan nan
+1865792 nbody 1 537 30 0.820000 4.465000  nan nan nan nan nan nan 0.000001 nan nan nan nan nan nan
+1866304 nbody 1 537 30 0.820000 4.450000  nan nan nan nan nan nan 0.000001 nan nan nan nan nan nan
+1866816 nbody 1 537 30 0.820000 4.449600  nan nan nan nan nan nan 0.000001 nan nan nan nan nan nan
+1867328 nbody 1 537 30 0.820000 4.418800  nan nan nan nan nan nan 0.000001 nan nan nan nan nan nan
+1867840 nbody 1 537 30 0.820000 4.465000  nan nan nan nan nan nan 0.000001 nan nan nan nan nan nan
+1868352 nbody 1 537 31 0.820000 4.447200  nan nan nan nan nan nan 0.000001 nan nan nan nan nan nan
+1868864 nbody 1 537 31 0.820000 4.463000  nan nan nan nan nan nan 0.000001 nan nan nan nan nan nan
+1869376 nbody 1 537 30 0.820000 4.448800  nan nan nan nan nan nan 0.000001 nan nan nan nan nan nan
+1869888 nbody 1 537 30 0.820000 4.434600  nan nan nan nan nan nan 0.000001 nan nan nan nan nan nan

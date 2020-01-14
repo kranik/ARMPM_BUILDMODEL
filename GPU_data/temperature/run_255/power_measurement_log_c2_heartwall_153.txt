@@ -1,0 +1,23 @@
+#Timestamp	Benchmark	Run(#)	GPU Frequency (MHz)	GPU Temperature(C)	GPU Voltage(V)	GPU Power(W)	inst_executed_cs	sm_inst_executed_texture	sm_inst_executed_global_loads	m_inst_executed_global_stores	threads_launched	gpu_busy	sm_executed_ipc	sm_issued_ipc	l2_write_bytes	l2_read_bytes	sm_active_cycles	sm_active_warps	sm_warps_launched
+1079400 heartwall 1 153 29 0.820000 0.708600  nan nan 18.600017 nan nan nan nan nan nan nan nan nan nan
+1079920 heartwall 1 153 29 0.820000 0.925000  nan nan 43.053270 nan nan nan nan nan nan nan nan nan nan
+1080432 heartwall 1 153 29 0.820000 0.894200  nan nan 46.210635 nan nan nan nan nan nan nan nan nan nan
+1080952 heartwall 1 153 29 0.820000 0.970600  nan nan 45.332778 nan nan nan nan nan nan nan nan nan nan
+1081464 heartwall 1 153 29 0.820000 0.831800  nan nan 49.584472 nan nan nan nan nan nan nan nan nan nan
+1081976 heartwall 1 153 30 0.820000 1.078000  nan nan 48.173054 nan nan nan nan nan nan nan nan nan nan
+1082488 heartwall 1 153 29 0.820000 0.893400  nan nan 45.774714 nan nan nan nan nan nan nan nan nan nan
+1083008 heartwall 1 153 29 0.820000 1.048200  nan nan 45.650049 nan nan nan nan nan nan nan nan nan nan
+1083520 heartwall 1 153 29 0.820000 0.986600  nan nan 45.470355 nan nan nan nan nan nan nan nan nan nan
+1084032 heartwall 1 153 29 0.820000 0.986200  nan nan 43.416314 nan nan nan nan nan nan nan nan nan nan
+1084552 heartwall 1 153 28 0.820000 1.002600  nan nan 46.435524 nan nan nan nan nan nan nan nan nan nan
+1085064 heartwall 1 153 29 0.820000 0.971400  nan nan 44.503382 nan nan nan nan nan nan nan nan nan nan
+1085576 heartwall 1 153 28 0.820000 1.001800  nan nan 45.122026 nan nan nan nan nan nan nan nan nan nan
+1086096 heartwall 1 153 28 0.820000 1.064200  nan nan 47.411910 nan nan nan nan nan nan nan nan nan nan
+1086608 heartwall 1 153 28 0.820000 1.079200  nan nan 46.735185 nan nan nan nan nan nan nan nan nan nan
+1087120 heartwall 1 153 29 0.820000 0.801600  nan nan 44.938994 nan nan nan nan nan nan nan nan nan nan
+1087640 heartwall 1 153 28 0.820000 0.986600  nan nan 44.972757 nan nan nan nan nan nan nan nan nan nan
+1088152 heartwall 1 153 29 0.820000 1.002000  nan nan 45.779399 nan nan nan nan nan nan nan nan nan nan
+1088664 heartwall 1 153 29 0.820000 0.863200  nan nan 44.109760 nan nan nan nan nan nan nan nan nan nan
+1089176 heartwall 1 153 30 0.820000 0.954800  nan nan 48.895747 nan nan nan nan nan nan nan nan nan nan
+1089688 heartwall 1 153 29 0.820000 1.078400  nan nan 45.691507 nan nan nan nan nan nan nan nan nan nan
+1090200 heartwall 1 153 29 0.820000 0.909400  nan nan 39.570756 nan nan nan nan nan nan nan nan nan nan

@@ -1,0 +1,19 @@
+#Timestamp	Benchmark	Run(#)	GPU Frequency (MHz)	GPU Temperature(C)	GPU Voltage(V)	GPU Power(W)	inst_executed_cs	sm_inst_executed_texture	sm_inst_executed_global_loads	m_inst_executed_global_stores	threads_launched	gpu_busy	sm_executed_ipc	sm_issued_ipc	l2_write_bytes	l2_read_bytes	sm_active_cycles	sm_active_warps	sm_warps_launched
+857600 transpose 1 153 28 0.820000 0.400000  nan nan nan nan nan nan nan nan 437.710257 nan nan nan nan
+858112 transpose 1 153 27 0.820000 0.831800  nan nan nan nan nan nan nan nan 1024.967719 nan nan nan nan
+858624 transpose 1 153 27 0.820000 0.754800  nan nan nan nan nan nan nan nan 1622.250407 nan nan nan nan
+859136 transpose 1 153 28 0.820000 0.801200  nan nan nan nan nan nan nan nan 1278.135902 nan nan nan nan
+859648 transpose 1 153 27 0.820000 0.616000  nan nan nan nan nan nan nan nan 2137.358020 nan nan nan nan
+860160 transpose 1 153 27 0.820000 0.600800  nan nan nan nan nan nan nan nan 2982.787804 nan nan nan nan
+860672 transpose 1 153 28 0.820000 0.616000  nan nan nan nan nan nan nan nan 2982.345180 nan nan nan nan
+861184 transpose 1 153 28 0.820000 0.616000  nan nan nan nan nan nan nan nan 2997.588331 nan nan nan nan
+861696 transpose 1 153 28 0.820000 0.616000  nan nan nan nan nan nan nan nan 2994.983564 nan nan nan nan
+862208 transpose 1 153 28 0.820000 0.523600  nan nan nan nan nan nan nan nan 2609.914895 nan nan nan nan
+862720 transpose 1 153 27 0.820000 0.924200  nan nan nan nan nan nan nan nan 1841.948744 nan nan nan nan
+863232 transpose 1 153 28 0.820000 0.863000  nan nan nan nan nan nan nan nan 1301.159500 nan nan nan nan
+863744 transpose 1 153 27 0.820000 1.001400  nan nan nan nan nan nan nan nan 1447.372607 nan nan nan nan
+864256 transpose 1 153 27 0.820000 0.847600  nan nan nan nan nan nan nan nan 1484.577348 nan nan nan nan
+864768 transpose 1 153 27 0.820000 0.770000  nan nan nan nan nan nan nan nan 1249.552697 nan nan nan nan
+865280 transpose 1 153 27 0.820000 0.939800  nan nan nan nan nan nan nan nan 1571.529593 nan nan nan nan
+865792 transpose 1 153 27 0.820000 1.001400  nan nan nan nan nan nan nan nan 1423.786735 nan nan nan nan
+866304 transpose 1 153 27 0.820000 1.155400  nan nan nan nan nan nan nan nan 1134.910318 nan nan nan nan

@@ -1,0 +1,4 @@
+#Timestamp	Benchmark	Run(#)	GPU Frequency (MHz)	GPU Temperature(C)	GPU Voltage(V)	GPU Power(W)	inst_executed_cs	sm_inst_executed_texture	sm_inst_executed_global_loads	m_inst_executed_global_stores	threads_launched	gpu_busy	sm_executed_ipc	sm_issued_ipc	l2_write_bytes	l2_read_bytes	sm_active_cycles	sm_active_warps	sm_warps_launched
+3126008 particle_filter 1 844 31 0.980000 2.955600  nan nan nan 0.077858 nan nan nan nan nan nan nan nan nan
+3126520 particle_filter 1 844 32 0.980000 2.140400  nan nan nan 0.015434 nan nan nan nan nan nan nan nan nan
+3127024 particle_filter 1 844 31 0.980000 2.309600  nan nan nan 0.015432 nan nan nan nan nan nan nan nan nan

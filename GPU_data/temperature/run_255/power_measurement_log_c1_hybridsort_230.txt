@@ -1,0 +1,6 @@
+#Timestamp	Benchmark	Run(#)	GPU Frequency (MHz)	GPU Temperature(C)	GPU Voltage(V)	GPU Power(W)	inst_executed_cs	sm_inst_executed_texture	sm_inst_executed_global_loads	m_inst_executed_global_stores	threads_launched	gpu_busy	sm_executed_ipc	sm_issued_ipc	l2_write_bytes	l2_read_bytes	sm_active_cycles	sm_active_warps	sm_warps_launched
+1462832 hybridsort 1 230 30 0.820000 0.539200  nan 0.043944 nan nan nan nan nan nan nan nan nan nan nan
+1463344 hybridsort 1 230 30 0.820000 0.615800  nan 0.364545 nan nan nan nan nan nan nan nan nan nan nan
+1463856 hybridsort 1 230 29 0.820000 0.831800  nan 1.353225 nan nan nan nan nan nan nan nan nan nan nan
+1464368 hybridsort 1 230 29 0.820000 0.754800  nan 2.312381 nan nan nan nan nan nan nan nan nan nan nan
+1464888 hybridsort 1 230 29 0.820000 0.770200  nan 3.249569 nan nan nan nan nan nan nan nan nan nan nan

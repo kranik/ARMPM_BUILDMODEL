@@ -1,0 +1,8 @@
+#Timestamp	Benchmark	Run(#)	GPU Frequency (MHz)	GPU Temperature(C)	GPU Voltage(V)	GPU Power(W)	inst_executed_cs	sm_inst_executed_texture	sm_inst_executed_global_loads	m_inst_executed_global_stores	threads_launched	gpu_busy	sm_executed_ipc	sm_issued_ipc	l2_write_bytes	l2_read_bytes	sm_active_cycles	sm_active_warps	sm_warps_launched
+2553136 b+tree 1 614 30 0.860000 1.232000  nan nan nan nan nan 0.934140 nan nan nan nan nan nan nan
+2553648 b+tree 1 614 29 0.860000 1.231800  nan nan nan nan nan 0.048443 nan nan nan nan nan nan nan
+2554152 b+tree 1 614 29 0.860000 1.232000  nan nan nan nan nan 0.050004 nan nan nan nan nan nan nan
+2554664 b+tree 1 614 29 0.860000 1.232000  nan nan nan nan nan 0.048102 nan nan nan nan nan nan nan
+2555176 b+tree 1 614 29 0.860000 1.232000  nan nan nan nan nan 0.000000 nan nan nan nan nan nan nan
+2555680 b+tree 1 614 29 0.860000 1.309200  nan nan nan nan nan 0.334956 nan nan nan nan nan nan nan
+2556192 b+tree 1 614 29 0.860000 1.233000  nan nan nan nan nan 0.100316 nan nan nan nan nan nan nan

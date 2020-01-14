@@ -1,0 +1,18 @@
+#Timestamp	Benchmark	Run(#)	GPU Frequency (MHz)	GPU Temperature(C)	GPU Voltage(V)	GPU Power(W)	inst_executed_cs	sm_inst_executed_texture	sm_inst_executed_global_loads	m_inst_executed_global_stores	threads_launched	gpu_busy	sm_executed_ipc	sm_issued_ipc	l2_write_bytes	l2_read_bytes	sm_active_cycles	sm_active_warps	sm_warps_launched
+860416 transpose 1 153 29 0.820000 0.492800  nan nan nan nan nan nan 0.000000 nan nan nan nan nan nan
+860928 transpose 1 153 28 0.820000 0.862400  nan nan nan nan nan nan 0.000000 nan nan nan nan nan nan
+861440 transpose 1 153 27 0.820000 0.893800  nan nan nan nan nan nan 0.000003 nan nan nan nan nan nan
+861952 transpose 1 153 27 0.820000 0.724000  nan nan nan nan nan nan 0.000003 nan nan nan nan nan nan
+862464 transpose 1 153 27 0.820000 0.616600  nan nan nan nan nan nan 0.000000 nan nan nan nan nan nan
+862976 transpose 1 153 27 0.820000 0.616200  nan nan nan nan nan nan 0.000000 nan nan nan nan nan nan
+863488 transpose 1 153 27 0.820000 0.616400  nan nan nan nan nan nan 0.000000 nan nan nan nan nan nan
+864000 transpose 1 153 27 0.820000 0.616000  nan nan nan nan nan nan 0.000000 nan nan nan nan nan nan
+864512 transpose 1 153 27 0.820000 0.617000  nan nan nan nan nan nan 0.000000 nan nan nan nan nan nan
+865024 transpose 1 153 29 0.820000 0.600400  nan nan nan nan nan nan 0.000000 nan nan nan nan nan nan
+865536 transpose 1 153 28 0.820000 1.001000  nan nan nan nan nan nan 0.000004 nan nan nan nan nan nan
+866048 transpose 1 153 28 0.820000 0.939000  nan nan nan nan nan nan 0.000004 nan nan nan nan nan nan
+866560 transpose 1 153 28 0.820000 0.878200  nan nan nan nan nan nan 0.000003 nan nan nan nan nan nan
+867072 transpose 1 153 27 0.820000 0.847200  nan nan nan nan nan nan 0.000001 nan nan nan nan nan nan
+867584 transpose 1 153 27 0.820000 0.739400  nan nan nan nan nan nan 0.000001 nan nan nan nan nan nan
+868096 transpose 1 153 28 0.820000 0.816600  nan nan nan nan nan nan 0.000003 nan nan nan nan nan nan
+868608 transpose 1 153 27 0.820000 1.155800  nan nan nan nan nan nan 0.000006 nan nan nan nan nan nan

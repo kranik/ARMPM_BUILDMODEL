@@ -1,0 +1,19 @@
+#Timestamp	Benchmark	Run(#)	GPU Frequency (MHz)	GPU Temperature(C)	GPU Voltage(V)	GPU Power(W)	inst_executed_cs	sm_inst_executed_texture	sm_inst_executed_global_loads	m_inst_executed_global_stores	threads_launched	gpu_busy	sm_executed_ipc	sm_issued_ipc	l2_write_bytes	l2_read_bytes	sm_active_cycles	sm_active_warps	sm_warps_launched
+1859008 nbody 1 537 30 0.820000 2.384800  nan nan nan nan nan nan nan nan nan nan nan 2341.615287 nan
+1859520 nbody 1 537 29 0.820000 4.434200  nan nan nan nan nan nan nan nan nan nan nan 5930.424385 nan
+1860032 nbody 1 537 29 0.820000 4.403400  nan nan nan nan nan nan nan nan nan nan nan 5932.705424 nan
+1860544 nbody 1 537 28 0.820000 4.449600  nan nan nan nan nan nan nan nan nan nan nan 5936.103836 nan
+1861056 nbody 1 537 29 0.820000 4.449600  nan nan nan nan nan nan nan nan nan nan nan 5934.377977 nan
+1861568 nbody 1 537 29 0.820000 4.403400  nan nan nan nan nan nan nan nan nan nan nan 6119.401614 nan
+1862080 nbody 1 537 29 0.820000 4.388000  nan nan nan nan nan nan nan nan nan nan nan 5935.847376 nan
+1862592 nbody 1 537 29 0.820000 4.403800  nan nan nan nan nan nan nan nan nan nan nan 5930.094463 nan
+1863104 nbody 1 537 29 0.820000 4.403400  nan nan nan nan nan nan nan nan nan nan nan 5936.134843 nan
+1863616 nbody 1 537 29 0.820000 4.419200  nan nan nan nan nan nan nan nan nan nan nan 5934.457251 nan
+1864128 nbody 1 537 29 0.820000 4.388000  nan nan nan nan nan nan nan nan nan nan nan 5937.530245 nan
+1864640 nbody 1 537 29 0.820000 4.388000  nan nan nan nan nan nan nan nan nan nan nan 5934.456571 nan
+1865152 nbody 1 537 30 0.820000 4.418000  nan nan nan nan nan nan nan nan nan nan nan 5929.785436 nan
+1865664 nbody 1 537 29 0.820000 4.432600  nan nan nan nan nan nan nan nan nan nan nan 5935.379424 nan
+1866176 nbody 1 537 29 0.820000 4.403400  nan nan nan nan nan nan nan nan nan nan nan 5934.973199 nan
+1866688 nbody 1 537 29 0.820000 4.403400  nan nan nan nan nan nan nan nan nan nan nan 5935.825080 nan
+1867200 nbody 1 537 29 0.820000 4.403800  nan nan nan nan nan nan nan nan nan nan nan 7539.975262 nan
+1867648 nbody 1 537 29 0.820000 4.388000  nan nan nan nan nan nan nan nan nan nan nan 5979.567382 nan
