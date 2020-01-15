@@ -1,0 +1,20 @@
+#Train Set	Test Set
+backprop	binomialOPtions
+bfs	BlackScholes
+cfd	MonteCarloMultiGPU
+hotspot	particles
+hybridsort	SobolQRNG
+leukocyte	convolutionTexture	
+mmumergpu	FDTD3d
+particle_filter	nbody	
+pathfinder	radixSortThrust
+stream_cluster	transpose
+b+tree		
+heartwall	
+hotspot3d	
+kmeans		
+lavaMD		
+myocyte		
+srad_v1		
+srad_v2		
+	
