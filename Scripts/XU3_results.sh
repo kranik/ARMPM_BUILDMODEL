@@ -153,7 +153,6 @@ else
 		./concatenate_results.sh -r "$results_dir" -n "${runs// /,}" -s
 	fi
 fi
-
 #Go into results directories and concatenate all the results files in to a big beast!
 for i in $RUNS;
 do
