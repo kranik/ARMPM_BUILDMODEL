@@ -5,13 +5,16 @@ Authors Jose Nunez-Yanez, Kris Nikov, Kerstin Eder, Mohammad HosseinabadyDepartm
 
 getting started
 
+To use this repository you need to have a TX1 board with some software that collects performance counter and power information.
+Contact us if you need access to this. The different scrupts in the TX1 board are called with a binary called pmonitor.
 
-To run pmonitor you launch as root like:
+To run pmonitor in the TX1 you launch as root like:
  
 sudo ./pmonitor
  
+This will run training and testing benchmarks and in a full run it will take a whole night to complete.
  
-Copy the directory with results from the board into a machine where you can run the python scripts.
+Then copy the directory with results from the TX1 board into a machine where you can run the python scripts.
  
 splitter_freq.py needs arguments like power_measurement_log_c0.dat,  power_measurement_log_c1.dat ...  power_measurement_log_c12.dat.
 
