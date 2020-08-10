@@ -1,7 +1,0 @@
-#Timestamp	Benchmark	Run(#)	GPU Frequency (MHz)	GPU Temperature(C)	GPU Voltage(V)	GPU Power(W)	inst_executed_cs	sm_inst_executed_texture	sm_inst_executed_global_loads	m_inst_executed_global_stores	threads_launched	gpu_busy	sm_executed_ipc	sm_issued_ipc	l2_write_bytes	l2_read_bytes	sm_active_cycles	sm_active_warps	sm_warps_launched
-2550272 convolutionTexture 1 921 32 1.020000 3.247000  nan nan nan nan nan nan nan nan 34.326142 nan nan nan nan
-2550784 convolutionTexture 1 921 31 1.020000 2.494400  nan nan nan nan nan nan nan nan 54.276779 nan nan nan nan
-2551296 convolutionTexture 1 921 31 1.020000 2.401400  nan nan nan nan nan nan nan nan 21.606635 nan nan nan nan
-2551744 convolutionTexture 1 921 31 1.020000 2.401400  nan nan nan nan nan nan nan nan 1.573937 nan nan nan nan
-2552256 convolutionTexture 1 921 31 1.020000 2.386000  nan nan nan nan nan nan nan nan 1.734618 nan nan nan nan
-2552768 convolutionTexture 1 921 31 1.020000 2.386400  nan nan nan nan nan nan nan nan 0.444793 nan nan nan nan

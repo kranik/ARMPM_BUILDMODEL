@@ -57,8 +57,13 @@ In this listing, the octave_makemodel script receives with -r a measurement.txt 
 
 This octave_model.sh will use octave so you need to install that since it will call the build_model.m octave file.
 
-An example of measurement.txt is provided in run_255_nvidia directory with the name power_measurement_merged_global.txt
+An example of measurement.txt is provided in the file power_measurement_merged_global.txt
 An example of benchmark.txt is provided in benchmark_13pc_nvidia2.txt file.
 
+For example
 
+./octave_makemodel.sh -r ./power_measurement_merged_global.txt  -b ./benchmark_13pc_nvidia2.txt  -f 76,153,230,307,384,460,537,614,691,768,844,921,998 -p 7 -m 1 -l 8,9,10,11,12 -n 4 -c 1 -o 2
+
+
+All the data fields should be separated with a TAB and no spaces should be used at all. 
  
